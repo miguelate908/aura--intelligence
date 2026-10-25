@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AURA Intelligence</title>
+<style>
+:root{--bg:#f6f7fb;--card:#fff;--tx:#1b1f2a;--mut:#6b7280;--br:#e4e7ee;--ac:#5b5bf0;--ac2:#eef0ff;--err:#c0392b;--ok:#1e8e5a}
+@media(prefers-color-scheme:dark){:root{--bg:#12141b;--card:#1b1e28;--tx:#e8eaf0;--mut:#9aa1b2;--br:#2b3040;--ac:#8587ff;--ac2:#25284a;--err:#ff7b6b;--ok:#4cd08f}}
+*{box-sizing:border-box}body{margin:0;font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--tx)}
+button,input{font:inherit}button{cursor:pointer;border:0;border-radius:8px;padding:8px 14px;background:var(--ac);color:#fff}
+button.sec{background:var(--ac2);color:var(--ac)}button.del{background:transparent;color:var(--err);padding:2px 8px}
+input{width:100%;padding:9px 11px;border:1px solid var(--br);border-radius:8px;background:var(--card);color:var(--tx)}
+label{display:block;font-size:12px;color:var(--mut);margin:10px 0 3px}
+.hide{display:none!important}
+#auth{max-width:380px;margin:8vh auto;padding:24px;background:var(--card);border:1px solid var(--br);border-radius:14px}
+#auth h1{margin:0 0 4px}#auth p{color:var(--mut);margin:0 0 12px}
+.tabs{display:flex;gap:8px;margin:14px 0 4px}.tabs button{flex:1}
+#app{display:grid;grid-template-columns:210px 1fr;min-height:100vh}
+nav{background:var(--card);border-right:1px solid var(--br);padding:16px;display:flex;flex-direction:column;gap:6px}
+nav b{font-size:18px;margin-bottom:10px}nav button{background:transparent;color:var(--tx);text-align:left}
+nav button.on{background:var(--ac2);color:var(--ac)}nav .sp{flex:1}
+main{padding:22px;overflow:auto}h2{margin:0 0 14px}
+.card{background:var(--card);border:1px solid var(--br);border-radius:12px;padding:16px;margin-bottom:16px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.kpi{font-size:28px;font-weight:700}.mut{color:var(--mut);font-size:13px}
+.tw{overflow-x:auto}table{border-collapse:collapse;width:100%}th,td{padding:8px 10px;border-bottom:1px solid var(--br);text-align:left;white-space:nowrap}
+th{font-size:12px;color:var(--mut);text-transform:uppercase}
+.msg{padding:9px 12px;border-radius:12px;margin:6px 0;max-width:80%;white-space:pre-wrap}
+.me{background:var(--ac);color:#fff;margin-left:auto}.bot{background:var(--ac2)}
+#log{height:46vh;overflow-y:auto;padding:4px}#cf{display:flex;gap:8px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}.chips button{font-size:13px}
+#toast{position:fixed;bottom:18px;right:18px;padding:10px 14px;border-radius:10px;background:var(--card);border:1px solid var(--br);max-width:320px}
+.e{color:var(--err)}.o{color:var(--ok)}
+@media(max-width:700px){#app{grid-template-columns:1fr}nav{flex-direction:row;flex-wrap:wrap;border-right:0;border-bottom:1px solid var(--br)}nav .sp{display:none}}
+</style>
+</head>
+<body>
+<section id="auth">
+  <h1>AURA Intelligence</h1><p>Inteligencia para tu empresa, en un solo lugar.</p>
+  <div class="tabs"><button id="tl" onclick="mode('login')">Ingresar</button><button id="tr" class="sec" onclick="mode('register')">Crear empresa</button></div>
+  <form id="af" onsubmit="submitAuth(event)">
+    <div id="rg" class="hide">
+      <label>Nombre de la empresa</label><input id="cn" autocomplete="organization">
+      <label>Tu nombre</label><input id="un" autocomplete="name">
+    </div>
+    <label>Correo</label><input id="em" type="email" autocomplete="email" required>
+    <label>Contraseña <span id="ph" class="hide">(mínimo 12 caracteres)</span></label><input id="pw" type="password" autocomplete="current-password" required>
+    <p id="ae" class="e"></p>
+    <button style="width:100%">Continuar</button>
+  </form>
+</section>
+ 
+<div id="app" class="hide">
+  <nav id="nav"><b>AURA</b></nav>
+  <main id="main"></main>
+</div>
+<div id="toast" class="hide"></div>
+ 
+<script>
+const S={token:null,spec:null,claims:{},sec:'resumen'};
+const RES=[['customers','Clientes'],['products','Productos'],['warehouses','Bodegas'],['events','Eventos']];
+const $=id=>document.getElementById(id);
+const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function store(k,v){try{v===undefined?sessionStorage.getItem(k):v===null?sessionStorage.removeItem(k):sessionStorage.setItem(k,v)}catch(e){}}
+function load(k){try{return sessionStorage.getItem(k)}catch(e){return null}}
+function toast(t,cls){const e=$('toast');e.textContent=t;e.className=cls||'';setTimeout(()=>e.classList.add('hide'),3500)}
+function decode(t){try{return JSON.parse(atob(t.split('.')[1].replace(/-/g,'+').replace(/_/g,'/')))}catch(e){return{}}}
+ 
+async function req(path,method='GET',body){
+  const h={'Content-Type':'application/json'};if(S.token)h.Authorization='Bearer '+S.token;
+  const r=await fetch(path,{method,headers:h,body:body?JSON.stringify(body):undefined});
+  const t=await r.text();let d;try{d=JSON.parse(t)}catch(e){d=t}
+  if(r.status===401&&S.token){logout();throw new Error('Tu sesión expiró, ingresa de nuevo.')}
+  if(!r.ok){const m=d&&d.detail;throw new Error(Array.isArray(m)?m.map(x=>x.msg).join('; '):m||('Error '+r.status))}
+  return d;
+}
+ 
+/* ---------- Autenticación ---------- */
+function mode(m){const reg=m==='register';$('rg').classList.toggle('hide',!reg);$('ph').classList.toggle('hide',!reg);
+  $('tl').className=reg?'sec':'';$('tr').className=reg?'':'sec';$('af').dataset.m=m;$('ae').textContent=''}
+async function submitAuth(ev){
+  ev.preventDefault();$('ae').textContent='';const reg=$('af').dataset.m==='register';
+  try{
+    if(reg){await req('/auth/register','POST',{company_name:$('cn').value,name:$('un').value,email:$('em').value,password:$('pw').value})}
+    const d=await req('/auth/login','POST',{email:$('em').value,password:$('pw').value});
+    S.token=d.access_token;store('t',S.token);start();
+  }catch(e){$('ae').textContent=e.message}
+}
+function logout(){S.token=null;store('t',null);$('app').classList.add('hide');$('auth').classList.remove('hide')}
+ 
+/* ---------- Inicio ---------- */
+async function start(){
+  S.claims=decode(S.token);
+  try{S.spec=await req('/openapi.json')}catch(e){S.spec={paths:{},components:{schemas:{}}}}
+  $('auth').classList.add('hide');$('app').classList.remove('hide');buildNav();go('resumen');
+}
+function buildNav(){
+  const items=[['resumen','Resumen'],...RES.filter(r=>findPath(r[0])),['asistente','Asistente IA']];
+  $('nav').innerHTML='<b>AURA</b>'+items.map(i=>`<button data-s="${i[0]}" onclick="go('${i[0]}')">${i[1]}</button>`).join('')+'<span class="sp"></span><button onclick="logout()">Cerrar sesión</button>';
+}
+function go(s){S.sec=s;document.querySelectorAll('nav button[data-s]').forEach(b=>b.classList.toggle('on',b.dataset.s===s));
+  s==='resumen'?resumen():s==='asistente'?asistente():recurso(s)}
+ 
+/* ---------- Descubrimiento de rutas (openapi) ---------- */
+function findPath(name){
+  const p=Object.keys(S.spec.paths||{});
+  const list=p.find(x=>new RegExp('^/'+name+'/?$').test(x)&&S.spec.paths[x].get);
+  if(!list)return null;
+  const byId=p.find(x=>x.startsWith('/'+name+'/{'));
+  return{list,create:S.spec.paths[list].post?list:null,item:byId,del:byId&&S.spec.paths[byId].delete?byId:null};
+}
+function schemaOf(op){
+  try{const s=op.requestBody.content['application/json'].schema;
+    const ref=s.$ref?s.$ref.split('/').pop():null;return ref?S.spec.components.schemas[ref]:s}catch(e){return null}
+}
+ 
+/* ---------- Resumen ---------- */
+async function resumen(){
+  $('main').innerHTML='<h2>Resumen</h2><div class="grid" id="kp"></div><div class="card" style="margin-top:16px"><b>¿Qué quieres hacer hoy?</b><p class="mut">Pregúntale al asistente por tus clientes, productos o bodegas, o revisa cada sección desde el menú.</p><button onclick="go(\'asistente\')">Abrir asistente</button></div>';
+  for(const [r,l] of RES){const f=findPath(r);if(!f)continue;
+    try{const d=await req(f.list);const n=Array.isArray(d)?d.length:(d.items||[]).length;
+      $('kp').insertAdjacentHTML('beforeend',`<div class="card"><div class="mut">${l}</div><div class="kpi">${n}</div></div>`)}catch(e){}}
+}
+ 
+/* ---------- Recursos (listar / crear / eliminar) ---------- */
+async function recurso(r){
+  const f=findPath(r),label=(RES.find(x=>x[0]===r)||[r,r])[1];
+  $('main').innerHTML=`<h2>${label}</h2><div id="fm"></div><div class="card tw" id="tb">Cargando…</div>`;
+  const sc=f.create?schemaOf(S.spec.paths[f.create].post):null;
+  if(sc){
+    const props=sc.properties||{};
+    const fields=Object.keys(props).map(k=>{
+      const t=props[k].type==='integer'||props[k].type==='number'||(props[k].anyOf||[]).some(a=>a.type==='integer'||a.type==='number')?'number':'text';
+      const v=k==='company_id'&&S.claims.company_id?S.claims.company_id:'';
+      return `<div><label>${esc(props[k].title||k)}</label><input name="${k}" type="${t}" step="any" value="${esc(v)}" ${(sc.required||[]).includes(k)?'required':''}></div>`}).join('');
+    $('fm').innerHTML=`<form class="card" onsubmit="crear(event,'${r}')"><div class="grid">${fields}</div><br><button>Agregar</button></form>`;
+  }
+  listar(r);
+}
+async function listar(r){
+  const f=findPath(r);
+  try{
+    let d=await req(f.list);d=Array.isArray(d)?d:(d.items||[]);
+    if(!d.length){$('tb').innerHTML='<span class="mut">Todavía no hay registros.</span>';return}
+    const cols=Object.keys(d[0]);
+    $('tb').innerHTML='<table><tr>'+cols.map(c=>`<th>${esc(c)}</th>`).join('')+(f.del?'<th></th>':'')+'</tr>'+
+      d.map(x=>'<tr>'+cols.map(c=>`<td>${esc(x[c])}</td>`).join('')+(f.del?`<td><button class="del" onclick="borrar('${r}',${x.id})">Eliminar</button></td>`:'')+'</tr>').join('')+'</table>';
+  }catch(e){$('tb').innerHTML=`<span class="e">${esc(e.message)}</span>`}
+}
+async function crear(ev,r){
+  ev.preventDefault();const body={};
+  new FormData(ev.target).forEach((v,k)=>{if(v!=='')body[k]=ev.target.elements[k].type==='number'?Number(v):v});
+  try{await req(findPath(r).create,'POST',body);toast('Registro creado','o');ev.target.reset();listar(r)}catch(e){toast(e.message,'e')}
+}
+async function borrar(r,id){
+  if(!confirm('¿Eliminar este registro?'))return;
+  try{await req(findPath(r).del.replace(/\{[^}]+\}/,id),'DELETE');toast('Eliminado','o');listar(r)}catch(e){toast(e.message,'e')}
+}
+ 
+/* ---------- Asistente (chat) ---------- */
+function asistente(){
+  $('main').innerHTML=`<h2>Asistente IA</h2><div class="card"><div id="log"></div>
+  <div class="chips">${['¿Cuántos clientes tengo?','Muéstrame mis productos','¿Qué bodegas tengo?','Resumen de mi empresa'].map(q=>`<button class="sec" onclick="ask('${q}')">${q}</button>`).join('')}</div>
+  <form id="cf" onsubmit="ask(null,event)"><input id="ci" placeholder="Escribe tu pregunta…" autocomplete="off"><button>Enviar</button></form></div>`;
+  say('bot','Hola, soy el asistente de AURA. Puedo ayudarte a consultar la información de tu empresa. ¿Qué necesitas?');
+}
+function say(w,t){const l=$('log');l.insertAdjacentHTML('beforeend',`<div class="msg ${w}">${esc(t)}</div>`);l.scrollTop=l.scrollHeight}
+async function ask(q,ev){
+  if(ev)ev.preventDefault();q=q||$('ci').value.trim();if(!q)return;$('ci').value='';say('me',q);
+  const path=Object.keys(S.spec.paths).find(p=>/assistant/.test(p)&&S.spec.paths[p].post);
+  if(!path){say('bot','No encontré el endpoint del asistente en la API (ruta con "assistant"). Revisa routers/assistant.py.');return}
+  const sc=schemaOf(S.spec.paths[path].post)||{properties:{}};
+  const key=Object.keys(sc.properties||{}).find(k=>/message|question|query|prompt|text/.test(k))||'message';
+  try{
+    const d=await req(path,'POST',{[key]:q});
+    const a=typeof d==='string'?d:(d.reply||d.answer||d.response||d.message||d.result||JSON.stringify(d,null,2));
+    say('bot',a);
+  }catch(e){say('bot','No pude responder: '+e.message)}
+}
+ 
+/* ---------- Arranque ---------- */
+mode('login');
+const t=load('t');if(t){S.token=t;start()}
+</script>
+</body>
+</html>

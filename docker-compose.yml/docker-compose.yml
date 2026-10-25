@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: aura-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_NAME:-aura_db}
+      POSTGRES_USER: ${DB_USER:-aura_user}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?Define DB_PASSWORD in backend/.env}
+    ports:
+      - "127.0.0.1:${DB_PORT:-5432}:5432"
+    volumes:
+      - aura_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  aura_data:
