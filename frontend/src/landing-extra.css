@@ -1,0 +1,22 @@
+/* Estilos de las secciones añadidas. Usan el prefijo x- para no chocar con los tuyos. */
+.x-section{padding-top:72px;padding-bottom:24px}
+.x-section h2{max-width:760px;margin:6px 0 28px}
+.x-grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.x-grid-2{grid-template-columns:repeat(auto-fit,minmax(220px,1fr));margin-top:18px}
+.x-card{position:relative;background:#0f1730;border:1px solid #1c2850;border-radius:14px;padding:22px;transition:.25s}
+.x-card:hover{border-color:#22d3ee;transform:translateY(-3px)}
+.x-card h3{margin:0 0 6px;font-size:18px;color:#e8ecf8}
+.x-card p{margin:0;color:#93a0c4;font-size:15px}
+.x-badge{float:right;font-size:11px;padding:2px 9px;border-radius:99px;border:1px solid}
+.x-badge.ok{color:#34d399;border-color:#34d39966}.x-badge.dev{color:#fbbf24;border-color:#fbbf2466}
+.x-steps{counter-reset:s;list-style:none;margin:0;padding:0;display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}
+.x-steps li{counter-increment:s;padding:20px;border-left:2px solid #8b5cf6;background:#0f1730;border-radius:0 12px 12px 0;color:#93a0c4;font-size:15px}
+.x-steps li::before{content:"0" counter(s);display:block;color:#22d3ee;font-weight:700;margin-bottom:4px}
+.x-note{margin-top:18px;color:#93a0c4}.x-note a,.x-foot a,.x-consent a{text-decoration:underline;color:inherit}
+.demo-form select{width:100%;background:#060914;border:1px solid #1c2850;border-radius:9px;padding:11px;color:#e8ecf8;font:inherit}
+.x-consent{display:flex;gap:10px;align-items:flex-start;font-size:14px;color:#93a0c4}
+.x-consent input{width:auto;margin-top:4px}
+.x-foot{font-size:14px}
+.x-legal{max-width:760px;margin:0 auto;padding:48px 20px;color:#93a0c4;min-height:100vh;background:#060914;font:16px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif}
+.x-legal h1{color:#e8ecf8}.x-legal h2{color:#e8ecf8;font-size:20px;margin:26px 0 6px}.x-legal a{color:#22d3ee}
+@media(prefers-reduced-motion:reduce){.x-card{transition:none}}

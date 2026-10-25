@@ -7,18 +7,21 @@ import time
 from collections import deque
 from email.message import EmailMessage
 from threading import Lock
+from typing import Optional
 
 from fastapi import APIRouter, Depends, HTTPException, Request
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 from sqlalchemy.orm import Session
 
+from core.security import get_current_user
 from database import get_db
-from models import DemoRequest
+from models import DemoRequest, User
 
 
 logger = logging.getLogger(__name__)
 router = APIRouter(prefix="/demo-requests", tags=["Demo requests"])
 
+SECTORS = {"logistica", "retail", "manufactura", "tecnologia", "servicios", "datos", "otro"}
 RATE_LIMIT = 5
 RATE_WINDOW_SECONDS = 10 * 60
 _request_times: dict[str, deque[float]] = {}
@@ -32,14 +35,26 @@ class DemoRequestCreate(BaseModel):
     name: str = Field(min_length=1, max_length=150)
     email: str = Field(min_length=3, max_length=254, pattern=r"^[^\s@]+@[^\s@]+\.[^\s@]+$")
     company: str = Field(min_length=1, max_length=150)
+    job_title: str = Field(min_length=1, max_length=150)
+    sector: str = Field(max_length=50)
+    company_size: Optional[str] = Field(default=None, max_length=50)
+    need: str = Field(min_length=10, max_length=2000)
     message: str = Field(default="", max_length=2000)
+    consent: bool
     website: str = Field(default="", max_length=200)
 
-    @field_validator("name", "company")
+    @field_validator("name", "company", "job_title")
     @classmethod
     def reject_control_characters(cls, value: str) -> str:
         if any(ord(char) < 32 for char in value):
             raise ValueError("El campo contiene caracteres no permitidos")
+        return value
+
+    @field_validator("sector")
+    @classmethod
+    def valid_sector(cls, value: str) -> str:
+        if value not in SECTORS:
+            raise ValueError("Sector no válido")
         return value
 
 
@@ -86,7 +101,11 @@ def _send_notification(demo: DemoRequest) -> str:
         "Se recibió una solicitud de demostración de AURA Intelligence.\n\n"
         f"Nombre: {demo.name}\n"
         f"Correo: {demo.email}\n"
-        f"Empresa: {demo.company_name}\n\n"
+        f"Empresa: {demo.company_name}\n"
+        f"Cargo: {demo.job_title}\n"
+        f"Sector: {demo.sector}\n"
+        f"Tamaño: {demo.company_size or 'No indicado'}\n\n"
+        f"Necesidad:\n{demo.need}\n\n"
         f"Mensaje:\n{demo.message or 'Sin mensaje adicional.'}\n"
         f"Solicitud registrada con ID {demo.id}."
     )
@@ -123,11 +142,19 @@ def create_demo_request(
     if payload.website:
         return {"accepted": True, "notification_status": "not_sent"}
 
+    if not payload.consent:
+        raise HTTPException(status_code=422, detail="Se requiere el consentimiento para tratar tus datos.")
+
     demo = DemoRequest(
         name=payload.name,
-        email=payload.email,
+        email=payload.email.lower(),
         company_name=payload.company,
+        job_title=payload.job_title,
+        sector=payload.sector,
+        company_size=payload.company_size or None,
+        need=payload.need,
         message=payload.message or None,
+        consent=True,
     )
     try:
         db.add(demo)
@@ -151,3 +178,37 @@ def create_demo_request(
         "request_id": demo.id,
         "notification_status": notification_status,
     }
+
+
+# ---- Consulta para administradores (correos en ADMIN_EMAILS del .env) ----
+def _admin_emails() -> set[str]:
+    return {e.strip().lower() for e in os.getenv("ADMIN_EMAILS", "").split(",") if e.strip()}
+
+
+def _is_admin(user: User) -> bool:
+    return user.email.strip().lower() in _admin_emails()
+
+
+@router.get("/is-admin")
+def demo_is_admin(user: User = Depends(get_current_user)):
+    return {"admin": _is_admin(user)}
+
+
+@router.get("/")
+def list_demo_requests(
+    limit: int = 100,
+    db: Session = Depends(get_db),
+    user: User = Depends(get_current_user),
+):
+    if not _is_admin(user):
+        raise HTTPException(status_code=403, detail="No tienes permiso para ver las solicitudes")
+    rows = db.query(DemoRequest).order_by(DemoRequest.id.desc()).limit(max(1, min(limit, 500))).all()
+    return [
+        {
+            "id": r.id, "created_at": r.created_at, "name": r.name, "email": r.email,
+            "company_name": r.company_name, "job_title": r.job_title, "sector": r.sector,
+            "company_size": r.company_size, "need": r.need, "message": r.message,
+            "notification_sent": r.notification_sent,
+        }
+        for r in rows
+    ]

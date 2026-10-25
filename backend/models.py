@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, DateTime, Float, ForeignKey, Text, Boolean
+from sqlalchemy import Column, Integer, String, DateTime, Float, ForeignKey, Text, Boolean, false
 from sqlalchemy.sql import func
 
 from database import Base
@@ -135,6 +135,11 @@ class DemoRequest(Base):
     company_name = Column(String(150), nullable=False)
     message = Column(Text, nullable=True)
     notification_sent = Column(Boolean, nullable=False, default=False)
+    job_title = Column(String(150), nullable=True)
+    sector = Column(String(50), nullable=True)
+    company_size = Column(String(50), nullable=True)
+    need = Column(Text, nullable=True)
+    consent = Column(Boolean, nullable=False, default=False, server_default=false())
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
 
 
