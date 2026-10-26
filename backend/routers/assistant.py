@@ -87,7 +87,7 @@ def _products(db: Session, cid: int, t: str) -> str:
             q = q.filter(Product.price < limit)
             title = f"Productos con precio menor a {_money(limit)}:"
         else:
-            title = "Tus productos:"
+            q, title = q.order_by(Product.id.desc()), "Tus productos:"
     elif _has(t, "mas caro", "mas costoso"):
         q, title = q.order_by(Product.price.desc()), "Tus productos más caros:"
     elif _has(t, "mas barato", "mas economico"):
@@ -156,7 +156,9 @@ def chat(body: ChatRequest, db: Session = Depends(get_db), current_user: User = 
         intent, reply = "search", _search(db, cid, raw)
     elif _has(t, "resumen", "general", "panorama", "estado de mi empresa"):
         intent, reply = "summary", _summary(db, cid)
-    elif _has(t, "evento", "actividad", "reciente", "historial"):
+    elif _has(t, "evento", "actividad", "historial") or (
+        _has(t, "reciente") and not _has(t, "cliente", "producto", "bodega", "almacen")
+    ):
         intent, reply = "events", _events(db, cid)
     elif _has(t, "cliente"):
         intent, reply = "customers", _customers(db, cid, t)

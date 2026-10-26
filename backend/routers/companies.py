@@ -2,44 +2,16 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from database import get_db
-from models import Company
-from schemas import CompanyCreate
-from services.events import create_event
+from models import Company, User
 from core.security import get_current_user
-from models import User
 
-
+# Nota: se eliminó POST /companies/. Era público (sin autenticación ni límite) y las
+# empresas se crean desde /auth/register, que sí tiene límite de intentos.
 router = APIRouter(
     prefix="/companies",
-    tags=["Companies"]
+    tags=["Companies"],
+    dependencies=[Depends(get_current_user)],
 )
-
-
-@router.post("/")
-def create_company(
-    company: CompanyCreate,
-    db: Session = Depends(get_db)
-):
-    new_company = Company(
-        name=company.name
-    )
-
-    db.add(new_company)
-    db.commit()
-    db.refresh(new_company)
-
-    create_event(
-        db=db,
-        company_id=new_company.id,
-        event_type="company.created",
-        entity_type="company",
-        entity_id=new_company.id,
-        description=f"Company '{new_company.name}' created"
-    )
-
-    db.commit()
-
-    return new_company
 
 
 @router.get("/")
@@ -61,11 +33,6 @@ def get_company(
         .filter(Company.id == company_id, Company.id == current_user.company_id)
         .first()
     )
-
     if company is None:
-        raise HTTPException(
-            status_code=404,
-            detail="Empresa no encontrada"
-        )
-
+        raise HTTPException(status_code=404, detail="Empresa no encontrada")
     return company
