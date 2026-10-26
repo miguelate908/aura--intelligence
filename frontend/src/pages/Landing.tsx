@@ -141,6 +141,7 @@ export default function Landing() {
           <a href="#sectores">Sectores</a>
           <a href="#seguridad">Seguridad</a>
           <a href="#solicitud">Contacto</a>
+          <Link to="/login">Acceder</Link>
         </nav>
         <a className="header-cta" href="#solicitud">Solicitar una demostración</a>
       </header>

@@ -1,4 +1,4 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import { api } from "../api";
 
 type Msg = { who: "me" | "bot"; text: string };
@@ -7,6 +7,8 @@ export default function Assistant() {
   const [log, setLog] = useState<Msg[]>([{ who: "bot", text: "Hola, soy el asistente de AURA. ¿Qué necesitas?" }]);
   const [q, setQ] = useState("");
   const [busy, setBusy] = useState(false);
+  const end = useRef<HTMLDivElement>(null);
+  useEffect(() => { end.current?.scrollIntoView({ block: "end" }); }, [log, busy]);
   const send = async (e: FormEvent) => {
     e.preventDefault();
     const text = q.trim();
@@ -24,8 +26,15 @@ export default function Assistant() {
     <>
       <h2>Asistente IA</h2>
       <div className="card">
-        <div className="log">{log.map((m, i) => <div key={i} className={`msg ${m.who}`}>{m.text}</div>)}{busy && <div className="msg bot">Pensando…</div>}</div>
-        <form className="row" onSubmit={send}><input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Escribe tu pregunta…" /><button>Enviar</button></form>
+        <div className="log" role="log" aria-live="polite">
+          {log.map((m, i) => <div key={i} className={`msg ${m.who}`}>{m.text}</div>)}
+          {busy && <div className="msg bot">Pensando…</div>}
+          <div ref={end} />
+        </div>
+        <form className="row" onSubmit={send}>
+          <input aria-label="Tu pregunta" value={q} onChange={(e) => setQ(e.target.value)} placeholder="Escribe tu pregunta…" />
+          <button disabled={busy || !q.trim()}>Enviar</button>
+        </form>
       </div>
     </>
   );

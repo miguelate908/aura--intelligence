@@ -1,5 +1,5 @@
 import { FormEvent, useState } from "react";
-import { Navigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { useAuth } from "../auth";
 
 export default function Login() {
@@ -7,23 +7,33 @@ export default function Login() {
   const [reg, setReg] = useState(false);
   const [f, setF] = useState({ company: "", name: "", email: "", password: "" });
   const [err, setErr] = useState("");
-  if (authed) return <Navigate to="/" replace />;
+  const [busy, setBusy] = useState(false);
+  if (authed) return <Navigate to="/app" replace />;
   const set = (k: string) => (e: any) => setF({ ...f, [k]: e.target.value });
   const submit = async (e: FormEvent) => {
     e.preventDefault();
-    setErr("");
+    setErr(""); setBusy(true);
     try { reg ? await register(f.company, f.name, f.email, f.password) : await login(f.email, f.password); }
     catch (x: any) { setErr(x.message); }
+    finally { setBusy(false); }
   };
   return (
-    <form className="card auth" onSubmit={submit}>
-      <h1>AURA Intelligence</h1>
-      {reg && <><label>Empresa</label><input value={f.company} onChange={set("company")} required /><label>Tu nombre</label><input value={f.name} onChange={set("name")} required /></>}
-      <label>Correo</label><input type="email" value={f.email} onChange={set("email")} required />
-      <label>Contraseña {reg && "(mínimo 12 caracteres)"}</label><input type="password" value={f.password} onChange={set("password")} required />
-      {err && <p className="err">{err}</p>}
-      <button>{reg ? "Crear empresa" : "Ingresar"}</button>
-      <button type="button" className="ghost" onClick={() => setReg(!reg)}>{reg ? "Ya tengo cuenta" : "Crear empresa nueva"}</button>
-    </form>
+    <div className="panel"><div className="authwrap">
+      <form className="card auth" onSubmit={submit}>
+        <h1>AURA Intelligence</h1>
+        <p className="mut">{reg ? "Crea tu empresa y tu primer usuario." : "Accede a tu panel."}</p>
+        {reg && <>
+          <label htmlFor="co">Empresa</label><input id="co" value={f.company} onChange={set("company")} required autoComplete="organization" />
+          <label htmlFor="nm">Tu nombre</label><input id="nm" value={f.name} onChange={set("name")} required autoComplete="name" />
+        </>}
+        <label htmlFor="em">Correo</label><input id="em" type="email" value={f.email} onChange={set("email")} required autoComplete="email" />
+        <label htmlFor="pw">Contraseña {reg && "(mínimo 12 caracteres)"}</label>
+        <input id="pw" type="password" value={f.password} onChange={set("password")} required minLength={reg ? 12 : undefined} autoComplete={reg ? "new-password" : "current-password"} />
+        {err && <p className="err" role="alert">{err}</p>}
+        <button disabled={busy}>{busy ? "Un momento…" : reg ? "Crear empresa" : "Ingresar"}</button>
+        <button type="button" className="ghost" onClick={() => { setReg(!reg); setErr(""); }}>{reg ? "Ya tengo cuenta" : "Crear empresa nueva"}</button>
+        <Link className="back" to="/">← Volver al inicio</Link>
+      </form>
+    </div></div>
   );
 }
