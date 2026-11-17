@@ -22,6 +22,7 @@ from routers.graph import router as graph_router
 from routers import auth
 from routers import assistant
 from routers import demo_requests
+from routers import imports
 
 Base.metadata.create_all(bind=engine)
 ensure_demo_request_columns(engine)
@@ -69,6 +70,7 @@ app.include_router(graph_router)
 app.include_router(auth.router)
 app.include_router(assistant.router)
 app.include_router(demo_requests.router)
+app.include_router(imports.router)
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 

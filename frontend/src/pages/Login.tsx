@@ -1,4 +1,5 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
+import { api } from "../api";
 import { Link, Navigate } from "react-router-dom";
 import { useAuth } from "../auth";
 
@@ -8,6 +9,10 @@ export default function Login() {
   const [f, setF] = useState({ company: "", name: "", email: "", password: "" });
   const [err, setErr] = useState("");
   const [busy, setBusy] = useState(false);
+  const [canRegister, setCanRegister] = useState(false);
+  useEffect(() => {
+    api<{ registration_enabled: boolean }>("/auth/config").then((c) => setCanRegister(c.registration_enabled)).catch(() => setCanRegister(false));
+  }, []);
   if (authed) return <Navigate to="/app" replace />;
   const set = (k: string) => (e: any) => setF({ ...f, [k]: e.target.value });
   const submit = async (e: FormEvent) => {
@@ -31,7 +36,9 @@ export default function Login() {
         <input id="pw" type="password" value={f.password} onChange={set("password")} required minLength={reg ? 12 : undefined} autoComplete={reg ? "new-password" : "current-password"} />
         {err && <p className="err" role="alert">{err}</p>}
         <button disabled={busy}>{busy ? "Un momento…" : reg ? "Crear empresa" : "Ingresar"}</button>
-        <button type="button" className="ghost" onClick={() => { setReg(!reg); setErr(""); }}>{reg ? "Ya tengo cuenta" : "Crear empresa nueva"}</button>
+        {canRegister
+          ? <button type="button" className="ghost" onClick={() => { setReg(!reg); setErr(""); }}>{reg ? "Ya tengo cuenta" : "Crear empresa nueva"}</button>
+          : <p className="mut">¿Aún no tienes cuenta? <a href="/#solicitud">Solicita una demostración</a>.</p>}
         <Link className="back" to="/">← Volver al inicio</Link>
       </form>
     </div></div>
