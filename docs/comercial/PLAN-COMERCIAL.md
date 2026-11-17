@@ -153,7 +153,7 @@ Escenario conservador (la mitad de pilotos y conversión): ~6 clientes y ≈ COP
 - [x] Script de empresa de demostración. *(hecho)*
 - [x] Sección de planes y piloto en la landing. *(hecho)*
 - [x] Kit de ventas: guiones, mensajes, propuesta, objeciones. *(hecho, `KIT-VENTAS.md`)*
-- [ ] **Tú:** publicar en producción con dominio propio y HTTPS (Render, Railway o un VPS con PostgreSQL administrado y copias de seguridad diarias).
+- [ ] **Tú:** publicar en producción con dominio propio y HTTPS siguiendo `docs/DESPLIEGUE.md` (configuración de Render incluida en `render.yaml`).
 - [ ] **Tú:** correo con dominio propio (p. ej. `hola@tudominio.com`) y actualizar `frontend/src/siteConfig.ts`.
 - [ ] **Tú:** RUT, facturación electrónica y cuenta de cobro (sección 5).
 - [ ] **Tú:** lista de 50 contactos de la red personal y primeros 20 mensajes.

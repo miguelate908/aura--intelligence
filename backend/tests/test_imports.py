@@ -89,3 +89,14 @@ def test_import_is_all_or_nothing_and_reports_rows():
 def test_unknown_entity_is_rejected():
     a = token("Empresa A", "a@example.com")
     assert client.post("/import/users", headers=a, json={"rows": [{"name": "x"}]}).status_code == 404
+
+
+def test_public_registration_can_be_disabled():
+    os.environ["REGISTRATION_ENABLED"] = "false"
+    try:
+        assert client.get("/auth/config").json() == {"registration_enabled": False}
+        body = {"company_name": "X", "name": "Admin", "email": "x@example.com", "password": "strong-password-123"}
+        assert client.post("/auth/register", json=body).status_code == 403
+    finally:
+        os.environ.pop("REGISTRATION_ENABLED", None)
+    assert client.get("/auth/config").json() == {"registration_enabled": True}
