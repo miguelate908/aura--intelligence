@@ -2,6 +2,10 @@ import { FormEvent, useState } from "react";
 import { Link } from "react-router-dom";
 import { api } from "../api";
 import { SITE } from "../siteConfig";
+import EdithMark from "../assets/edith-mark.svg";
+import EdithLogo from "../assets/edith-logo.svg";
+import EdithLogoLight from "../assets/edith-logo-light.svg";
+import { ThemeToggle } from "../theme";
 import "../landing-extra.css";
 
 const capabilities = [
@@ -79,7 +83,7 @@ const plans: { name: string; price: string; unit: string; items: string[]; featu
 const EMPTY = { name: "", email: "", company: "", job_title: "", sector: "", company_size: "", need: "", message: "", website: "" };
 
 function BrandMark() {
-  return <span className="brand-mark" aria-hidden="true" />;
+  return <img className="brand-mark" src={EdithMark} alt="" aria-hidden="true" />;
 }
 
 function NetworkIllustration() {
@@ -91,7 +95,7 @@ function NetworkIllustration() {
           <linearGradient id="nodeGlow" x1="0" y1="0" x2="1" y2="1"><stop stopColor="#32d6ed" /><stop offset="1" stopColor="#7862f6" /></linearGradient>
           <radialGradient id="graphAura"><stop stopColor="#243d79" stopOpacity=".4" /><stop offset="1" stopColor="#10152a" stopOpacity="0" /></radialGradient>
         </defs>
-        <ellipse cx="310" cy="215" rx="275" ry="205" fill="url(#graphAura)" />
+        <ellipse className="graph-aura" cx="310" cy="215" rx="275" ry="205" fill="url(#graphAura)" />
         <g stroke="url(#graphLink)" strokeWidth="1.6">
           <path d="M310 218 124 100M310 218 495 106M310 218 104 323M310 218 510 335" />
           <path d="M124 100 495 106M104 323 510 335" strokeDasharray="5 7" opacity=".72" />
@@ -101,7 +105,7 @@ function NetworkIllustration() {
         <circle cx="310" cy="218" r="31" fill="#8854e9" fillOpacity=".62" />
         <circle cx="104" cy="323" r="25" fill="#3475e8" fillOpacity=".58" />
         <circle cx="510" cy="335" r="26" fill="#20b9d5" fillOpacity=".61" />
-        <g fill="#f1f4fc" fontFamily="Inter, system-ui, sans-serif" fontSize="13" textAnchor="middle">
+        <g fill="currentColor" fontFamily="Inter, system-ui, sans-serif" fontSize="13" textAnchor="middle">
           <text x="124" y="139">Clientes</text>
           <text x="495" y="145">Productos</text>
           <text x="310" y="223">Empresa</text>
@@ -135,7 +139,7 @@ export default function Landing() {
         { ...demo, company_size: demo.company_size || null, consent },
       );
       const text = result.notification_status === "sent"
-        ? "Recibimos tu solicitud y enviamos una notificación al equipo de AURA."
+        ? "Recibimos tu solicitud y enviamos una notificación al equipo de EDITH."
         : result.notification_status === "failed"
           ? "Tu solicitud quedó registrada, pero no pudimos enviar la notificación por correo."
           : "Tu solicitud quedó registrada. El correo de notificación aún está pendiente de configuración.";
@@ -152,9 +156,9 @@ export default function Landing() {
   return (
     <div className="landing">
       <header className="site-header">
-        <a className="brand" href="#inicio" aria-label="AURA Intelligence, inicio">
-          <BrandMark />
-          <span className="brand-word">AURA Intelligence</span>
+        <a className="brand" href="#inicio" aria-label="EDITH Intelligence, inicio">
+          <img className="brand-logo on-dark" src={EdithLogo} alt="" aria-hidden="true" />
+          <img className="brand-logo on-light" src={EdithLogoLight} alt="" aria-hidden="true" />
         </a>
         <nav className="site-nav" aria-label="Navegación principal">
           <a href="#capacidades">Soluciones</a>
@@ -165,13 +169,14 @@ export default function Landing() {
           <a href="#solicitud">Contacto</a>
           <Link to="/login">Acceder</Link>
         </nav>
+        <ThemeToggle />
         <a className="header-cta" href="#solicitud">Solicitar una demostración</a>
       </header>
 
       <main>
         <section className="hero section-wrap" id="inicio">
           <div className="hero-copy">
-            <div className="eyebrow">AURA INTELLIGENCE</div>
+            <div className="eyebrow">EDITH INTELLIGENCE</div>
             <h1>Convierte los datos de<br className="desktop-break" /> tu empresa en<br className="desktop-break" /> <span className="gradient-text">decisiones<br className="desktop-break" /> inteligentes.</span></h1>
             <p className="hero-lede">Conecta información, descubre oportunidades y comprende mejor las operaciones de tu negocio con una plataforma de inteligencia empresarial pensada para decidir con fundamento.</p>
             <div className="hero-actions">
@@ -186,7 +191,7 @@ export default function Landing() {
           <div className="section-kicker">01 / EL ENFOQUE</div>
           <div className="intro-copy">
             <h2>De datos dispersos a<br /><span className="muted-heading">una visión compartida.</span></h2>
-            <p>AURA organiza la información esencial de tu empresa en un espacio donde las entidades y sus relaciones pueden entenderse en conjunto.</p>
+            <p>EDITH organiza la información esencial de tu empresa en un espacio donde las entidades y sus relaciones pueden entenderse en conjunto.</p>
           </div>
           <div className="intro-stamp"><span className="stamp-orbit">◎</span><span>CONOCER<br />CONECTAR<br />DECIDIR</span></div>
         </section>
@@ -235,7 +240,7 @@ export default function Landing() {
             <div className="platform-visual" aria-hidden="true">
               <div className="platform-grid" />
               <div className="platform-orbit orbit-a" /><div className="platform-orbit orbit-b" />
-              <div className="platform-core"><BrandMark /><span>AURA<br /><small>INTELLIGENCE</small></span></div>
+              <div className="platform-core"><BrandMark /><span>EDITH<br /><small>INTELLIGENCE</small></span></div>
               <span className="platform-node node-a">CLIENTES</span><span className="platform-node node-b">PRODUCTOS</span>
               <span className="platform-node node-c">OPERACIONES</span><span className="platform-node node-d">EVENTOS</span>
               <span className="platform-line line-a" /><span className="platform-line line-b" /><span className="platform-line line-c" /><span className="platform-line line-d" />
@@ -291,8 +296,8 @@ export default function Landing() {
         <section className="closing section-wrap" id="solicitud">
           <div className="closing-rule" />
           <div className="section-kicker">SOLICITA UNA DEMOSTRACIÓN</div>
-          <h2>Conoce AURA<br /><span className="gradient-text">en acción.</span></h2>
-          <p className="demo-intro">Cuéntanos un poco sobre ti y tu empresa. Te mostraremos cómo AURA puede dar contexto a tus operaciones.</p>
+          <h2>Conoce EDITH<br /><span className="gradient-text">en acción.</span></h2>
+          <p className="demo-intro">Cuéntanos un poco sobre ti y tu empresa. Te mostraremos cómo EDITH puede dar contexto a tus operaciones.</p>
           <form className="demo-form" onSubmit={submitDemo}>
             <label>Nombre<input name="name" value={demo.name} onChange={updateDemo("name")} autoComplete="name" placeholder="Tu nombre" maxLength={150} required /></label>
             <label>Correo de trabajo<input name="email" type="email" value={demo.email} onChange={updateDemo("email")} autoComplete="email" placeholder="nombre@empresa.com" maxLength={254} required /></label>
@@ -327,7 +332,7 @@ export default function Landing() {
       </main>
 
       <footer className="site-footer section-wrap">
-        <a className="brand footer-brand" href="#inicio"><BrandMark /><span className="brand-word">AURA<small>INTELLIGENCE</small></span></a>
+        <a className="brand footer-brand" href="#inicio" aria-label="EDITH Intelligence, inicio"><img className="brand-logo on-dark" src={EdithLogo} alt="" aria-hidden="true" /><img className="brand-logo on-light" src={EdithLogoLight} alt="" aria-hidden="true" /></a>
         <span>Inteligencia de datos empresariales.</span>
         <span className="x-foot">
           {SITE.contactEmail && <><a href={`mailto:${SITE.contactEmail}`}>{SITE.contactEmail}</a> · </>}

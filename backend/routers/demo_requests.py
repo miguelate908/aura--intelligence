@@ -94,11 +94,11 @@ def _send_notification(demo: DemoRequest) -> str:
         return "failed"
 
     message = EmailMessage()
-    message["Subject"] = "Nueva solicitud de demostración — AURA Intelligence"
+    message["Subject"] = "Nueva solicitud de demostración — EDITH Intelligence"
     message["From"] = sender
     message["To"] = recipient
     message.set_content(
-        "Se recibió una solicitud de demostración de AURA Intelligence.\n\n"
+        "Se recibió una solicitud de demostración de EDITH Intelligence.\n\n"
         f"Nombre: {demo.name}\n"
         f"Correo: {demo.email}\n"
         f"Empresa: {demo.company_name}\n"

@@ -4,7 +4,7 @@ import { api } from "../api";
 type Msg = { who: "me" | "bot"; text: string };
 
 export default function Assistant() {
-  const [log, setLog] = useState<Msg[]>([{ who: "bot", text: "Hola, soy el asistente de AURA. ¿Qué necesitas?" }]);
+  const [log, setLog] = useState<Msg[]>([{ who: "bot", text: "Hola, soy EDITH, tu asistente inteligente. ¿Qué necesitas?" }]);
   const [q, setQ] = useState("");
   const [busy, setBusy] = useState(false);
   const end = useRef<HTMLDivElement>(null);

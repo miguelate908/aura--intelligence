@@ -1,0 +1,63 @@
+<div id="edith-reference" aria-label="Vista de referencia de EDITH Intelligence">
+  <style>
+    #edith-reference{--e-bg:#070b16;--e-surface:#0b1220;--e-text:#f1f5f9;--e-muted:#a9b8cb;--e-quiet:#71849b;--e-line:rgba(165,190,211,.14);--e-cyan:#72e5dd;--e-violet:#a99bff;color:var(--e-text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;background:radial-gradient(ellipse at 82% 17%,rgba(100,65,176,.19),transparent 40%),radial-gradient(ellipse at 36% 45%,rgba(13,106,140,.14),transparent 44%),var(--e-bg);border-radius:12px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.25)}
+    #edith-reference *{box-sizing:border-box}
+    #edith-reference .e-header{height:66px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(22px,5vw,68px);border-bottom:1px solid rgba(165,190,211,.1);background:rgba(5,8,18,.72)}
+    #edith-reference .e-brand{display:flex;align-items:center;gap:11px;white-space:nowrap;font-size:15px;font-weight:700;letter-spacing:-.02em}
+    #edith-reference .e-mark{width:13px;height:13px;border-radius:50%;background:linear-gradient(135deg,#36d7eb,#7b5ef6);box-shadow:0 0 17px rgba(63,189,242,.7)}
+    #edith-reference .e-nav{display:flex;align-items:center;gap:clamp(12px,2.2vw,25px);margin-left:auto;margin-right:22px}
+    #edith-reference a{color:inherit;text-decoration:none}
+    #edith-reference .e-nav a{color:var(--e-muted);font-size:11px;white-space:nowrap}
+    #edith-reference .e-cta{min-height:40px;display:flex;align-items:center;padding:0 15px;border:1px solid rgba(114,229,221,.44);border-radius:4px;color:#d9fffc;font-size:10px;white-space:nowrap;background:rgba(15,50,62,.28)}
+    #edith-reference .e-hero{width:min(1100px,calc(100% - 64px));min-height:490px;margin:auto;display:grid;grid-template-columns:1.05fr .95fr;align-items:center;gap:25px;padding:52px 0 48px}
+    #edith-reference .e-eyebrow{margin-bottom:17px;color:var(--e-cyan);font-size:9px;letter-spacing:.2em;font-weight:650}
+    #edith-reference h1{max-width:560px;margin:0;font-size:clamp(43px,5vw,61px);font-weight:730;line-height:1.04;letter-spacing:-.055em}
+    #edith-reference .e-gradient{color:var(--e-cyan);background:linear-gradient(100deg,#7ce5dd 8%,#a6b0ff 96%);background-clip:text;-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    #edith-reference .e-copy{max-width:475px;margin:20px 0 0;color:var(--e-muted);font-size:13px;line-height:1.85}
+    #edith-reference .e-actions{display:flex;flex-wrap:wrap;gap:11px;margin-top:27px}
+    #edith-reference .e-button{min-height:43px;display:inline-flex;align-items:center;gap:15px;padding:0 16px;border-radius:4px;font-size:11px}
+    #edith-reference .e-primary{color:#071119;background:linear-gradient(105deg,#72e5dd,#8ab8f5);font-weight:700}
+    #edith-reference .e-secondary{color:#c7d3e1;border:1px solid var(--e-line);background:rgba(10,17,31,.55)}
+    #edith-reference .e-graph{position:relative;width:100%;height:365px;overflow:hidden;background:radial-gradient(ellipse at 52% 50%,rgba(31,83,109,.24),transparent 63%)}
+    #edith-reference .e-orbit{position:absolute;top:50%;left:51%;width:76%;height:46%;border:1px solid rgba(100,211,215,.23);border-radius:50%;transform:translate(-50%,-50%) rotate(-26deg)}
+    #edith-reference .e-orbit.o2{width:55%;height:70%;transform:translate(-50%,-50%) rotate(37deg);border-color:rgba(169,155,255,.18)}
+    #edith-reference .e-lines{position:absolute;inset:0}
+    #edith-reference .e-line{position:absolute;left:50%;top:50%;height:1px;width:33%;transform-origin:left center;background:linear-gradient(90deg,rgba(114,229,221,.55),rgba(114,229,221,.1))}
+    #edith-reference .e-line.l1{transform:rotate(-145deg)}#edith-reference .e-line.l2{transform:rotate(-36deg)}#edith-reference .e-line.l3{transform:rotate(145deg)}#edith-reference .e-line.l4{transform:rotate(36deg)}
+    #edith-reference .e-core{position:absolute;left:51%;top:50%;z-index:2;display:flex;align-items:center;gap:10px;transform:translate(-50%,-50%);padding:13px 16px;border:1px solid rgba(114,229,221,.35);border-radius:6px;background:#0c1927;box-shadow:0 0 45px rgba(71,194,194,.12);font-size:12px;letter-spacing:.1em}
+    #edith-reference .e-core .e-mark{width:24px;height:24px}
+    #edith-reference .e-core small{display:block;margin-top:2px;color:var(--e-quiet);font-size:7px;letter-spacing:.16em}
+    #edith-reference .e-node{position:absolute;z-index:1;padding:8px 10px;border:1px solid rgba(149,178,200,.2);border-radius:4px;background:#0b1422;color:#b7c9d8;font-size:8px;letter-spacing:.13em}
+    #edith-reference .e-node.n1{top:15%;left:10%}#edith-reference .e-node.n2{top:16%;right:8%}#edith-reference .e-node.n3{bottom:14%;left:9%}#edith-reference .e-node.n4{bottom:13%;right:7%}
+    #edith-reference .e-glow{position:absolute;width:7px;height:7px;border-radius:50%;background:#6de0dc;box-shadow:0 0 15px #55d8e6}
+    #edith-reference .e-glow.g1{top:22%;left:30%}#edith-reference .e-glow.g2{top:28%;right:24%}#edith-reference .e-glow.g3{bottom:24%;left:25%}#edith-reference .e-glow.g4{bottom:22%;right:28%}
+    #edith-reference .e-bottom{width:min(1100px,calc(100% - 64px));margin:0 auto;padding:22px 0 27px;border-top:1px solid var(--e-line);display:flex;align-items:center;justify-content:space-between;gap:20px}
+    #edith-reference .e-bottom-label{color:var(--e-cyan);font-size:8px;letter-spacing:.18em}
+    #edith-reference .e-bottom-title{margin-top:6px;font-size:19px;letter-spacing:-.03em}
+    #edith-reference .e-bottom-right{color:var(--e-quiet);font-size:9px;letter-spacing:.14em;text-align:right}
+    @media(max-width:760px){#edith-reference .e-nav{display:none}#edith-reference .e-header{padding:0 20px}#edith-reference .e-hero{width:calc(100% - 40px);grid-template-columns:1fr;gap:4px;padding:55px 0 30px}#edith-reference h1{font-size:clamp(43px,9vw,58px)}#edith-reference .e-graph{height:300px}#edith-reference .e-bottom{width:calc(100% - 40px)}}
+    @media(max-width:420px){#edith-reference .e-header{height:60px}#edith-reference .e-brand{font-size:13px}#edith-reference .e-cta{min-height:35px;padding:0 10px;font-size:9px}#edith-reference .e-hero{width:calc(100% - 34px)}#edith-reference .e-copy{font-size:12px}#edith-reference .e-graph{height:255px}#edith-reference .e-bottom{width:calc(100% - 34px)}}
+  </style>
+  <header class="e-header">
+    <a class="e-brand" href="#edith-reference"><span class="e-mark" aria-hidden="true"></span>EDITH Intelligence</a>
+    <nav class="e-nav" aria-label="Navegación principal"><a href="#soluciones">Soluciones</a><a href="#plataforma">Plataforma</a><a href="#sectores">Sectores</a><a href="#seguridad">Seguridad</a><a href="#contacto">Contacto</a><a href="#acceder">Acceder</a></nav>
+    <a class="e-cta" href="#contacto">Solicitar una demostración</a>
+  </header>
+  <main>
+    <section class="e-hero" aria-label="Portada de EDITH Intelligence">
+      <div>
+        <div class="e-eyebrow">EDITH INTELLIGENCE</div>
+        <h1>Convierte los datos de tu empresa en <span class="e-gradient">decisiones inteligentes.</span></h1>
+        <p class="e-copy">Conecta información, descubre oportunidades y comprende mejor las operaciones de tu negocio con una plataforma de inteligencia empresarial pensada para decidir con fundamento.</p>
+        <div class="e-actions"><a class="e-button e-primary" href="#contacto">Solicitar una demostración <span aria-hidden="true">↗</span></a><a class="e-button e-secondary" href="#plataforma">Explorar la plataforma</a></div>
+      </div>
+      <div class="e-graph" role="img" aria-label="Diagrama de EDITH conectando clientes, productos, almacenes y eventos">
+        <div class="e-orbit"></div><div class="e-orbit o2"></div><div class="e-lines"><i class="e-line l1"></i><i class="e-line l2"></i><i class="e-line l3"></i><i class="e-line l4"></i></div>
+        <span class="e-node n1">CLIENTES</span><span class="e-node n2">PRODUCTOS</span><span class="e-node n3">ALMACENES</span><span class="e-node n4">EVENTOS</span>
+        <i class="e-glow g1"></i><i class="e-glow g2"></i><i class="e-glow g3"></i><i class="e-glow g4"></i>
+        <div class="e-core"><span class="e-mark" aria-hidden="true"></span><span>EDITH<small>INTELLIGENCE</small></span></div>
+      </div>
+    </section>
+    <div class="e-bottom"><div><div class="e-bottom-label">01 / EL ENFOQUE</div><div class="e-bottom-title">De datos dispersos a una visión compartida.</div></div><div class="e-bottom-right">CONOCER&nbsp; · &nbsp;CONECTAR&nbsp; · &nbsp;DECIDIR</div></div>
+  </main>
+</div>

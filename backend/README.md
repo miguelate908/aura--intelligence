@@ -1,4 +1,4 @@
-# AURA Intelligence API
+# EDITH Intelligence API
 
 API REST con FastAPI, SQLAlchemy y PostgreSQL. La documentación interactiva se publica en `/docs`.
 

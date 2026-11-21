@@ -1,14 +1,15 @@
-.panel{--bg:#060914;--bg2:#0c1226;--card:#0f1730;--line:#1c2850;--tx:#e8ecf8;--mu:#93a0c4;--cy:#22d3ee;--bl:#3b82f6;--vi:#8b5cf6;--bad:#f87171;--good:#34d399;color-scheme:dark}
+/* Local aliases of the shared tokens in tokens.css */
+.panel{--bg:var(--surface-000);--bg2:var(--surface-150);--card:var(--surface-300);--tx:var(--text);--mu:var(--text-muted-app);--cy:var(--cyan-strong);--bl:var(--blue);--vi:var(--violet-strong);--bad:var(--danger);--good:var(--success)}
 .panel, .panel *{box-sizing:border-box}
 .panel{margin:0;background:var(--bg);color:var(--tx);font:15px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
 .panel h1,.panel h2{margin:0 0 14px}
 .panel h2{font-size:24px}
 .panel a{color:inherit}
 .panel :focus-visible{outline:2px solid var(--cy);outline-offset:2px}
-.panel button{font:inherit;font-weight:600;color:var(--tx);cursor:pointer;border:0;border-radius:9px;padding:10px 16px;background:linear-gradient(135deg,var(--bl),var(--vi));transition:.2s}
+.panel button{font:inherit;font-weight:600;color:#ffffff;cursor:pointer;border:0;border-radius:9px;padding:10px 16px;background:linear-gradient(135deg,var(--bl),var(--vi));transition:.2s}
 .panel button:hover:not(:disabled){filter:brightness(1.15)}
 .panel button:disabled{opacity:.55;cursor:default}
-.panel button.ghost{background:transparent;border:1px solid var(--line)}
+.panel button.ghost{background:transparent;color:var(--tx);border:1px solid var(--line)}
 .panel button.ghost:hover{border-color:var(--cy)}
 .panel input,.panel select,.panel textarea{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:9px;padding:10px;color:var(--tx);font:inherit}
 .panel label{display:block;font-size:13px;color:var(--mu);margin:10px 0 4px}
@@ -23,11 +24,12 @@
 .panel .app{display:grid;grid-template-columns:230px 1fr;min-height:100vh}
 .panel .app>nav{display:flex;flex-direction:column;gap:4px;padding:20px 14px;background:var(--bg2);border-right:1px solid var(--line);position:sticky;top:0;height:100vh}
 .panel .app>nav b{display:flex;align-items:center;gap:8px;padding:4px 10px 18px;letter-spacing:.06em}
-.panel .app>nav b::before{content:"";width:12px;height:12px;border-radius:50%;background:linear-gradient(135deg,var(--cy),var(--vi));box-shadow:0 0 12px var(--cy)}
+.panel .app>nav .app-brand img{display:block;width:28px;height:28px;object-fit:contain}
 .panel .app>nav a{padding:9px 12px;border-radius:9px;color:var(--mu);text-decoration:none}
 .panel .app>nav a:hover{color:var(--tx);background:var(--card)}
 .panel .app>nav a.active{color:var(--tx);background:var(--card);box-shadow:inset 2px 0 var(--cy)}
 .panel .sp{flex:1}
+.panel .app>nav .theme-toggle{width:auto;height:auto;margin:0;font-size:15px}
 .panel .app>main{padding:28px;min-width:0;max-width:1100px;width:100%}
 .panel .tw{overflow-x:auto}
 .panel table{width:100%;border-collapse:collapse}
@@ -39,13 +41,15 @@
 .panel .pager{display:flex;gap:10px;align-items:center;justify-content:flex-end;margin-top:12px}
 .panel .log{display:flex;flex-direction:column;gap:10px;max-height:52vh;overflow-y:auto;margin-bottom:14px}
 .panel .msg{padding:10px 14px;border-radius:12px;max-width:80%;white-space:pre-wrap}
-.panel .msg.me{align-self:flex-end;background:linear-gradient(135deg,var(--bl),var(--vi))}
+.panel .msg.me{align-self:flex-end;color:#ffffff;background:linear-gradient(135deg,var(--bl),var(--vi))}
 .panel .msg.bot{align-self:flex-start;background:var(--bg);border:1px solid var(--line)}
 .panel .row{display:flex;gap:10px}
 .panel .row input{flex:1}
-.panel .authwrap{min-height:100vh;display:grid;place-items:center;padding:20px;background:radial-gradient(50% 50% at 70% 20%,rgba(139,92,246,.2),transparent),radial-gradient(40% 40% at 20% 80%,rgba(34,211,238,.1),transparent)}
+.panel .authwrap{min-height:100vh;display:grid;place-items:center;padding:20px;background:var(--auth-aura)}
 .panel .auth{width:100%;max-width:400px;margin:0}
 .panel .auth h1{font-size:24px}
+.panel .auth .auth-brand{display:flex;align-items:center;gap:10px}
+.panel .auth .auth-brand img{display:block;width:36px;height:36px;object-fit:contain}
 .panel .auth button{width:100%;margin-top:14px}
 .panel .auth button.ghost{margin-top:8px}
 .panel .auth .back{display:inline-block;margin-top:14px;color:var(--mu);font-size:13px}
