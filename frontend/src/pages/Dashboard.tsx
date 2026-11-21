@@ -9,7 +9,8 @@ export default function Dashboard() {
   const [inv, setInv] = useState<any[] | null>(null);
   useEffect(() => {
     ITEMS.forEach(([p]) => api<any[]>(p).then((d) => setCounts((c) => ({ ...c, [p]: d.length }))).catch(() => {}));
-    api<any[]>("/inventory").then(setInv).catch(() => setInv([]));
+    // Si el módulo de inventario no está desplegado, se ocultan sus tarjetas.
+    api<any[]>("/inventory").then(setInv).catch(() => setInv(null));
   }, []);
   const units = (inv ?? []).reduce((s, r) => s + r.quantity, 0);
   const low = (inv ?? []).filter((r) => r.quantity <= r.minimum_quantity);
@@ -20,8 +21,8 @@ export default function Dashboard() {
         {ITEMS.map(([p, l]) => (
           <div className="card" key={p}><div className="mut">{l}</div><div className="kpi">{counts[p] ?? "–"}</div></div>
         ))}
-        <div className="card"><div className="mut">Unidades en inventario</div><div className="kpi">{inv ? units : "–"}</div></div>
-        <div className="card"><div className="mut">Con stock bajo</div><div className="kpi" style={low.length ? { color: "var(--err)" } : undefined}>{inv ? low.length : "–"}</div></div>
+        {inv && <div className="card"><div className="mut">Unidades en inventario</div><div className="kpi">{units}</div></div>}
+        {inv && <div className="card"><div className="mut">Con stock bajo</div><div className="kpi" style={low.length ? { color: "var(--err)" } : undefined}>{low.length}</div></div>}
       </div>
       {low.length > 0 && (
         <div className="card">

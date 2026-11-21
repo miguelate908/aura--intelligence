@@ -6,10 +6,14 @@
     <meta name="theme-color" content="#070b16" />
     <meta name="description" content="EDITH Intelligence conecta datos, relaciones y operaciones empresariales para dar claridad a cada decisión." />
     <title>EDITH Intelligence — Inteligencia empresarial conectada</title>
-    <script type="module" crossorigin src="/static/assets/index-DpPeQik3.js"></script>
-    <link rel="stylesheet" crossorigin href="/static/assets/index-BRx5Z4kB.css">
+    <script>
+      // Aplica el tema guardado antes de pintar para evitar un destello del tema oscuro.
+      try { if (localStorage.getItem("edith-theme") === "light") { document.documentElement.dataset.theme = "light"; document.querySelector('meta[name="theme-color"]').content = "#f8fafc"; } } catch (e) {}
+    </script>
+    <script type="module" crossorigin src="/static/assets/index-rWPlNO0D.js"></script>
+    <link rel="stylesheet" crossorigin href="/static/assets/index-B3A2u7Ex.css">
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root"></div>
   </body>
 </html>
