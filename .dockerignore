@@ -1,0 +1,13 @@
+.git
+.venv
+.venv-tests
+.test-deps
+.runtime-deps
+**/node_modules
+frontend/dist
+**/__pycache__
+**/*.pyc
+.pytest_cache
+backend/.env
+.env
+.env.production

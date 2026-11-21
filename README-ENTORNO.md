@@ -1,4 +1,4 @@
-# Entorno de desarrollo AURA
+# Entorno de desarrollo EDITH
 
 ## Estructura
 ```

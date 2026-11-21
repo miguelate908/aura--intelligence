@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AURA Intelligence</title>
+<title>EDITH Intelligence</title>
 <style>
 :root{--bg:#f6f7fb;--card:#fff;--tx:#1b1f2a;--mut:#6b7280;--br:#e4e7ee;--ac:#5b5bf0;--ac2:#eef0ff;--err:#c0392b;--ok:#1e8e5a}
 @media(prefers-color-scheme:dark){:root{--bg:#12141b;--card:#1b1e28;--tx:#e8eaf0;--mut:#9aa1b2;--br:#2b3040;--ac:#8587ff;--ac2:#25284a;--err:#ff7b6b;--ok:#4cd08f}}
@@ -37,7 +37,7 @@ th{font-size:12px;color:var(--mut);text-transform:uppercase}
 </head>
 <body>
 <section id="auth">
-  <h1>AURA Intelligence</h1><p>Inteligencia para tu empresa, en un solo lugar.</p>
+  <h1>EDITH Intelligence</h1><p>Inteligencia para tu empresa, en un solo lugar.</p>
   <div class="tabs"><button id="tl" onclick="mode('login')">Ingresar</button><button id="tr" class="sec" onclick="mode('register')">Crear empresa</button></div>
   <form id="af" onsubmit="submitAuth(event)">
     <div id="rg" class="hide">
@@ -52,7 +52,7 @@ th{font-size:12px;color:var(--mut);text-transform:uppercase}
 </section>
  
 <div id="app" class="hide">
-  <nav id="nav"><b>AURA</b></nav>
+  <nav id="nav"><b>EDITH</b></nav>
   <main id="main"></main>
 </div>
 <div id="toast" class="hide"></div>
@@ -97,7 +97,7 @@ async function start(){
 }
 function buildNav(){
   const items=[['resumen','Resumen'],...RES.filter(r=>findPath(r[0])),['asistente','Asistente IA']];
-  $('nav').innerHTML='<b>AURA</b>'+items.map(i=>`<button data-s="${i[0]}" onclick="go('${i[0]}')">${i[1]}</button>`).join('')+'<span class="sp"></span><button onclick="logout()">Cerrar sesión</button>';
+  $('nav').innerHTML='<b>EDITH</b>'+items.map(i=>`<button data-s="${i[0]}" onclick="go('${i[0]}')">${i[1]}</button>`).join('')+'<span class="sp"></span><button onclick="logout()">Cerrar sesión</button>';
 }
 function go(s){S.sec=s;document.querySelectorAll('nav button[data-s]').forEach(b=>b.classList.toggle('on',b.dataset.s===s));
   s==='resumen'?resumen():s==='asistente'?asistente():recurso(s)}
@@ -163,7 +163,7 @@ function asistente(){
   $('main').innerHTML=`<h2>Asistente IA</h2><div class="card"><div id="log"></div>
   <div class="chips">${['¿Cuántos clientes tengo?','Muéstrame mis productos','¿Qué bodegas tengo?','Resumen de mi empresa'].map(q=>`<button class="sec" onclick="ask('${q}')">${q}</button>`).join('')}</div>
   <form id="cf" onsubmit="ask(null,event)"><input id="ci" placeholder="Escribe tu pregunta…" autocomplete="off"><button>Enviar</button></form></div>`;
-  say('bot','Hola, soy el asistente de AURA. Puedo ayudarte a consultar la información de tu empresa. ¿Qué necesitas?');
+  say('bot','Hola, soy EDITH. Puedo ayudarte a consultar la información de tu empresa. ¿Qué necesitas?');
 }
 function say(w,t){const l=$('log');l.insertAdjacentHTML('beforeend',`<div class="msg ${w}">${esc(t)}</div>`);l.scrollTop=l.scrollHeight}
 async function ask(q,ev){

@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 64" fill="none" role="img" aria-labelledby="edith-logo-title edith-logo-description">
+  <title id="edith-logo-title">EDITH Intelligence</title>
+  <desc id="edith-logo-description">Logotipo con una E orbital degradada en cian, azul y violeta, junto al nombre EDITH Intelligence.</desc>
+  <defs>
+    <linearGradient id="edith-mark-gradient" x1="10" y1="15" x2="54" y2="51" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#27D6E8" />
+      <stop offset=".52" stop-color="#2879F5" />
+      <stop offset="1" stop-color="#9858F6" />
+    </linearGradient>
+    <linearGradient id="edith-orbit-gradient" x1="5" y1="30" x2="59" y2="35" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#27D6E8" />
+      <stop offset=".62" stop-color="#3977F6" />
+      <stop offset="1" stop-color="#9B55F5" />
+    </linearGradient>
+  </defs>
+  <g transform="translate(0 0)">
+    <path d="M40 14H29C19.6 14 13 21.5 13 32s6.6 18 16 18h11M17 24h19M13.5 32h24M17 40h19" stroke="url(#edith-mark-gradient)" stroke-width="5.2" stroke-linecap="round" stroke-linejoin="round" />
+    <ellipse cx="32" cy="32" rx="28" ry="10.5" transform="rotate(-20 32 32)" stroke="url(#edith-orbit-gradient)" stroke-width="3.2" />
+    <circle cx="55" cy="21" r="4.1" fill="#A75BFF" />
+    <circle cx="55" cy="21" r="2.2" fill="#EAE4FF" />
+  </g>
+  <text x="78" y="31" fill="#F1F5F9" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="24" font-weight="650" letter-spacing="2.8">EDITH</text>
+  <text x="80" y="49" fill="#A9B8CB" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="9" font-weight="500" letter-spacing="3.8">INTELLIGENCE</text>
+</svg>

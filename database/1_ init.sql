@@ -75,5 +75,5 @@ CREATE TABLE IF NOT EXISTS audit_logs (
 );
 
 INSERT INTO companies (name)
-VALUES ('AURA Demo Company')
+VALUES ('EDITH Demo Company')
 ON CONFLICT DO NOTHING;

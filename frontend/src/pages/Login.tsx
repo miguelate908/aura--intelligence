@@ -1,6 +1,7 @@
 import { FormEvent, useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import { useAuth } from "../auth";
+import EdithMark from "../assets/edith-mark.svg";
 
 export default function Login() {
   const { authed, login, register } = useAuth();
@@ -20,7 +21,7 @@ export default function Login() {
   return (
     <div className="panel"><div className="authwrap">
       <form className="card auth" onSubmit={submit}>
-        <h1>AURA Intelligence</h1>
+        <h1 className="auth-brand"><img src={EdithMark} alt="" aria-hidden="true" />EDITH Intelligence</h1>
         <p className="mut">{reg ? "Crea tu empresa y tu primer usuario." : "Accede a tu panel."}</p>
         {reg && <>
           <label htmlFor="co">Empresa</label><input id="co" value={f.company} onChange={set("company")} required autoComplete="organization" />

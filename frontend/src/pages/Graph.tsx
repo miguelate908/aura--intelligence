@@ -6,7 +6,8 @@ type GNode = Ref & { name?: string; sku?: string };
 type Rel = { id: number; source: Ref; relationship: string; target: Ref };
 type G = { entity: Ref; nodes: GNode[]; relationships: Rel[] };
 
-const COLORS: Record<string, string> = { company: "#8b5cf6", customer: "#22d3ee", product: "#3b82f6", warehouse: "#34d399" };
+// Colores de entidad del sistema de diseño (tokens.css): cambian con el tema.
+const COLORS: Record<string, string> = { company: "var(--entity-company)", customer: "var(--entity-customer)", product: "var(--entity-product)", warehouse: "var(--entity-warehouse)" };
 const TYPES: [string, string][] = [["company", "Empresa"], ["customer", "Cliente"], ["product", "Producto"], ["warehouse", "Bodega"]];
 const key = (r: Ref) => `${r.type}:${r.id}`;
 const label = (n: GNode) => { const t = n.name ?? n.sku ?? `${n.type} #${n.id}`; return t.length > 18 ? t.slice(0, 17) + "…" : t; };
@@ -70,12 +71,12 @@ export default function Graph() {
         <div className="card">
           <svg className="gsvg" viewBox={`${-view.S} ${-view.S} ${2 * view.S} ${2 * view.S}`} role="img" aria-label={`Grafo con ${view.nodes.length} nodos y ${view.edges.length} relaciones`}>
             {view.edges.map((r) => { const a = view.pos.get(key(r.source))!, b = view.pos.get(key(r.target))!; return (
-              <g key={r.id}><line x1={a.x} y1={a.y} x2={b.x} y2={b.y} stroke="#3b82f6" strokeOpacity=".5" strokeWidth="1.5"><title>{r.relationship}</title></line>
-                <text x={(a.x + b.x) / 2} y={(a.y + b.y) / 2} fontSize="10" fill="#93a0c4" textAnchor="middle">{r.relationship}</text></g>); })}
+              <g key={r.id}><line x1={a.x} y1={a.y} x2={b.x} y2={b.y} style={{ stroke: "var(--blue)" }} strokeOpacity=".5" strokeWidth="1.5"><title>{r.relationship}</title></line>
+                <text x={(a.x + b.x) / 2} y={(a.y + b.y) / 2} fontSize="10" style={{ fill: "var(--text-muted-app)" }} textAnchor="middle">{r.relationship}</text></g>); })}
             {view.nodes.map((n) => { const p = view.pos.get(key(n))!; return (
               <g key={key(n)} className="n" tabIndex={0} role="button" aria-label={`${n.type} ${label(n)}`} transform={`translate(${p.x} ${p.y})`}
                 onClick={() => pick(n)} onKeyDown={(e) => e.key === "Enter" && pick(n)}>
-                <circle r="20" fill={COLORS[n.type] ?? "#93a0c4"} /><text y="38" fontSize="12" fill="#e8ecf8" textAnchor="middle">{label(n)}</text></g>); })}
+                <circle r="20" style={{ fill: COLORS[n.type] ?? "var(--text-muted-app)" }} /><text y="38" fontSize="12" style={{ fill: "var(--text)" }} textAnchor="middle">{label(n)}</text></g>); })}
           </svg>
           <div className="legend">{TYPES.map(([v, l]) => <span key={v}><i style={{ background: COLORS[v] }} />{l}</span>)}</div>
           {view.hidden > 0 && <p className="mut">{view.hidden} relación(es) apuntan a entidades que esta vista aún no puede mostrar.</p>}

@@ -2,34 +2,35 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { api } from "../api";
 
-// [ruta API, etiqueta, ruta en el panel (null = sin página aún)]
-const ITEMS: [string, string, string | null][] = [
-  ["/customers", "Clientes", "/app/customers"],
-  ["/products", "Productos", "/app/products"],
-  ["/warehouses", "Bodegas", "/app/warehouses"],
-  ["/events", "Eventos", null],
-];
+const ITEMS: [string, string][] = [["/customers", "Clientes"], ["/products", "Productos"], ["/warehouses", "Bodegas"], ["/events", "Eventos"]];
 
 export default function Dashboard() {
   const [counts, setCounts] = useState<Record<string, number>>({});
-  const [failed, setFailed] = useState<Record<string, boolean>>({});
+  const [inv, setInv] = useState<any[] | null>(null);
   useEffect(() => {
-    ITEMS.forEach(([p]) =>
-      api<any[]>(p)
-        .then((d) => setCounts((c) => ({ ...c, [p]: d.length })))
-        .catch(() => setFailed((f) => ({ ...f, [p]: true })))
-    );
+    ITEMS.forEach(([p]) => api<any[]>(p).then((d) => setCounts((c) => ({ ...c, [p]: d.length }))).catch(() => {}));
+    api<any[]>("/inventory").then(setInv).catch(() => setInv([]));
   }, []);
+  const units = (inv ?? []).reduce((s, r) => s + r.quantity, 0);
+  const low = (inv ?? []).filter((r) => r.quantity <= r.minimum_quantity);
   return (
     <>
       <h2>Resumen</h2>
-      <p className="mut">Indicadores calculados con los registros reales de tu empresa.</p>
       <div className="grid">
-        {ITEMS.map(([p, l, to]) => {
-          const body = (<><div className="mut">{l}</div><div className="kpi">{failed[p] ? "—" : counts[p] ?? "…"}</div>{failed[p] && <div className="err">No se pudo cargar</div>}</>);
-          return to ? <Link className="card" key={p} to={to}>{body}</Link> : <div className="card" key={p}>{body}</div>;
-        })}
+        {ITEMS.map(([p, l]) => (
+          <div className="card" key={p}><div className="mut">{l}</div><div className="kpi">{counts[p] ?? "–"}</div></div>
+        ))}
+        <div className="card"><div className="mut">Unidades en inventario</div><div className="kpi">{inv ? units : "–"}</div></div>
+        <div className="card"><div className="mut">Con stock bajo</div><div className="kpi" style={low.length ? { color: "var(--err)" } : undefined}>{inv ? low.length : "–"}</div></div>
       </div>
+      {low.length > 0 && (
+        <div className="card">
+          <b>Por reponer</b>
+          <ul>{low.slice(0, 8).map((r) => <li key={r.id}>{r.product_name} en {r.warehouse_name}: {r.quantity} (mínimo {r.minimum_quantity})</li>)}</ul>
+          <Link to="/app/inventory">Ir al inventario →</Link>
+        </div>
+      )}
+      {inv && inv.length === 0 && <div className="card mut">Aún no hay inventario. Crea productos y bodegas, y agrégalos en <Link to="/app/inventory">Inventario</Link>.</div>}
     </>
   );
 }

@@ -4,8 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#070b16" />
-    <meta name="description" content="AURA Intelligence conecta datos, relaciones y operaciones empresariales para dar claridad a cada decisión." />
-    <title>AURA Intelligence — Inteligencia empresarial conectada</title>
+    <meta name="description" content="EDITH Intelligence conecta datos, relaciones y operaciones empresariales para dar claridad a cada decisión." />
+    <title>EDITH Intelligence — Inteligencia empresarial conectada</title>
+    <script>
+      // Aplica el tema guardado antes de pintar para evitar un destello del tema oscuro.
+      try { if (localStorage.getItem("edith-theme") === "light") { document.documentElement.dataset.theme = "light"; document.querySelector('meta[name="theme-color"]').content = "#f8fafc"; } } catch (e) {}
+    </script>
   </head>
   <body>
     <div id="root"></div>
