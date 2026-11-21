@@ -94,20 +94,24 @@ def _send_notification(demo: DemoRequest) -> str:
         return "failed"
 
     message = EmailMessage()
-    message["Subject"] = "Nueva solicitud de demostración — EDITH Intelligence"
+    message["Subject"] = f"Nueva solicitud de demostración: {demo.company_name} ({demo.name})"
     message["From"] = sender
     message["To"] = recipient
+    # Al pulsar "Responder" en el correo, la respuesta va directo al interesado.
+    message["Reply-To"] = demo.email
     message.set_content(
-        "Se recibió una solicitud de demostración de EDITH Intelligence.\n\n"
+        f"{demo.name} ({demo.company_name}) pidió una demostración de EDITH Intelligence.\n"
+        f"Para contestarle, pulsa Responder: la respuesta llega a {demo.email}.\n\n"
+        f"Necesidad:\n{demo.need}\n\n"
+        f"Mensaje:\n{demo.message or 'Sin mensaje adicional.'}\n\n"
+        "Datos de contacto\n"
         f"Nombre: {demo.name}\n"
         f"Correo: {demo.email}\n"
         f"Empresa: {demo.company_name}\n"
         f"Cargo: {demo.job_title}\n"
         f"Sector: {demo.sector}\n"
         f"Tamaño: {demo.company_size or 'No indicado'}\n\n"
-        f"Necesidad:\n{demo.need}\n\n"
-        f"Mensaje:\n{demo.message or 'Sin mensaje adicional.'}\n"
-        f"Solicitud registrada con ID {demo.id}."
+        f"Solicitud registrada con ID {demo.id}. También la ves en el panel, en Solicitudes."
     )
 
     try:
