@@ -35,14 +35,13 @@ Costo aproximado: unos USD 13 al mes en total (servicio *Starter* más PostgreSQ
 
 El registro público está desactivado en producción (`REGISTRATION_ENABLED=false`). Así nadie crea cuentas gratis y cada cuenta corresponde a un cliente que firmó un piloto.
 
-Abre el servicio en Render, ve a **Shell** y ejecuta:
+Abre el servicio en Render, ve a **Shell** y ejecuta el comando. La Shell ya abre dentro de la carpeta `backend` (la línea termina en `~/project/src/backend$`), así que no hace falta `cd backend`:
 
 ```bash
-cd backend
 python scripts/create_client.py --company "AURA Intelligence" --name "Tu nombre" --email tu-correo@dominio.com
 ```
 
-El script imprime una contraseña temporal una sola vez. Para cada cliente nuevo, repite el comando con sus datos y envíale la contraseña por un canal distinto al del correo de bienvenida (por ejemplo, WhatsApp).
+Usa para tu usuario el mismo correo que pusiste en `ADMIN_EMAILS`, así ves el menú **Solicitudes**. El script imprime una contraseña temporal una sola vez; al entrar, cámbiala en **Cuenta**. Para cada cliente nuevo, repite el comando con sus datos y envíale la contraseña por un canal distinto al del correo de bienvenida (por ejemplo, WhatsApp).
 
 Para tus demos de venta puedes crear la empresa ficticia con `python scripts/seed_demo.py --email demo@tudominio.com`. Ten en cuenta que comparte la base con tus clientes. Si prefieres separarla, crea un segundo servicio solo para demostraciones.
 
