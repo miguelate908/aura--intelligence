@@ -59,6 +59,27 @@ const securityItems: [string, string][] = [
   ["Límite de envíos", "El formulario de contacto limita los envíos repetidos desde una misma IP."],
   ["Consentimiento", "Guardamos tu solicitud solo si aceptas el tratamiento de tus datos."],
 ];
+// Precios de referencia; mantenerlos iguales a docs/comercial/PLAN-COMERCIAL.md.
+const plans: { name: string; price: string; unit: string; items: string[]; featured?: boolean }[] = [
+  { name: "Piloto 30 días", price: "COP 1.200.000", unit: "pago único", featured: true, items: [
+    "Cargamos tus archivos de Excel o CSV (hasta 5.000 registros)",
+    "Configuración de la cuenta de tu empresa",
+    "Dos sesiones de trabajo con nuestro equipo",
+    "Informe de hallazgos sobre tus datos",
+    "Se descuenta del plan anual si continúas",
+  ] },
+  { name: "Esencial", price: "COP 290.000", unit: "/ mes", items: [
+    "Hasta 10.000 registros",
+    "Una recarga de datos asistida al mes",
+    "Soporte por correo en 2 días hábiles",
+  ] },
+  { name: "Profesional", price: "COP 690.000", unit: "/ mes", items: [
+    "Hasta 50.000 registros",
+    "Recargas de datos asistidas sin límite",
+    "Reunión mensual de revisión con informe",
+    "Soporte prioritario en 1 día hábil",
+  ] },
+];
 const EMPTY = { name: "", email: "", company: "", job_title: "", sector: "", company_size: "", need: "", message: "", website: "" };
 
 function BrandMark() {
@@ -143,6 +164,7 @@ export default function Landing() {
           <a href="#capacidades">Soluciones</a>
           <a href="#plataforma">Plataforma</a>
           <a href="#sectores">Sectores</a>
+          <a href="#planes">Planes</a>
           <a href="#seguridad">Seguridad</a>
           <a href="#solicitud">Contacto</a>
           <Link to="/login">Acceder</Link>
@@ -243,6 +265,23 @@ export default function Landing() {
           <div className="section-kicker">CÓMO FUNCIONA</div>
           <h2>Del registro a la decisión.</h2>
           <ol className="x-steps">{steps.map((t) => <li key={t}>{t}</li>)}</ol>
+        </section>
+
+        <section className="section-wrap x-section" id="planes">
+          <div className="section-kicker">PLANES</div>
+          <h2>Empieza con un piloto de 30 días. Continúa si te sirve.</h2>
+          <div className="x-plans">
+            {plans.map((p) => (
+              <article className={`x-card x-plan${p.featured ? " featured" : ""}`} key={p.name}>
+                {p.featured && <span className="x-badge ok">Recomendado para empezar</span>}
+                <h3>{p.name}</h3>
+                <div className="x-price">{p.price} <small>{p.unit}</small></div>
+                <ul>{p.items.map((i) => <li key={i}>{i}</li>)}</ul>
+                <a className="button button-secondary" href="#solicitud">{p.featured ? "Solicitar el piloto" : "Hablar con ventas"}</a>
+              </article>
+            ))}
+          </div>
+          <p className="x-note">Precio por empresa. Pago anual: dos meses sin costo. Valores antes de impuestos. Desarrollos a medida bajo cotización.</p>
         </section>
 
         <section className="section-wrap x-section" id="seguridad">

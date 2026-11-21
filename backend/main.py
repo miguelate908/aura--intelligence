@@ -20,6 +20,8 @@ from routers.inventory import router as inventory_router
 from routers.manage import router as manage_router
 from routers.contact import router as contact_router
 from routers.account import router as account_router
+from routers import demo_requests
+from routers import imports
 
 Base.metadata.create_all(bind=engine)
 
@@ -62,6 +64,8 @@ app.include_router(inventory_router)
 app.include_router(manage_router)
 app.include_router(contact_router)
 app.include_router(account_router)
+app.include_router(demo_requests.router)
+app.include_router(imports.router)
 
 if Path("static").is_dir():
     app.mount("/static", StaticFiles(directory="static"), name="static")

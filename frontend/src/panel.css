@@ -68,3 +68,7 @@
 .panel .legend{display:flex;gap:14px;flex-wrap:wrap;font-size:13px;color:var(--mu);margin-top:8px}
 .panel .legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px}
 .panel{min-height:100vh}
+.panel .import{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;margin-top:12px}
+.panel .import label{font-weight:600}
+.panel .import a{text-decoration:underline;color:inherit}
+.panel ul.err{margin:8px 0;padding-left:20px}
