@@ -53,9 +53,9 @@
 .panel .auth button{width:100%;margin-top:14px}
 .panel .auth button.ghost{margin-top:8px}
 .panel .auth .back{display:inline-block;margin-top:14px;color:var(--mu);font-size:13px}
-@media(max-width:820px){.panel .app{grid-template-columns:1fr}
-.panel .app>nav{flex-direction:row;overflow-x:auto;height:auto;position:sticky;border-right:0;border-bottom:1px solid var(--line);padding:10px;z-index:5;align-items:center}
-.panel .app>nav b{padding:0 8px}
+@media(max-width:820px){.panel .app{grid-template-columns:1fr;align-content:start}
+.panel .app>nav{flex-direction:row;flex-wrap:wrap;align-content:flex-start;row-gap:2px;height:auto;position:static;border-right:0;border-bottom:1px solid var(--line);padding:10px;align-items:center}
+.panel .app>nav b{padding:0 8px;flex-basis:100%}
 .panel .app>nav a{white-space:nowrap}
 .panel .sp{display:none}
 .panel .app>main{padding:18px}
