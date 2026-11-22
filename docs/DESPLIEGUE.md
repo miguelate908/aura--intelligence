@@ -55,13 +55,63 @@ Para tus demos de venta puedes crear la empresa ficticia con `python scripts/see
 
 ## 4. Correo para las notificaciones
 
-Usa el correo de tu dominio (Google Workspace, Zoho Mail) o un servicio transaccional (Brevo, Resend, Postmark). Con Google Workspace:
+Cada solicitud de demostración envía un aviso a `DEMO_REQUEST_EMAIL`. Al pulsar **Responder** en ese aviso, la respuesta va directo al interesado.
+
+### Opción recomendada: Brevo (gratis hasta 300 correos al día)
+
+Es la configuración que está en producción. Gmail suele cortar los inicios de sesión que llegan desde servidores como Render, aunque la contraseña de aplicación esté bien. Brevo está hecho para enviar desde servidores.
+
+1. Crea una cuenta en https://www.brevo.com (plan **Free**).
+2. Verifica el remitente: tu nombre → **Senders, Domains & Dedicated IPs** → **Senders** → **Add sender**, con el correo que usarás en `SMTP_FROM`.
+3. Tu nombre → **SMTP & API** → pestaña **SMTP**:
+   - copia el **Login**; termina en `@smtp-brevo.com`;
+   - pulsa **Generate a new SMTP key** y cópiala; empieza por `xsmtpsib-`. La API key (`xkeysib-`) no sirve aquí.
+4. En **Environment** del servicio en Render:
+
+   | Variable | Valor |
+   |---|---|
+   | `SMTP_HOST` | `smtp-relay.brevo.com` |
+   | `SMTP_PORT` | `587` |
+   | `SMTP_STARTTLS` | `true` |
+   | `SMTP_USER` | el **Login** de Brevo (`...@smtp-brevo.com`), **no** tu correo |
+   | `SMTP_PASSWORD` | la **SMTP key** |
+   | `SMTP_FROM` | el remitente verificado en el paso 2 |
+   | `DEMO_REQUEST_EMAIL` | el correo donde quieres recibir los avisos |
+
+5. Pulsa **Save, rebuild, and deploy**. No uses **Save only**: el servicio no ve los valores nuevos hasta que se vuelve a desplegar.
+
+Si el remitente es un Gmail, los primeros avisos pueden caer en **Spam**. Márcalos como "No es spam". Con un dominio propio verificado en Brevo esto desaparece.
+
+### Alternativa: Google Workspace o Gmail
 
 - `SMTP_HOST=smtp.gmail.com`, `SMTP_PORT=587`, `SMTP_STARTTLS=true`.
 - `SMTP_USER` y `SMTP_FROM` con tu correo.
-- `SMTP_PASSWORD` con una **contraseña de aplicación**, no la contraseña normal.
+- `SMTP_PASSWORD` con una **contraseña de aplicación** de 16 letras sin espacios, no la contraseña normal. Exige tener activada la verificación en dos pasos.
 
-Cambia los valores en **Environment** del servicio. Render reinicia el servicio solo.
+### Probar el envío desde la Shell de Render
+
+Si al pegar sale `\E[200~`, escribe primero a mano `bind 'set enable-bracketed-paste off'`.
+
+Revisa que las variables tengan valor, sin mostrarlos:
+
+```bash
+python -c "import os;[print(k, 'OK' if os.getenv(k,'').strip() else 'VACIA') for k in ['SMTP_HOST','SMTP_USER','SMTP_PASSWORD','SMTP_FROM','DEMO_REQUEST_EMAIL']]"
+```
+
+Envía un aviso de prueba. Debe imprimir `sent`:
+
+```bash
+python -c "from types import SimpleNamespace as S; from routers.demo_requests import _send_notification as f; print(f(S(id=0,name='Prueba',email='prueba@example.com',company_name='Prueba SMTP',job_title='-',sector='-',company_size=None,need='Prueba de correo',message='')))"
+```
+
+| Resultado | Qué significa |
+|---|---|
+| `sent` | El correo salió. Si no lo ves, búscalo en Spam. |
+| `not_configured` | `SMTP_HOST`, `SMTP_FROM` o `DEMO_REQUEST_EMAIL` está vacía en el servidor. Revisa los valores y usa **Save, rebuild, and deploy**. |
+| `535 Authentication failed` | Usuario o clave incorrectos. En Brevo, `SMTP_USER` debe ser el Login `...@smtp-brevo.com`. |
+| `Connection unexpectedly closed` | Gmail cortó el inicio de sesión desde Render. Cambia a Brevo. |
+
+En el panel, cada solicitud muestra **Correo de aviso al equipo: enviado / no enviado**.
 
 ## 5. Operación diaria
 
