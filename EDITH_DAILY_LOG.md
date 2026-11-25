@@ -1,5 +1,15 @@
 # EDITH — Registro diario
 
+## 2026-11-25 — Bitácoras antiguas archivadas en `docs/bitacora/`
+
+Tres ramas sin fusionar tenían el código ya en `master`, pero guardaban informes de supervisión que no estaban en `master`. Antes de borrarlas, con la autorización del usuario, esos informes se copiaron sin cambios a `docs/bitacora/`:
+
+- `2026-11-21.md`, de `claude/ecstatic-wright-gdujta`;
+- `2026-11-24.md`, de `claude/laughing-curie-leps3u`;
+- `2026-11-25-supervision.md`, de `claude/laughing-curie-m34ua3`. Es el informe que detectó el riesgo de `backend/static`.
+
+`docs/bitacora/README.md` indica la rama y el commit de origen de cada uno. Las ramas se borran después de fusionar este cambio.
+
 ## 2026-11-25 — Correo de autorización para solicitudes anteriores
 
 **Rama:** `claude/determined-hamilton-ljygsk`, recreada desde `master`. No está fusionada. No se envió ningún correo.
