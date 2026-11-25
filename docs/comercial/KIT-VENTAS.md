@@ -164,6 +164,8 @@ Revisa la hoja cada lunes: ninguna oportunidad activa debe quedar sin "próximo 
 
 **No subas al repositorio la copia con datos reales.** Contiene datos personales (Ley 1581 de 2012): guarda tu copia en un lugar privado y deja aquí solo la plantilla vacía.
 
+**Conservación (política de privacidad, 25-11-2026):** borra cada oportunidad que no sea cliente 12 meses después de su «Fecha del último contacto»; la columna «Alerta» lo avisa. Los datos de clientes se conservan mientras dure el contrato. Si alguien pide que borremos sus datos, bórralo aunque no se haya cumplido el plazo. A un contador referidor solo se le informa si su referido contrató y cuánto pagó.
+
 ---
 
 ## 8. Borrador de acuerdo de referidos (contadores y consultores)
