@@ -31,4 +31,4 @@ El formulario limita cada IP a cinco envíos por diez minutos y usa un campo se�
 ## Para crecer
 - Cada módulo nuevo (inventario, pedidos, reportes) va en `frontend/src/pages/` y se registra en `App.tsx`.
 - Cuando un módulo tenga lógica propia, agrúpalo en `src/features/<modulo>/`.
-- Producción: `npm run build` genera `backend/static`, que FastAPI sirve. Render compila el sitio en cada despliegue (`docs/DESPLIEGUE.md`, sección 6).
+- Producción: `npm run build` genera `backend/static`, que FastAPI sirve. Esa carpeta no se guarda en git: Render la compila en cada despliegue (`docs/DESPLIEGUE.md`, sección 6). En local, sin compilar, la API funciona y el sitio se abre con `dev.ps1`.
