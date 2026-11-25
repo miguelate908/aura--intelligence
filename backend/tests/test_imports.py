@@ -1,7 +1,6 @@
 import os
 
 os.environ.setdefault("DATABASE_URL", "sqlite://")
-os.environ.setdefault("JWT_SECRET_KEY", "test-secret-key-that-is-long-enough-32-characters")
 
 from fastapi import FastAPI
 from fastapi.testclient import TestClient

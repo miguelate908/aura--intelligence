@@ -19,7 +19,6 @@ jobs:
         working-directory: backend
     env:
       DATABASE_URL: "sqlite://"
-      JWT_SECRET_KEY: "public-test-only-key-for-in-memory-auth-tests"
       REGISTRATION_ENABLED: "true"
     steps:
       - uses: actions/checkout@v7.0.1
