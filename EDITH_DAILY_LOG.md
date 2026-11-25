@@ -18,7 +18,7 @@ La supervisión de hoy encontró 4 avisos de `npm audit` en `frontend/` (1 alto,
 
 - Se eligió Vite 6.4.x (no 8.x) porque corrige los avisos con el menor salto y mantiene compatibilidad con Node 18/20/22.
 - No hizo falta tocar `App.tsx`, `pages/*.tsx` ni `vite.config.ts`: las importaciones desde `react-router-dom` (`Navigate`, `NavLink`, `Outlet`, `Route`, `Routes`, `Link`, `BrowserRouter`) siguen funcionando en v7.
-- `backend/static/` se regeneró con el nuevo build (Render sirve esos archivos ya compilados).
+- `backend/static/` se regeneró con el nuevo build. Desde el PR #23, Render compila el sitio en cada despliegue; la copia en git se mantiene hasta que se autorice quitarla.
 
 ### Verificación
 
@@ -33,13 +33,35 @@ La supervisión de hoy encontró 4 avisos de `npm audit` en `frontend/` (1 alto,
 
 ### Ruta del build en el `Dockerfile`
 
-Error previo: la segunda etapa copiaba `COPY --from=web /web/dist /srv/frontend/dist`, pero `vite.config.ts` compila en `../backend/static` (en la etapa `web`, `/backend/static`). Como `/web/dist` no existe, `docker build` fallaba en ese paso. Además, FastAPI sirve `static/` desde `/srv/backend`, no desde `/srv/frontend/dist`.
+La misma corrección (`COPY --from=web /backend/static ./static`) llegó a `master` con el PR #23, «Compila el frontend en el despliegue de Render». Al fusionar `master` en esta rama se conservó esa versión del `Dockerfile` y de `README-ENTORNO.md`, y esta rama aporta solo el cambio a `node:22-alpine`. Ese PR también hace que Render compile el frontend en cada despliegue (`NODE_VERSION` 22.22.0, compatible con plugin-react 5, que exige `>=22.12.0`). Así, Render ya no usa la copia de `backend/static/` guardada en git.
 
-- `Dockerfile`: ahora `COPY --from=web /backend/static ./static`, después de `COPY backend/ ./`, para que el sitio recién compilado sustituya la copia versionada.
-- `README-ENTORNO.md`: decía que el build genera `frontend/dist`; ahora indica `backend/static/`.
-- `vite.config.ts` no cambió, porque Render depende de `backend/static/`.
+Verificación de la imagen en esta rama: `docker build` completo. Solo para la prueba se usó una copia del Dockerfile con el certificado del proxy del entorno de verificación. `npm ci` y `npm run build` corrieron en `node:22-alpine`, y con el contenedor en marcha (SQLite), `/`, `/login`, `/privacidad`, `/app/customers`, `/health` y el JS del sitio respondieron 200.
 
-Verificación: `docker build` completo. Solo para esta prueba se usó una copia del Dockerfile que añade el certificado del proxy del entorno de verificación; el Dockerfile del repositorio no lo lleva. `npm ci` y `npm run build` corrieron en `node:22-alpine`, y la imagen final contiene los mismos `index-G1M1fVdK.js` e `index-BsvzXWJM.css` que `backend/static/`. Con el contenedor en marcha (SQLite), `/`, `/login`, `/privacidad`, `/app/customers`, `/health` y el JS enlazado desde `index.html` respondieron 200.
+## 2026-11-25 — Render compila el frontend en cada despliegue
+
+**Riesgo.** `render.yaml` desplegaba con `rootDir: backend` y solo `pip install`. Producción servía el `backend/static` guardado en git, así que un cambio en `frontend/src` sin `npm run build` ni commit de `backend/static` dejaba el sitio desactualizado sin aviso.
+
+**Cambio.**
+- `render.yaml`: sin `rootDir`. El build ejecuta `npm ci --include=dev && npm run build` en `frontend/` y luego `pip install -r backend/requirements.txt`. El arranque hace `cd backend && uvicorn ...`. Se fija `NODE_VERSION=22.22.0`. El build imprime primero `node --version` y `npm --version` para detectar enseguida si falta Node.
+- `Dockerfile`: copiaba `/web/dist`, que no existe porque Vite compila en `../backend/static` (en esa etapa, `/backend/static`). Ahora copia esa carpeta a `backend/static`, que es de donde `backend/main.py` sirve el sitio. No se probó con Docker en esta sesión.
+- `docs/DESPLIEGUE.md`: nueva sección 6 con el cambio, el riesgo del primer despliegue y los pasos en Render. La Shell de Render ahora abre en la raíz del repositorio, así que hay que hacer `cd backend` antes de los scripts.
+- `README-ENTORNO.md`: corregida la carpeta de salida de `npm run build`.
+
+**Verificación local** (copia limpia del repositorio, Python 3.11, Node 22.23.5):
+
+| Verificación | Resultado |
+|---|---|
+| `buildCommand` de `render.yaml`, ejecutado desde la raíz | `tsc` y `vite build` correctos; dependencias de Python instaladas |
+| `cd backend && python -m pytest -q` | 33 passed |
+| `startCommand` de `render.yaml` con SQLite temporal | `/`, `/login`, `/app/customers` → 200 HTML; `/health` → 200; JS y CSS de `/static/assets/` → 200 |
+
+`pytest -q` a secas falló en la recogida (`No module named 'database'`) porque el ejecutable de pytest del entorno no añade `backend/` a la ruta de importación. Con `python -m pytest` pasa; no es un efecto de este cambio.
+
+El bundle compilado aquí tiene otro hash que el de `master`, pero la diferencia son solo nombres de variables del minificador: `backend/static` de `master` corresponde al `frontend/src` actual.
+
+**Pendiente, con autorización del usuario.**
+- Aplicar el cambio en Render y revisar el primer log de build (ver `docs/DESPLIEGUE.md`, sección 6). La documentación de Render no confirma de forma explícita que el runtime Python traiga Node; si falta, el build falla y Render mantiene la versión anterior.
+- Después de un despliegue correcto, dejar de guardar `backend/static` en git. Antes hay que hacer que `backend/main.py` arranque aunque falte la carpeta. **No se borró nada.**
 
 ## 2026-11-25 — Precisión de precios en CSV y registro público en Docker
 

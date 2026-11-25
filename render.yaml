@@ -6,14 +6,21 @@ services:
     runtime: python
     plan: starter            # el plan gratuito se duerme y tarda en despertar: malo para demos
     region: virginia       # la más cercana a Colombia
-    rootDir: backend
-    buildCommand: pip install -r requirements.txt
-    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT --proxy-headers --forwarded-allow-ips="*"
+    # Sin rootDir: los comandos parten de la raíz del repositorio. Así el build ve frontend/
+    # y cualquier cambio (frontend o backend) dispara el despliegue automático.
+    # El build compila React en backend/static (vite.config.ts) y sobrescribe la copia guardada en git.
+    buildCommand: >-
+      node --version && npm --version &&
+      cd frontend && npm ci --include=dev && npm run build && cd .. &&
+      pip install -r backend/requirements.txt
+    startCommand: cd backend && uvicorn main:app --host 0.0.0.0 --port $PORT --proxy-headers --forwarded-allow-ips="*"
     healthCheckPath: /health
     autoDeploy: true         # despliega en cada cambio fusionado en la rama configurada
     envVars:
       - key: PYTHON_VERSION
         value: 3.11.9
+      - key: NODE_VERSION    # Node que usa el build del frontend (Vite 6 + TypeScript 5; plugin-react 5 exige >=22.12)
+        value: 22.22.0
       - key: APP_ENV
         value: production
       - key: DATABASE_URL

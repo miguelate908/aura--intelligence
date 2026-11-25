@@ -2,7 +2,7 @@
 
 El repositorio incluye `render.yaml`, que crea en Render dos recursos:
 
-- **Servicio web `aura-intelligence`**: FastAPI sirve la API y el sitio ya compilado en `backend/static`.
+- **Servicio web `aura-intelligence`**: FastAPI sirve la API y el sitio React. Render compila el sitio en cada despliegue y lo deja en `backend/static`.
 - **Base PostgreSQL `aura-db`**: plan con copias de seguridad.
 
 Costo aproximado: unos USD 13 al mes en total (servicio *Starter* más PostgreSQL *Basic 256 MB*). Confirma los precios en render.com/pricing antes de crear los recursos. Los planes gratuitos no sirven para clientes: el servicio se duerme y la base gratuita caduca.
@@ -10,10 +10,7 @@ Costo aproximado: unos USD 13 al mes en total (servicio *Starter* más PostgreSQ
 ## Antes de empezar
 
 1. **Fusiona en `master`** el PR con estos cambios. Render despliega desde una rama de GitHub.
-2. **Recompila el frontend si cambiaste algo en `frontend/`** y confirma `backend/static`. Render no compila el frontend.
-   ```powershell
-   cd frontend; npm run build
-   ```
+2. **No hace falta recompilar el frontend a mano.** Render ejecuta `npm ci` y `npm run build` en `frontend/` en cada despliegue (ver la sección 6).
 
 ## 1. Crear los recursos (una sola vez)
 
@@ -35,7 +32,13 @@ Costo aproximado: unos USD 13 al mes en total (servicio *Starter* más PostgreSQ
 
 El registro público está desactivado en producción (`REGISTRATION_ENABLED=false`). Así nadie crea cuentas gratis y cada cuenta corresponde a un cliente que firmó un piloto.
 
-Abre el servicio en Render, ve a **Shell** y ejecuta el comando. La Shell ya abre dentro de la carpeta `backend` (la línea termina en `~/project/src/backend$`), así que no hace falta `cd backend`:
+Abre el servicio en Render, ve a **Shell** y entra primero en `backend`. Desde que el servicio no usa `rootDir`, la Shell abre en la raíz del repositorio (la línea termina en `~/project/src$`):
+
+```bash
+cd backend
+```
+
+Luego crea el usuario:
 
 ```bash
 python scripts/create_client.py --company "AURA Intelligence" --name "Tu nombre" --email tu-correo@dominio.com
@@ -51,7 +54,7 @@ Para tus demos de venta puedes crear la empresa ficticia con `python scripts/see
 2. En Render ve a **Settings → Custom Domains → Add**, escribe `www.tudominio.com` y luego `tudominio.com`.
 3. En tu registrador crea los registros DNS que Render te indique: un `CNAME` para `www` y un `A` o `ALIAS` para el dominio raíz.
 4. Render emite el certificado HTTPS automáticamente cuando el DNS propaga, normalmente en menos de una hora.
-5. Cambia `contactEmail` en `frontend/src/siteConfig.ts` por el correo de tu dominio, recompila y fusiona.
+5. Cambia `contactEmail` en `frontend/src/siteConfig.ts` por el correo de tu dominio y fusiona. Render recompila el sitio solo.
 
 ## 4. Correo para las notificaciones
 
@@ -90,7 +93,7 @@ Si el remitente es un Gmail, los primeros avisos pueden caer en **Spam**. Márca
 
 ### Probar el envío desde la Shell de Render
 
-Si al pegar sale `\E[200~`, escribe primero a mano `bind 'set enable-bracketed-paste off'`.
+Estos comandos se ejecutan dentro de `backend` (`cd backend` al abrir la Shell). Si al pegar sale `\E[200~`, escribe primero a mano `bind 'set enable-bracketed-paste off'`.
 
 Revisa que las variables tengan valor, sin mostrarlos:
 
@@ -120,8 +123,54 @@ En el panel, cada solicitud muestra **Correo de aviso al equipo: enviado / no en
 - **Registros de errores:** en el servicio, ve a **Logs**.
 - **Varias instancias:** los límites de intentos de login y del formulario viven en memoria. Si algún día escalas a más de una instancia, hay que moverlos a Redis (ver `backend/core/ratelimit.py`).
 
+## 6. Compilación del sitio en Render
+
+### Qué cambió (2026-11-25)
+
+Antes, `render.yaml` usaba `rootDir: backend` y solo hacía `pip install`. Render servía el `backend/static` guardado en git. Si alguien cambiaba `frontend/src` y olvidaba ejecutar `npm run build` y confirmar `backend/static`, producción quedaba con el sitio viejo y nadie se enteraba.
+
+Ahora el servicio no tiene `rootDir`, así que los comandos parten de la raíz del repositorio:
+
+| Campo | Valor |
+|---|---|
+| Root Directory | vacío |
+| Build Command | `node --version && npm --version && cd frontend && npm ci --include=dev && npm run build && cd .. && pip install -r backend/requirements.txt` |
+| Start Command | `cd backend && uvicorn main:app --host 0.0.0.0 --port $PORT --proxy-headers --forwarded-allow-ips="*"` |
+| `NODE_VERSION` | `22.22.0` |
+
+- `npm run build` ejecuta `tsc --noEmit` y `vite build`. Vite escribe en `backend/static` (`frontend/vite.config.ts`) y reemplaza la copia de git. `backend/main.py` sirve el sitio desde esa carpeta.
+- `--include=dev` hace falta porque TypeScript y Vite son dependencias de desarrollo.
+- Sin `rootDir`, cualquier fusión en `master` dispara un despliegue, también si solo cambia `frontend/`. Con `rootDir: backend`, Render ignora los cambios de fuera de `backend/`.
+- Si `tsc` encuentra un error de tipos, el build falla y Render mantiene la versión anterior funcionando. Es preferible a publicar un sitio roto.
+
+### Riesgo del primer despliegue
+
+La documentación de Render no dice de forma explícita que el runtime Python traiga Node. Por eso el build empieza con `node --version && npm --version`:
+
+- Si el log de build muestra las dos versiones y luego `vite build` con `✓ built`, todo está bien.
+- Si falla con `node: command not found`, el despliegue se cancela y producción sigue con la versión anterior. En ese caso, vuelve a poner temporalmente `rootDir: backend` y el `buildCommand` antiguo, y avisa para cambiar a un servicio Docker (el `Dockerfile` ya compila el sitio).
+- `NODE_VERSION` está documentada para servicios Node. Si Render la ignora en Python, usará su Node por defecto (24.x en servicios nuevos), que también compila este sitio. El log muestra cuál usó.
+
+### Qué debes hacer en Render
+
+1. Fusiona el PR en `master`.
+2. Si el servicio se creó con el Blueprint y está sincronizado, Render aplica `render.yaml` solo. Compruébalo en **Settings → Build & Deploy**: Root Directory vacío y los comandos de la tabla.
+3. Si el servicio no está sincronizado con el Blueprint, cambia esos tres campos a mano en **Settings → Build & Deploy** y añade `NODE_VERSION=22.22.0` en **Environment**. Después pulsa **Manual Deploy → Deploy latest commit**.
+4. Revisa el log de build: versiones de Node y npm, `vite build` y `✓ built`.
+5. Abre `/health`, `/`, `/login` y `/app/customers` en el dominio. Las cuatro deben cargar.
+6. Recuerda que en la **Shell** ahora hay que hacer `cd backend` antes de los scripts.
+
+### Paso final propuesto: dejar de guardar `backend/static` en git
+
+**No está hecho.** Requiere tu autorización explícita, porque hoy esa carpeta es lo que sirve producción. Hazlo solo después de al menos un despliegue correcto con el build nuevo:
+
+1. Cambiar en `backend/main.py` el montaje de `/static` para que no falle si la carpeta no existe. Hoy `StaticFiles(directory="static")` lanza un error al arrancar sin ella, por ejemplo al correr las pruebas sin compilar.
+2. `git rm -r --cached backend/static` y añadir `backend/static/` a `.gitignore`.
+3. En local, compilar con `cd frontend; npm run build` antes de abrir el sitio desde `uvicorn`. Para desarrollo diario sigue sirviendo `dev.ps1` con Vite.
+
 ## Lista de verificación antes del primer cliente
 
+- [ ] El log del último despliegue muestra `vite build` y `✓ built`.
 - [ ] `/health` responde en el dominio propio con HTTPS.
 - [ ] Puedes iniciar sesión con tu usuario y ves el menú **Solicitudes**.
 - [ ] Enviaste una solicitud de demostración de prueba y llegó al correo, o al menos aparece en **Solicitudes**.
