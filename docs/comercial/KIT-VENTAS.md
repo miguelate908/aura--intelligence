@@ -4,6 +4,17 @@ Materiales listos para usar con el plan de `PLAN-COMERCIAL.md`. Reemplaza lo que
 
 ---
 
+## 0. Mensaje base: complemento de Siigo y Alegra
+
+Úsalo como idea central en todos los mensajes, demos y propuestas (ver `PLAN-COMERCIAL.md` §3.1):
+
+> **"Siigo o Alegra llevan tu contabilidad. AURA ordena y conecta lo que hoy vive en Excel: tus clientes, tus productos y tus bodegas. Nosotros cargamos los archivos; tú no cambias de sistema."**
+
+- Di siempre "complementa", nunca "reemplaza" ni "se integra con" (la integración no existe).
+- Si el prospecto no usa Siigo ni Alegra, nombra el software que use o di "tu software contable".
+
+---
+
 ## 1. Mensajes de primer contacto
 
 ### Red personal (WhatsApp o correo)
@@ -19,8 +30,22 @@ Materiales listos para usar con el plan de `PLAN-COMERCIAL.md`. Reemplaza lo que
 **Día 7 (si responde con un dolor):**
 > Tiene mucho sentido. Eso es justo lo que resolvemos con AURA: cargamos sus archivos por ustedes y en 30 días tienen todo conectado y consultable. ¿Te parece si te lo muestro en 30 minutos esta semana? [enlace de agenda]
 
-### Contadores y consultores
-> Hola [nombre]. Sé que atiendes a varias pymes. Muchas tienen su información operativa dispersa en Excel, y eso también te complica el trabajo a ti. Estoy lanzando AURA para resolver eso, y ofrezco el 20 % del primer año por cada cliente que recomiendes y contrate. ¿Te puedo mostrar en 20 minutos de qué se trata?
+### Contadores y consultores (canal de referidos del 20 %)
+
+Un contador es un **prospecto de alianza**, no un cliente ni un socio, hasta que acepte por escrito las condiciones de referidos. El mensaje debe dejar claro que AURA no toca su trabajo ni el software contable de sus clientes.
+
+**Primer mensaje (WhatsApp, correo o LinkedIn):**
+> Hola [nombre]. Sé que atiendes a varias pymes, seguramente con Siigo o Alegra. No te vengo a ofrecer otro programa contable: AURA complementa ese software. Ellos siguen llevando la contabilidad contigo; nosotros ordenamos y conectamos lo que hoy tienen en Excel —clientes, productos y bodegas— y les entregamos un informe de calidad de esos datos. Eso también te ahorra a ti pedir y corregir archivos cada mes. Por cada cliente que recomiendes y contrate, te reconozco el 20 % de lo que pague el primer año. ¿Te muestro en 20 minutos cómo funciona?
+
+**Si responde "mis clientes ya tienen Siigo/Alegra":**
+> Justo por eso. No cambian nada de lo que ya usan contigo. Lo que ordenamos es la parte operativa que no está en el contable, o que está repetida en varios Excel: listas de clientes, catálogos de productos, un archivo por bodega. Si el software les permite exportar a Excel, cargamos ese archivo también.
+
+**Si pregunta cuánto gana:**
+> El 20 % de lo que el cliente pague el primer año. Por ejemplo, un cliente en el Plan Profesional mensual paga COP 8.280.000 el primer año; tu parte serían COP 1.656.000. En el Esencial mensual serían COP 696.000. Se paga cuando el cliente paga, y te lo dejo por escrito antes de que me presentes a nadie.
+
+*(Cálculo: 20 % × mensualidad × 12. Si el cliente paga anual —10 mensualidades— la base es menor: COP 1.380.000 en Profesional y COP 580.000 en Esencial. Antes del primer referido, define por escrito si el Piloto cuenta para la comisión y en qué plazo pagas; `PLAN-COMERCIAL.md` no lo fija todavía.)*
+
+**Cierre de la conversación con el contador:** pide que te presente a **una** pyme concreta que viva el problema, no una lista. Registra al contador en la hoja de oportunidades con canal `referido-contador`.
 
 ---
 
@@ -100,8 +125,11 @@ Muestra la sección "Estado del producto" si preguntan por algo que no existe. N
 | Objeción | Respuesta |
 |---|---|
 | "Es muy caro." | "¿Cuántas horas a la semana dedican hoy a consolidar archivos? A [valor hora], el Plan Profesional se paga con [X] horas al mes. Además, el piloto se descuenta si continúan." |
+| "¿Por qué pago más que por Siigo / Alegra?" | "Porque no es lo mismo y no lo reemplaza. Su Siigo o Alegra hace su contabilidad y su facturación, y lo debe seguir usando. Con AURA paga que alguien cargue, depure y mantenga ordenados sus clientes, productos y bodegas que hoy están en Excel: en el Esencial hacemos nosotros una recarga cada mes. La comparación justa no es contra otro programa, sino contra las horas que su equipo pasa juntando archivos. ¿Cuántas son a la semana?" *Luego haz la cuenta en voz alta: horas al mes × [valor hora] frente a COP 290.000. Si la cuenta no da, no insistas: ofrece el Piloto como prueba acotada o descalifica.* |
 | "Ya tenemos Excel." | "Exacto, y lo seguirán usando si quieren. AURA no reemplaza su Excel: lo conecta, para que dejen de buscar en siete archivos." |
 | "Ya tenemos un software contable / ERP." | "Ese software lleva la contabilidad; AURA da la visión operativa de clientes, productos y bodegas que normalmente queda fuera. No hay que cambiar nada de lo que ya usan." |
+| "Siigo / Alegra ya maneja inventario y bodegas." | "Si su equipo ya lleva ahí clientes, productos y bodegas al día, probablemente no nos necesita para eso, y se lo digo con franqueza. ¿Hoy todo está ahí, o todavía hay archivos de Excel aparte?" *Si todo está en el contable, agradece y descalifica. AURA no maneja cantidades de inventario: no lo prometas.* |
+| "¿Se conecta con mi Siigo / Alegra?" | "Hoy no hay una conexión automática. Si su software le deja exportar a Excel o CSV, cargamos ese archivo; lo probamos con un archivo suyo antes de proponerle nada." |
 | "¿Tiene inteligencia artificial?" | "Hoy tiene un asistente de consultas con reglas, que responde preguntas frecuentes al instante. La IA está en la hoja de ruta, y los clientes del piloto deciden qué se construye primero." |
 | "¿Y si después me quiero ir?" | "Sus datos son suyos. Al terminar les entregamos todo en Excel." *(Mientras no exista la exportación en el panel, hazla manualmente desde la base de datos.)* |
 | "¿Es seguro?" | "Cada empresa solo ve sus propios datos, el acceso exige contraseña de 12 caracteres y la sesión caduca a los 30 minutos. No declaramos certificaciones que no tenemos." |

@@ -1,5 +1,48 @@
 # EDITH — Registro diario
 
+## 2026-11-25 — Posicionamiento frente a Siigo/Alegra y propuesta sobre el Plan Esencial
+
+**Rama:** `claude/determined-hamilton-ljygsk`, creada desde `master` (`559e1f5`). Está sin fusionar y requiere tu revisión. No se envió ni se publicó nada.
+
+**Origen.** Es la sección C–E de la investigación comercial del 25 de noviembre. Esa sección está en la rama `claude/laughing-curie-m34ua3`, que no se ha fusionado en `master`, y por eso no aparece en este archivo. Allí se detectó que el Plan Esencial (COP 290.000/mes) cuesta más que los planes pyme de Siigo y Alegra, lo que facilita la objeción "¿por qué pago más que por Siigo?".
+
+**Verificación de precios (25-11-2026).**
+
+- Las páginas oficiales de Siigo `siigo.com/planes/`, `/precios/` y `/planes-precios/` devolvieron HTTP 404. Las de Alegra `alegra.com/colombia/precios/` y `/contabilidad/precios/` cargaron, pero no mostraban planes. No se pudo confirmar ningún precio con el proveedor.
+- Hay dos fuentes de terceros que coinciden entre sí: blog.alegra.com/colombia/alegra-vs-siigo-colombia/, actualizada el 16-07-2026, y guiadesoftware.com/blog/mejor-software-contabilidad-colombia, actualizada el 11-11-2026.
+  - Siigo Nube Profesional: COP 145.993/mes con pago anual.
+  - Siigo Nube Emprendedor: COP 191.327/mes con 3 usuarios, y COP 2.869.900/año a precio de lista.
+  - Alegra: Emprendedor COP 74.900, Pyme COP 163.900, Pro COP 250.900 y Plus COP 319.900 al mes. Con pago anual hay un 25 % menos.
+  - Ninguna de las dos fuentes indica el IVA.
+- El rango anterior, COP 89.000–191.000, no recoge los extremos. El plan de entrada de Alegra cuesta menos, y Alegra Pro y Plus cuestan lo mismo o más que el Esencial. Además, Alegra Pyme ya incluye 2 bodegas.
+
+**Cambios propuestos.**
+
+- `docs/comercial/PLAN-COMERCIAL.md`:
+  - §2: indica que el ICP ya usa Siigo o Alegra.
+  - §3.1 (nuevo): posicionamiento como complemento. Recoge lo que no se promete, como la integración, y cuándo descalificar.
+  - §4.1 (nuevo): tabla de precios de referencia con su fuente y fecha, las opciones A, B y C, y una recomendación.
+  - §6.3: los contadores figuran como prospectos de alianza.
+- `docs/comercial/KIT-VENTAS.md`:
+  - §0 (nuevo): mensaje base.
+  - §1: nueva variante para contadores, con respuestas de seguimiento y el cálculo de la comisión del 20 %.
+  - §5: tres objeciones nuevas: "¿por qué pago más que por Siigo/Alegra?", "Siigo/Alegra ya maneja inventario" y "¿se conecta con mi Siigo/Alegra?".
+
+**Recomendación de precios (pendiente de tu aprobación; no se cambió ningún precio).** Recomiendo la opción A: mantener el Esencial en COP 290.000, ofrecerlo después del Piloto y del Profesional, y presentarlo como servicio mensual de datos ordenados que complementa el software contable.
+
+- Hoy no hay datos de ventas que justifiquen bajarlo.
+- El descuento de fundador congelaría de por vida un precio más bajo.
+- Regla de revisión: si al menos 3 de las primeras 10 demos se pierden por precio frente a Siigo o Alegra, se evalúa un plan inferior sin servicio (opción C).
+
+**Pendientes para ti.**
+
+1. Decidir entre A, B o C.
+2. Definir por escrito si el Piloto cuenta para la comisión de referidos y en qué plazo se paga.
+3. Revisar las cifras en las webs de Siigo y Alegra antes de citarlas a un prospecto.
+4. La rama `claude/laughing-curie-leps3u` cambia la marca a "EDITH Intelligence". Este cambio conserva "AURA", igual que `master`. Si fusionas ambas, habrá que unificar el nombre en las secciones nuevas.
+
+**Clientes confirmados:** ninguno. **Ingresos registrados:** COP 0. Los contadores mencionados son prospectos de alianza, no clientes.
+
 ## 2026-11-25 — Precisión de precios en CSV y registro público en Docker
 
 **Precios con tres decimales.** Si un producto tiene un precio numérico de `12.345`, el panel lo exporta como `12,345`. Al reimportar ese texto, el panel lo interpreta como `12345`. La API aplica la misma convención a los precios enviados como texto. El caso es ambiguo porque un único separador seguido de tres cifras también representa miles. Se comprobó que el importador convierte tanto `12,345` como `12.345` en `12345`, mientras que `1.250,75` se convierte en `1250.75`. Si se admiten precios con tres decimales, queda por definir un formato que conserve ese valor en la exportación y posterior importación. [Informe del 23 de noviembre](https://github.com/miguelate908/aura--intelligence/blob/5ba973fa28a0e14f4391b1107e3f431a19d44b20/docs/supervision/2026-11-23.md)
