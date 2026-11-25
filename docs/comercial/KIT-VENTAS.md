@@ -1,4 +1,4 @@
-# AURA Intelligence — Kit de ventas
+# EDITH Intelligence — Kit de ventas
 
 Materiales listos para usar con el plan de `PLAN-COMERCIAL.md`. Reemplaza lo que está entre `[corchetes]`.
 
@@ -8,7 +8,7 @@ Materiales listos para usar con el plan de `PLAN-COMERCIAL.md`. Reemplaza lo que
 
 Úsalo como idea central en todos los mensajes, demos y propuestas (ver `PLAN-COMERCIAL.md` §3.1):
 
-> **"Siigo o Alegra llevan tu contabilidad. AURA ordena y conecta lo que hoy vive en Excel: tus clientes, tus productos y tus bodegas. Nosotros cargamos los archivos; tú no cambias de sistema."**
+> **"Siigo o Alegra llevan tu contabilidad. EDITH ordena y conecta lo que hoy vive en Excel: tus clientes, tus productos y tus bodegas. Nosotros cargamos los archivos; tú no cambias de sistema."**
 
 - Di siempre "complementa", nunca "reemplaza" ni "se integra con" (la integración no existe).
 - Si el prospecto no usa Siigo ni Alegra, nombra el software que use o di "tu software contable".
@@ -18,7 +18,7 @@ Materiales listos para usar con el plan de `PLAN-COMERCIAL.md`. Reemplaza lo que
 ## 1. Mensajes de primer contacto
 
 ### Red personal (WhatsApp o correo)
-> Hola [nombre], ¿cómo vas? Estoy lanzando AURA, una herramienta para que las pymes tengan sus clientes, productos y bodegas organizados en un solo lugar, sin seguir peleando con archivos de Excel. Estoy buscando 5 empresas para un piloto con acompañamiento personal. ¿Conoces a algún gerente de una distribuidora, comercializadora o fábrica que viva ese problema? Me ayudaría muchísimo una presentación de 20 minutos.
+> Hola [nombre], ¿cómo vas? Estoy lanzando EDITH, una herramienta para que las pymes tengan sus clientes, productos y bodegas organizados en un solo lugar, sin seguir peleando con archivos de Excel. Estoy buscando 5 empresas para un piloto con acompañamiento personal. ¿Conoces a algún gerente de una distribuidora, comercializadora o fábrica que viva ese problema? Me ayudaría muchísimo una presentación de 20 minutos.
 
 ### LinkedIn — secuencia de 3 mensajes
 **Día 0 (con la solicitud de conexión):**
@@ -28,14 +28,14 @@ Materiales listos para usar con el plan de `PLAN-COMERCIAL.md`. Reemplaza lo que
 > Gracias por conectar, [nombre]. Una pregunta rápida: en [empresa], ¿la información de clientes, productos y bodegas vive en un mismo sistema o en varios archivos? Estoy hablando con gerentes de operaciones para entender cómo lo manejan.
 
 **Día 7 (si responde con un dolor):**
-> Tiene mucho sentido. Eso es justo lo que resolvemos con AURA: cargamos sus archivos por ustedes y en 30 días tienen todo conectado y consultable. ¿Te parece si te lo muestro en 30 minutos esta semana? [enlace de agenda]
+> Tiene mucho sentido. Eso es justo lo que resolvemos con EDITH: cargamos sus archivos por ustedes y en 30 días tienen todo conectado y consultable. ¿Te parece si te lo muestro en 30 minutos esta semana? [enlace de agenda]
 
 ### Contadores y consultores (canal de referidos del 20 %)
 
-Un contador es un **prospecto de alianza**, no un cliente ni un socio, hasta que acepte por escrito las condiciones de referidos. El mensaje debe dejar claro que AURA no toca su trabajo ni el software contable de sus clientes.
+Un contador es un **prospecto de alianza**, no un cliente ni un socio, hasta que acepte por escrito las condiciones de referidos. El mensaje debe dejar claro que EDITH no toca su trabajo ni el software contable de sus clientes.
 
 **Primer mensaje (WhatsApp, correo o LinkedIn):**
-> Hola [nombre]. Sé que atiendes a varias pymes, seguramente con Siigo o Alegra. No te vengo a ofrecer otro programa contable: AURA complementa ese software. Ellos siguen llevando la contabilidad contigo; nosotros ordenamos y conectamos lo que hoy tienen en Excel —clientes, productos y bodegas— y les entregamos un informe de calidad de esos datos. Eso también te ahorra a ti pedir y corregir archivos cada mes. Por cada cliente que recomiendes y contrate, te reconozco el 20 % de lo que pague el primer año. ¿Te muestro en 20 minutos cómo funciona?
+> Hola [nombre]. Sé que atiendes a varias pymes, seguramente con Siigo o Alegra. No te vengo a ofrecer otro programa contable: EDITH complementa ese software. Ellos siguen llevando la contabilidad contigo; nosotros ordenamos y conectamos lo que hoy tienen en Excel —clientes, productos y bodegas— y les entregamos un informe de calidad de esos datos. Eso también te ahorra a ti pedir y corregir archivos cada mes. Por cada cliente que recomiendes y contrate, te reconozco el 20 % de lo que pague el primer año. ¿Te muestro en 20 minutos cómo funciona?
 
 **Si responde "mis clientes ya tienen Siigo/Alegra":**
 > Justo por eso. No cambian nada de lo que ya usan contigo. Lo que ordenamos es la parte operativa que no está en el contable, o que está repetida en varios Excel: listas de clientes, catálogos de productos, un archivo por bodega. Si el software les permite exportar a Excel, cargamos ese archivo también.
@@ -89,12 +89,12 @@ Muestra la sección "Estado del producto" si preguntan por algo que no existe. N
 
 ## 4. Plantilla de propuesta de piloto
 
-> **Propuesta de piloto AURA Intelligence para [Empresa]**
+> **Propuesta de piloto EDITH Intelligence para [Empresa]**
 > Fecha: [fecha] · Válida por 15 días
 >
 > **Situación actual.** [2–3 frases con lo que dijeron en el descubrimiento: archivos, horas perdidas, consecuencias.]
 >
-> **Objetivo del piloto.** En 30 días, tener los clientes, productos y bodegas de [Empresa] centralizados y conectados en AURA, y entregar un informe de hallazgos sobre la calidad y organización de sus datos.
+> **Objetivo del piloto.** En 30 días, tener los clientes, productos y bodegas de [Empresa] centralizados y conectados en EDITH, y entregar un informe de hallazgos sobre la calidad y organización de sus datos.
 >
 > **Alcance.**
 > - Carga inicial desde Excel/CSV de hasta 5.000 registros.
@@ -114,7 +114,7 @@ Muestra la sección "Estado del producto" si preguntan por algo que no existe. N
 > | 3 | Uso por el equipo de [Empresa], ajustes |
 > | 4 | Informe de hallazgos y reunión de cierre |
 >
-> **Datos personales.** [Empresa] es responsable del tratamiento de los datos que entrega; AURA actúa como encargado y los usa únicamente para prestar el servicio, según el acuerdo de tratamiento de datos anexo.
+> **Datos personales.** [Empresa] es responsable del tratamiento de los datos que entrega; EDITH actúa como encargado y los usa únicamente para prestar el servicio, según el acuerdo de tratamiento de datos anexo.
 >
 > **Aceptación.** Nombre, cargo, fecha y firma.
 
@@ -125,13 +125,13 @@ Muestra la sección "Estado del producto" si preguntan por algo que no existe. N
 | Objeción | Respuesta |
 |---|---|
 | "Es muy caro." | "¿Cuántas horas a la semana dedican hoy a consolidar archivos? A [valor hora], el Plan Profesional se paga con [X] horas al mes. Además, el piloto se descuenta si continúan." |
-| "¿Por qué pago más que por Siigo / Alegra?" | "Porque no es lo mismo y no lo reemplaza. Su Siigo o Alegra hace su contabilidad y su facturación, y lo debe seguir usando. Con AURA paga que alguien cargue, depure y mantenga ordenados sus clientes, productos y bodegas que hoy están en Excel: en el Esencial hacemos nosotros una recarga cada mes. La comparación justa no es contra otro programa, sino contra las horas que su equipo pasa juntando archivos. ¿Cuántas son a la semana?" *Luego haz la cuenta en voz alta: horas al mes × [valor hora] frente a COP 290.000. Si la cuenta no da, no insistas: ofrece el Piloto como prueba acotada o descalifica.* |
-| "Ya tenemos Excel." | "Exacto, y lo seguirán usando si quieren. AURA no reemplaza su Excel: lo conecta, para que dejen de buscar en siete archivos." |
-| "Ya tenemos un software contable / ERP." | "Ese software lleva la contabilidad; AURA da la visión operativa de clientes, productos y bodegas que normalmente queda fuera. No hay que cambiar nada de lo que ya usan." |
-| "Siigo / Alegra ya maneja inventario y bodegas." | "Si su equipo ya lleva ahí clientes, productos y bodegas al día, probablemente no nos necesita para eso, y se lo digo con franqueza. ¿Hoy todo está ahí, o todavía hay archivos de Excel aparte?" *Si todo está en el contable, agradece y descalifica. AURA no maneja cantidades de inventario: no lo prometas.* |
+| "¿Por qué pago más que por Siigo / Alegra?" | "Porque no es lo mismo y no lo reemplaza. Su Siigo o Alegra hace su contabilidad y su facturación, y lo debe seguir usando. Con EDITH paga que alguien cargue, depure y mantenga ordenados sus clientes, productos y bodegas que hoy están en Excel: en el Esencial hacemos nosotros una recarga cada mes. La comparación justa no es contra otro programa, sino contra las horas que su equipo pasa juntando archivos. ¿Cuántas son a la semana?" *Luego haz la cuenta en voz alta: horas al mes × [valor hora] frente a COP 290.000. Si la cuenta no da, no insistas: ofrece el Piloto como prueba acotada o descalifica.* |
+| "Ya tenemos Excel." | "Exacto, y lo seguirán usando si quieren. EDITH no reemplaza su Excel: lo conecta, para que dejen de buscar en siete archivos." |
+| "Ya tenemos un software contable / ERP." | "Ese software lleva la contabilidad; EDITH da la visión operativa de clientes, productos y bodegas que normalmente queda fuera. No hay que cambiar nada de lo que ya usan." |
+| "Siigo / Alegra ya maneja inventario y bodegas." | "Si su equipo ya lleva ahí clientes, productos y bodegas al día, probablemente no nos necesita para eso, y se lo digo con franqueza. ¿Hoy todo está ahí, o todavía hay archivos de Excel aparte?" *Si todo está en el contable, agradece y descalifica. EDITH no maneja cantidades de inventario: no lo prometas.* |
 | "¿Se conecta con mi Siigo / Alegra?" | "Hoy no hay una conexión automática. Si su software le deja exportar a Excel o CSV, cargamos ese archivo; lo probamos con un archivo suyo antes de proponerle nada." |
 | "¿Tiene inteligencia artificial?" | "Hoy tiene un asistente de consultas con reglas, que responde preguntas frecuentes al instante. La IA está en la hoja de ruta, y los clientes del piloto deciden qué se construye primero." |
-| "¿Y si después me quiero ir?" | "Sus datos son suyos. Al terminar les entregamos todo en Excel." *(Mientras no exista la exportación en el panel, hazla manualmente desde la base de datos.)* |
+| "¿Y si después me quiero ir?" | "Sus datos son suyos. Al terminar les entregamos todo en Excel." *(En el panel, **Exportar CSV** en Clientes, Productos y Bodegas descarga cada lista en un archivo que Excel abre directamente.)* |
 | "¿Es seguro?" | "Cada empresa solo ve sus propios datos, el acceso exige contraseña de 12 caracteres y la sesión caduca a los 30 minutos. No declaramos certificaciones que no tenemos." |
 | "Déjame pensarlo." | "Claro. ¿Qué necesitarías ver para decidir? ¿Agendamos 15 minutos el [día] para resolverlo con [quien decide]?" |
 
@@ -139,7 +139,7 @@ Muestra la sección "Estado del producto" si preguntan por algo que no existe. N
 
 ## 6. Correo de cierre del piloto
 
-> Asunto: Resultados del piloto AURA — [Empresa]
+> Asunto: Resultados del piloto EDITH — [Empresa]
 >
 > Hola [nombre],
 >
@@ -170,38 +170,38 @@ Revisa la hoja cada lunes: ninguna oportunidad activa debe quedar sin "próximo 
 
 > **Borrador para revisión.** No es asesoría legal ni tributaria. Hazlo revisar por tu contador o abogado antes de firmar el primero (ver `PLAN-COMERCIAL.md` §5). Las condiciones de comisión son las aprobadas el 25-11-2026 (`PLAN-COMERCIAL.md` §6); la vigencia del registro (90 días), la duración (un año), el preaviso (30 días) y la cláusula de controversias (30 días de arreglo directo y luego centro de conciliación) también quedaron aprobados ese día. Lo que está entre `[corchetes]` son datos que debes completar en cada acuerdo.
 
-> **ACUERDO DE REFERIDOS — AURA INTELLIGENCE**
+> **ACUERDO DE REFERIDOS — EDITH INTELLIGENCE**
 >
-> Entre **[tu nombre completo o razón social]**, identificado con [C.C./NIT] [número], en adelante **AURA**, y **[nombre del contador o consultor]**, identificado con [C.C./NIT] [número], en adelante **EL REFERIDOR**, se celebra este acuerdo el [fecha], en [ciudad].
+> Entre **[tu nombre completo o razón social]**, identificado con [C.C./NIT] [número], en adelante **EDITH**, y **[nombre del contador o consultor]**, identificado con [C.C./NIT] [número], en adelante **EL REFERIDOR**, se celebra este acuerdo el [fecha], en [ciudad].
 >
-> **1. Objeto.** EL REFERIDOR podrá presentar a AURA empresas interesadas en sus servicios. AURA pagará una comisión por cada empresa referida que contrate y pague un plan, en los términos de este acuerdo.
+> **1. Objeto.** EL REFERIDOR podrá presentar a EDITH empresas interesadas en sus servicios. EDITH pagará una comisión por cada empresa referida que contrate y pague un plan, en los términos de este acuerdo.
 >
-> **2. Cómo se registra un referido.** El referido existe solo cuando EL REFERIDOR envía a AURA, por escrito (correo o WhatsApp), el nombre de la empresa y de la persona de contacto, y AURA confirma por escrito que esa empresa no estaba ya en su registro de oportunidades. Si la empresa ya estaba registrada, no se genera comisión. El registro vale por **noventa (90) días**: si en ese plazo la empresa no contrata un plan, el referido vence. EL REFERIDOR puede volver a registrarlo después.
+> **2. Cómo se registra un referido.** El referido existe solo cuando EL REFERIDOR envía a EDITH, por escrito (correo o WhatsApp), el nombre de la empresa y de la persona de contacto, y EDITH confirma por escrito que esa empresa no estaba ya en su registro de oportunidades. Si la empresa ya estaba registrada, no se genera comisión. El registro vale por **noventa (90) días**: si en ese plazo la empresa no contrata un plan, el referido vence. EL REFERIDOR puede volver a registrarlo después.
 >
-> **3. Comisión.** AURA pagará a EL REFERIDOR el **veinte por ciento (20 %)** de los valores efectivamente pagados por la empresa referida por su **Plan Esencial o Plan Profesional**, mensual o anual, durante los **doce (12) primeros meses** contados desde el inicio de ese plan. La base de cálculo excluye el IVA [*confirmar con tu contador*].
+> **3. Comisión.** EDITH pagará a EL REFERIDOR el **veinte por ciento (20 %)** de los valores efectivamente pagados por la empresa referida por su **Plan Esencial o Plan Profesional**, mensual o anual, durante los **doce (12) primeros meses** contados desde el inicio de ese plan. La base de cálculo excluye el IVA [*confirmar con tu contador*].
 >
-> **4. Pagos que no generan comisión.** No generan comisión: (a) el **Piloto AURA 30 días**, incluido el valor del Piloto que se acredite al plan anual; (b) los desarrollos a medida; (c) los pagos recibidos después de los doce primeros meses; (d) los valores que AURA devuelva o no logre cobrar.
+> **4. Pagos que no generan comisión.** No generan comisión: (a) el **Piloto EDITH 30 días**, incluido el valor del Piloto que se acredite al plan anual; (b) los desarrollos a medida; (c) los pagos recibidos después de los doce primeros meses; (d) los valores que EDITH devuelva o no logre cobrar.
 >
-> **5. Forma y plazo de pago.** AURA pagará la comisión dentro de los **treinta (30) días calendario siguientes a cada pago efectivamente recibido** de la empresa referida, mediante transferencia a la cuenta que indique EL REFERIDOR. Si la empresa no paga, se atrasa o cancela, no se causa comisión por los períodos no pagados. Si la empresa paga un año por adelantado, la comisión se calcula sobre ese pago y se paga en el mismo plazo.
+> **5. Forma y plazo de pago.** EDITH pagará la comisión dentro de los **treinta (30) días calendario siguientes a cada pago efectivamente recibido** de la empresa referida, mediante transferencia a la cuenta que indique EL REFERIDOR. Si la empresa no paga, se atrasa o cancela, no se causa comisión por los períodos no pagados. Si la empresa paga un año por adelantado, la comisión se calcula sobre ese pago y se paga en el mismo plazo.
 >
-> **6. Documentos y tributos.** Para cada pago, EL REFERIDOR entregará a AURA factura electrónica o documento soporte / cuenta de cobro, según su régimen tributario. AURA aplicará las retenciones que exija la ley. Cada parte responde por sus propios impuestos. [*Confirmar con tu contador qué documento y qué retenciones aplican.*]
+> **6. Documentos y tributos.** Para cada pago, EL REFERIDOR entregará a EDITH factura electrónica o documento soporte / cuenta de cobro, según su régimen tributario. EDITH aplicará las retenciones que exija la ley. Cada parte responde por sus propios impuestos. [*Confirmar con tu contador qué documento y qué retenciones aplican.*]
 >
-> **7. Independencia.** EL REFERIDOR actúa de forma independiente. Este acuerdo no crea relación laboral, sociedad, agencia comercial ni representación. EL REFERIDOR no puede firmar contratos, fijar precios, ofrecer descuentos ni recibir pagos a nombre de AURA.
+> **7. Independencia.** EL REFERIDOR actúa de forma independiente. Este acuerdo no crea relación laboral, sociedad, agencia comercial ni representación. EL REFERIDOR no puede firmar contratos, fijar precios, ofrecer descuentos ni recibir pagos a nombre de EDITH.
 >
-> **8. Qué puede y qué no puede decir EL REFERIDOR.** Puede describir AURA como un servicio y una herramienta que ordena y conecta clientes, productos y bodegas, como complemento del software contable de la empresa. **No puede** afirmar que AURA se integra con Siigo, Alegra u otro software, que maneja inventario con cantidades, que usa inteligencia artificial, ni ofrecer funciones o precios distintos a los publicados por AURA. AURA le entregará el material de presentación vigente.
+> **8. Qué puede y qué no puede decir EL REFERIDOR.** Puede describir EDITH como un servicio y una herramienta que ordena y conecta clientes, productos y bodegas, como complemento del software contable de la empresa. **No puede** afirmar que EDITH se integra con Siigo, Alegra u otro software, que maneja inventario con cantidades, que usa inteligencia artificial, ni ofrecer funciones o precios distintos a los publicados por EDITH. EDITH le entregará el material de presentación vigente.
 >
-> **9. Datos personales y confidencialidad.** Cada parte trata los datos personales que reciba conforme a la Ley 1581 de 2012 y sus normas reglamentarias. EL REFERIDOR solo compartirá datos de contacto de personas que hayan aceptado ser contactadas por AURA. AURA no compartirá con EL REFERIDOR la información de negocio de la empresa referida (clientes, productos, bodegas, precios) sin autorización escrita de esa empresa. Ambas partes mantendrán confidencial la información de la otra parte que no sea pública.
+> **9. Datos personales y confidencialidad.** Cada parte trata los datos personales que reciba conforme a la Ley 1581 de 2012 y sus normas reglamentarias. EL REFERIDOR solo compartirá datos de contacto de personas que hayan aceptado ser contactadas por EDITH. EDITH no compartirá con EL REFERIDOR la información de negocio de la empresa referida (clientes, productos, bodegas, precios) sin autorización escrita de esa empresa. Ambas partes mantendrán confidencial la información de la otra parte que no sea pública.
 >
-> **10. No exclusividad.** Ninguna parte tiene exclusividad. EL REFERIDOR puede recomendar otros servicios y AURA puede tener otros referidores.
+> **10. No exclusividad.** Ninguna parte tiene exclusividad. EL REFERIDOR puede recomendar otros servicios y EDITH puede tener otros referidores.
 >
-> **11. Duración y terminación.** Este acuerdo dura **un (1) año** y se renueva automáticamente por períodos iguales, salvo aviso escrito de cualquiera de las partes con **treinta (30) días** de anticipación. Si el acuerdo termina, AURA seguirá pagando la comisión de los referidos que ya hayan contratado un plan, hasta completar sus doce primeros meses.
+> **11. Duración y terminación.** Este acuerdo dura **un (1) año** y se renueva automáticamente por períodos iguales, salvo aviso escrito de cualquiera de las partes con **treinta (30) días** de anticipación. Si el acuerdo termina, EDITH seguirá pagando la comisión de los referidos que ya hayan contratado un plan, hasta completar sus doce primeros meses.
 >
 > **12. Cambios.** Cualquier cambio en la comisión o en estas condiciones debe constar por escrito y firmado por ambas partes. Los cambios no afectan a los referidos que ya hayan contratado un plan.
 >
 > **13. Ley y controversias.** Se rige por la ley colombiana. Las partes intentarán resolver cualquier diferencia de forma directa durante **treinta (30) días** calendario. Si no llegan a un acuerdo, acudirán a conciliación en un **centro de conciliación de [ciudad]**, antes de cualquier otra vía.
 >
 > **Firmas.**
-> AURA: [nombre], [C.C./NIT], firma, fecha.
+> EDITH: [nombre], [C.C./NIT], firma, fecha.
 > EL REFERIDOR: [nombre], [C.C./NIT], firma, fecha.
 
 **Antes de enviarlo a un contador:**
