@@ -1,5 +1,5 @@
 # 1) Compila el sitio (React + Vite)
-FROM node:20-alpine AS web
+FROM node:22-alpine AS web
 WORKDIR /web
 COPY frontend/package*.json ./
 RUN if [ -f package-lock.json ]; then npm ci; else npm install; fi
@@ -14,7 +14,7 @@ COPY backend/requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 COPY backend/ ./
 # vite.config.ts compila en ../backend/static, que en esta etapa es /backend/static.
-# main.py sirve el sitio desde backend/static, que no se guarda en git.
+# main.py sirve el sitio desde backend/static, que no se guarda en git ni entra al contexto (.dockerignore).
 COPY --from=web /backend/static ./static
 RUN useradd -m app && chown -R app /srv
 USER app
