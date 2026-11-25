@@ -1,5 +1,25 @@
 # EDITH — Registro diario
 
+## 2026-11-25 — `backend/static` deja de guardarse en git
+
+**Rama:** `claude/magical-cerf-238ltt` (PR #26; sin fusión). Con autorización del responsable.
+
+**Motivo.** `backend/static/` es el resultado de `npm run build`. En pocos minutos, tres PR (#23, #24 y este) lo recompilaron por separado y causaron conflictos de fusión en archivos generados. Desde el PR #23, Render compila el sitio en cada despliegue, y el `Dockerfile` también lo compila, así que la copia en git ya no hace falta.
+
+**Cambios.**
+- `git rm -r --cached backend/static`; `backend/static/` añadido a `.gitignore` y a `.dockerignore`. La imagen usa solo el build de su etapa `web`.
+- `backend/main.py`: `StaticFiles(..., check_dir=False)`, para que la API arranque sin el sitio compilado. Sin él, `/` mantiene el mensaje JSON de la API, y `/login`, `/privacidad` y `/app/...` responden 503 con una página que indica ejecutar `npm run build`, en lugar de un error 500.
+- `backend/tests/test_app_startup.py`: ya no depende de que exista `backend/static`. Una prueba usa un sitio compilado de ejemplo en un directorio temporal (rutas del sitio, `/static/assets/...` y cabeceras). Otra prueba el arranque sin compilar (`/health` 200, rutas del sitio 503).
+- `docs/DESPLIEGUE.md` y `render.yaml`: se actualizó la descripción. Volver a `rootDir: backend` ya no es una salida de emergencia válida, porque sin la copia en git el sitio respondería 503. La alternativa es Docker o revertir el PR.
+
+**Verificación.**
+- `python -m pytest -q`: 34 pasadas, también con `backend/static` borrado del disco.
+- Sin compilar, `uvicorn main:app` responde `/health` 200, `/` 200 (JSON), y `/login` y `/app/customers` 503.
+- Con los pasos del build de Render (`npm ci --include=dev && npm run build`), el navegador muestra `/`, `/login`, `/privacidad` y `/app/customers` (con sesión). `git status` no muestra archivos de `backend/static`.
+- `docker build` (copia de prueba con el certificado del proxy del entorno de verificación): la imagen contiene `index-G1M1fVdK.js`, y `/`, `/login`, `/privacidad`, `/app/customers`, `/health` y el JS respondieron 200.
+
+**Pendiente antes de fusionar.** Confirmar en el log de Render que un despliegue con el build del PR #23 mostró `vite build` y `✓ built`. Si Render no tiene Node en el runtime Python, sin la copia en git el sitio no se publicaría.
+
 ## 2026-11-25 — Actualización de dependencias del frontend (avisos de `npm audit`)
 
 **Rama:** `claude/magical-cerf-238ltt` (creada desde `master` en `559e1f5`; sin fusión, lista para revisión)

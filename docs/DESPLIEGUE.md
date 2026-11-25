@@ -138,7 +138,7 @@ Ahora el servicio no tiene `rootDir`, así que los comandos parten de la raíz d
 | Start Command | `cd backend && uvicorn main:app --host 0.0.0.0 --port $PORT --proxy-headers --forwarded-allow-ips="*"` |
 | `NODE_VERSION` | `22.22.0` |
 
-- `npm run build` ejecuta `tsc --noEmit` y `vite build`. Vite escribe en `backend/static` (`frontend/vite.config.ts`) y reemplaza la copia de git. `backend/main.py` sirve el sitio desde esa carpeta.
+- `npm run build` ejecuta `tsc --noEmit` y `vite build`. Vite escribe en `backend/static` (`frontend/vite.config.ts`). Esa carpeta no está en git, así que el sitio solo existe si este paso termina bien. `backend/main.py` sirve el sitio desde ella.
 - `--include=dev` hace falta porque TypeScript y Vite son dependencias de desarrollo.
 - Sin `rootDir`, cualquier fusión en `master` dispara un despliegue, también si solo cambia `frontend/`. Con `rootDir: backend`, Render ignora los cambios de fuera de `backend/`.
 - Si `tsc` encuentra un error de tipos, el build falla y Render mantiene la versión anterior funcionando. Es preferible a publicar un sitio roto.
@@ -148,7 +148,7 @@ Ahora el servicio no tiene `rootDir`, así que los comandos parten de la raíz d
 La documentación de Render no dice de forma explícita que el runtime Python traiga Node. Por eso el build empieza con `node --version && npm --version`:
 
 - Si el log de build muestra las dos versiones y luego `vite build` con `✓ built`, todo está bien.
-- Si falla con `node: command not found`, el despliegue se cancela y producción sigue con la versión anterior. En ese caso, vuelve a poner temporalmente `rootDir: backend` y el `buildCommand` antiguo, y avisa para cambiar a un servicio Docker (el `Dockerfile` ya compila el sitio).
+- Si falla con `node: command not found`, el despliegue se cancela y producción sigue con la versión anterior. Desde que `backend/static` dejó de estar en git, volver a `rootDir: backend` con el `buildCommand` antiguo ya **no** sirve: la API arrancaría, pero el sitio respondería 503. En ese caso, cambia el servicio a Docker (el `Dockerfile` ya compila el sitio) o revierte el PR que quitó `backend/static` de git.
 - `NODE_VERSION` está documentada para servicios Node. Si Render la ignora en Python, usará su Node por defecto (24.x en servicios nuevos), que también compila este sitio. El log muestra cuál usó.
 
 ### Qué debes hacer en Render
@@ -160,13 +160,15 @@ La documentación de Render no dice de forma explícita que el runtime Python tr
 5. Abre `/health`, `/`, `/login` y `/app/customers` en el dominio. Las cuatro deben cargar.
 6. Recuerda que en la **Shell** ahora hay que hacer `cd backend` antes de los scripts.
 
-### Paso final propuesto: dejar de guardar `backend/static` en git
+### `backend/static` ya no se guarda en git
 
-**No está hecho.** Requiere tu autorización explícita, porque hoy esa carpeta es lo que sirve producción. Hazlo solo después de al menos un despliegue correcto con el build nuevo:
+**Hecho el 2026-11-25** con autorización del responsable:
 
-1. Cambiar en `backend/main.py` el montaje de `/static` para que no falle si la carpeta no existe. Hoy `StaticFiles(directory="static")` lanza un error al arrancar sin ella, por ejemplo al correr las pruebas sin compilar.
-2. `git rm -r --cached backend/static` y añadir `backend/static/` a `.gitignore`.
-3. En local, compilar con `cd frontend; npm run build` antes de abrir el sitio desde `uvicorn`. Para desarrollo diario sigue sirviendo `dev.ps1` con Vite.
+1. `backend/main.py` monta `/static` con `check_dir=False`, así que la API arranca aunque el sitio no esté compilado. Sin compilar, `/` responde con el mensaje JSON de la API, y `/login`, `/privacidad` y `/app/...` responden 503 con una página que indica ejecutar `npm run build`.
+2. `backend/static/` está en `.gitignore` y en `.dockerignore`. La imagen Docker usa solo el sitio que compila su etapa `web`.
+3. En local, compila con `cd frontend; npm run build` antes de abrir el sitio desde `uvicorn`. Para el desarrollo diario sigue sirviendo `dev.ps1` con Vite.
+
+**Antes de fusionar**, confirma en el log de Render que el despliegue con el build nuevo (PR #23) ya mostró `vite build` y `✓ built`. Si Render no tiene Node, sin la copia en git el sitio no se publica (ver «Riesgo del primer despliegue»).
 
 ## Lista de verificación antes del primer cliente
 

@@ -5,7 +5,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from fastapi import Depends, FastAPI, Request
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from database import engine, Base, SessionLocal
 from core.migrations import ensure_demo_request_columns
@@ -79,7 +79,9 @@ app.include_router(demo_requests.router)
 app.include_router(imports.router)
 app.include_router(contact_router)
 app.include_router(account_router)
-app.mount("/static", StaticFiles(directory="static"), name="static")
+# backend/static no se guarda en git: lo genera `npm run build` en frontend/ (Render y Docker lo
+# compilan en cada despliegue). check_dir=False deja arrancar la API aunque no se haya compilado.
+app.mount("/static", StaticFiles(directory="static", check_dir=False), name="static")
 
 
 @app.middleware("http")
@@ -96,6 +98,11 @@ async def strip_api_prefix_and_headers(request: Request, call_next):
 
 
 INDEX = Path("static/index.html")
+SITE_NOT_BUILT = (
+    "<!doctype html><meta charset=\"utf-8\"><title>Sitio sin compilar</title>"
+    "<p>El sitio no está compilado. Ejecuta <code>npm ci &amp;&amp; npm run build</code> en "
+    "<code>frontend/</code>; se genera <code>backend/static/</code>.</p>"
+)
 
 
 @app.get("/", include_in_schema=False)
@@ -117,4 +124,6 @@ def health():
 @app.get("/privacidad", include_in_schema=False)
 @app.get("/login", include_in_schema=False)
 def web_app(rest: str = ""):
-    return FileResponse("static/index.html")
+    if INDEX.is_file():
+        return FileResponse(INDEX)
+    return HTMLResponse(SITE_NOT_BUILT, status_code=503)
