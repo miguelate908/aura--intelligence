@@ -28,7 +28,7 @@
   - §1: nueva variante para contadores, con respuestas de seguimiento y el cálculo de la comisión del 20 %.
   - §5: tres objeciones nuevas: "¿por qué pago más que por Siigo/Alegra?", "Siigo/Alegra ya maneja inventario" y "¿se conecta con mi Siigo/Alegra?".
 
-**Recomendación de precios (pendiente de tu aprobación; no se cambió ningún precio).** Recomiendo la opción A: mantener el Esencial en COP 290.000, ofrecerlo después del Piloto y del Profesional, y presentarlo como servicio mensual de datos ordenados que complementa el software contable.
+**Recomendación de precios: opción A, aprobada por ti el 25-11-2026; no cambia ningún precio.** La opción A consiste en mantener el Esencial en COP 290.000, ofrecerlo después del Piloto y del Profesional, y presentarlo como servicio mensual de datos ordenados que complementa el software contable.
 
 - Hoy no hay datos de ventas que justifiquen bajarlo.
 - El descuento de fundador congelaría de por vida un precio más bajo.
@@ -36,7 +36,7 @@
 
 **Pendientes para ti.**
 
-1. Decidir entre A, B o C.
+1. ~~Decidir entre A, B o C.~~ Hecho: opción A aprobada el 25-11-2026.
 2. Definir por escrito si el Piloto cuenta para la comisión de referidos y en qué plazo se paga.
 3. Revisar las cifras en las webs de Siigo y Alegra antes de citarlas a un prospecto.
 4. La rama `claude/laughing-curie-leps3u` cambia la marca a "EDITH Intelligence". Este cambio conserva "AURA", igual que `master`. Si fusionas ambas, habrá que unificar el nombre en las secciones nuevas.

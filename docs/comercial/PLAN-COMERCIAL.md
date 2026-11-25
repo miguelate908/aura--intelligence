@@ -78,9 +78,9 @@ Se vende **por empresa**, no por usuario (aún no hay multiusuario).
 - **Descuento de fundador:** los 5 primeros clientes conservan su precio de por vida a cambio de un testimonio y permiso para usar su logo. No des otros descuentos.
 - **Por qué estos precios:** el piloto cubre ~12–15 horas de tu trabajo; el Plan Profesional equivale a menos que medio salario mínimo y reemplaza horas de un auxiliar consolidando archivos. Sube precios después del cliente 10.
 
-### 4.1 Referencia de mercado y propuesta sobre el Plan Esencial (pendiente de tu aprobación)
+### 4.1 Referencia de mercado y decisión sobre el Plan Esencial
 
-> **Los precios de la tabla anterior no cambian con este documento.** Esta sección es una propuesta para que decidas.
+> **Decisión (25-11-2026): opción A aprobada.** El Plan Esencial se mantiene en COP 290.000/mes; los precios de la tabla anterior no cambian.
 
 **Precios públicos de referencia (consultados el 25-11-2026; fuentes de terceros, no verificadas con los proveedores):**
 
@@ -106,14 +106,14 @@ Ninguna fuente indica si los precios incluyen IVA. Las páginas oficiales de pre
 | **B. Bajar el Esencial (p. ej. a ≈ COP 190.000)** | Quita la objeción de entrada. | Te ubica como "otro software contable" y compites por precio con empresas grandes. Los 5 clientes fundadores conservan su precio de por vida (§4): bajar antes de vender fija para siempre el precio más bajo. Necesitarías más clientes para el mismo MRR, con el mismo tiempo tuyo de soporte. |
 | **C. Añadir un plan inferior sin servicio** (autoservicio con importación CSV, sin recarga asistida) | Da una puerta barata si la objeción se confirma. | Más planes que explicar y más soporte sin cobro; sin varios usuarios ni límites por plan en el código, aún no es un producto de autoservicio (§1). |
 
-**Recomendación: opción A, con una regla para revisar.**
+**Opción aprobada: A, con una regla para revisar.**
 
 1. **Mantener el precio de lista** del Plan Esencial en COP 290.000 y no ofrecerlo como primera opción: vender primero el **Piloto** y, al cierre, el **Profesional**; el Esencial queda como alternativa si el presupuesto no alcanza.
 2. **Reempaquetar cómo se presenta** (texto, no precio): describirlo como *"servicio mensual de datos ordenados: tu información operativa actualizada cada mes por nosotros, como complemento de tu Siigo o Alegra"*, y siempre junto al cálculo de horas ahorradas (objeción en `KIT-VENTAS.md` §5).
 3. **Regla de revisión:** registra en el CRM el motivo de cada oportunidad perdida (§7). Si tras **10 demos** al menos **3** se pierden por precio frente a Siigo o Alegra, evalúa la opción C (no la B) con esos datos. Ninguna de las dos se aplica sin tu aprobación.
 4. **Sin descuentos adicionales** fuera del de fundador y el pago anual, como ya dice este plan.
 
-**Decisión pendiente (tuya):** aprobar A, elegir B o C, o pedir otra variante. Hasta entonces se mantienen los precios de la tabla del §4.
+**Decisión:** opción A aprobada el 25-11-2026. Cualquier cambio de precio posterior (incluida la opción C si se cumple la regla del punto 3) requiere una nueva aprobación.
 
 ---
 
