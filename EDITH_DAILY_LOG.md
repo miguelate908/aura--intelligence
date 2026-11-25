@@ -19,6 +19,11 @@
 Ningún cliente ve estos identificadores.
 
 **Plantilla `docs/comercial/plantillas/registro-oportunidades.xlsx`.** Se actualizó después de que se fusionara el PR #30, que modificaba el mismo archivo. Se editaron directamente los XML internos, sin regenerar el libro. Cambian el título de «Leyenda», el texto sobre referidos de contadores y el autor de los comentarios de cuatro celdas, que pasa de «AURA» a «EDITH». Al comparar con openpyxl, solo difieren esas 2 celdas y esos autores. Las 2.325 fórmulas, las 8 validaciones y el formato condicional siguen iguales. LibreOffice recalculó el libro sin errores.
+## 2026-11-25 — Despliegue en Render con Vite 6 y React Router 7 (PR #26)
+
+El PR #26 se fusionó en `master` (`05bf16f`): `vite ^6.4.6`, `@vitejs/plugin-react ^5.2.0`, `react-router-dom ^7.18.7`, `node:22-alpine` en el `Dockerfile` y `backend/static` en `.dockerignore`. Con esto, `npm audit` en `frontend/` reporta 0 vulnerabilidades. La rama `claude/magical-cerf-238ltt` se borró después de la fusión.
+
+El responsable confirmó que el despliegue automático en Render de esa fusión salió bien. Queda cerrado el pendiente de la entrada «Actualización de dependencias del frontend»: el build de Render con Node 22.22.0 compila el sitio con Vite 6 y producción lo sirve. La confirmación es del responsable; desde esta sesión no hay acceso a Render.
 
 ## 2026-11-25 — `pytest` funciona sin `python -m`
 
