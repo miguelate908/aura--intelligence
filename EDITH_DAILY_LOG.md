@@ -1,5 +1,38 @@
 # EDITH — Registro diario
 
+## 2026-11-25 — Plantilla del registro de oportunidades
+
+**Rama:** `claude/determined-hamilton-ljygsk`, recreada desde `master` (`09ed1ce`). No está fusionada.
+
+**Archivo nuevo:** `docs/comercial/plantillas/registro-oportunidades.xlsx`. Es la plantilla del `KIT-VENTAS.md` §7 y está vacía, salvo una fila de ejemplo ficticia marcada «EJEMPLO» que hay que borrar.
+
+Contiene cinco hojas:
+
+- **Leyenda:** cómo llenarla y avisos de datos personales.
+- **Oportunidades:** listas desplegables para estado, canal, tamaño, software contable, plan y motivo de pérdida. Calcula el valor estimado del primer año, la comisión del 20 %, el vencimiento del registro del referido a 90 días y alertas.
+- **Resumen:** embudo frente a las metas del `PLAN-COMERCIAL.md` §8 y regla de las 10 demos del §4.1.
+- **Referidores:** contadores como prospectos de alianza, con sus referidos y su comisión.
+- **Listas:** precios y parámetros, con su fuente en el plan comercial.
+
+**Reglas que aplica:**
+
+- El Piloto no genera comisión.
+- La fila de ejemplo no cuenta en el resumen.
+- «Cliente» se reserva para quien ya pagó.
+
+**Verificación:**
+
+- LibreOffice recalculó las 2.324 fórmulas sin errores.
+- En una copia aparte, que luego se borró, se cargaron cuatro filas de prueba. Los resultados fueron los esperados:
+  - Esencial anual: valor de COP 2.900.000 y comisión de COP 580.000.
+  - Piloto: comisión de COP 0.
+  - Alertas de «Próximo paso vencido» y «Falta motivo de pérdida».
+  - Regla de las 10 demos: «Faltan 8 demos».
+
+**Pendiente de tu parte:** las solicitudes de demo se borran a los 7 días según la política de privacidad. Si las copias a esta hoja las conservas más tiempo, primero actualiza la política o define un plazo para borrar los registros inactivos. No subas al repositorio la copia con datos reales.
+
+**Clientes confirmados:** ninguno. **Ingresos registrados:** COP 0.
+
 ## 2026-11-25 — Docker verificado y `backend/static` recompilado
 
 **Rama:** `claude/admiring-wright-nba927` (sin fusión). PR #24.

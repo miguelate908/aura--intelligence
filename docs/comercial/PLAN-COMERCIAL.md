@@ -158,7 +158,7 @@ Contacto → Conversación de descubrimiento (20 min) → Demo con datos de ejem
 - **Piloto:** pago 100 % por adelantado. Carga sus datos con la importación CSV del panel. Agenda la reunión de cierre desde el primer día.
 - **Conversión:** en la reunión de cierre presenta el informe de hallazgos y ofrece el plan anual con el piloto acreditado.
 
-**Seguimiento de oportunidades:** las solicitudes de demo se borran a los 7 días por la política de privacidad. Copia cada solicitud calificada el mismo día a una hoja o CRM gratuito (HubSpot Free o una hoja de cálculo) con estado: *nuevo → contactado → demo → propuesta → piloto → cliente / perdido*. Si quieres retenerlas más tiempo, actualiza antes la política de privacidad.
+**Seguimiento de oportunidades:** las solicitudes de demo se borran a los 7 días por la política de privacidad. Copia cada solicitud calificada el mismo día a una hoja o CRM gratuito (HubSpot Free o la plantilla `plantillas/registro-oportunidades.xlsx`, ver `KIT-VENTAS.md` §7) con estado: *nuevo → contactado → demo → propuesta → piloto → cliente / perdido*. Si quieres retenerlas más tiempo, actualiza antes la política de privacidad.
 
 ---
 
