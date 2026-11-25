@@ -1,5 +1,21 @@
 # EDITH — Registro diario
 
+## 2026-11-25 — Verificación externa de producción tras el PR #24
+
+**Alcance.** Comprobación desde fuera de `https://www.edith-intelligence.com`, hecha entre las 21:30 y las 21:32 UTC, sin acceso a Render. El log del despliegue no se revisó, porque no había clave de API ni conector de Render en la sesión. `https://edith-intelligence.com` redirige a `www`.
+
+| Comprobación | Resultado |
+|---|---|
+| `GET /` | 200; `index.html` carga `assets/index-xmmbltQo.js` y `assets/index-D6PzXnmm.css` |
+| `GET /health` | 200, `{"status":"ok"}` |
+| `GET /login`, `GET /auth/config` | 200 |
+| `GET /static/assets/index-xmmbltQo.js` | 200; SHA-256 `d4122cef07f2b6fd247379c92b26e589b3feaed4ac49f8fbdac7d88113db968d`, igual al compilado en el PR #24 con Node 22 y en la etapa `web` de Docker |
+| `GET /static/assets/index-CezIjX0-.js` (copia antigua compilada en Windows) | 404 |
+
+**Conclusión.** Producción sirve el bundle compilado en Linux a partir del `frontend/src` actual, y el JavaScript antiguo ya no se sirve. Con el `buildCommand` de `render.yaml`, un fallo de compilación (por ejemplo, la falta de Node) habría mantenido la versión anterior. Por tanto, al menos un despliegue con la compilación nueva terminó bien, lo que coincide con lo que confirmó el usuario en la entrada anterior.
+
+**No verificado.** Qué commit está activo (`09ed1ce`, del PR #24, o `d76d43a`, del PR #27): todos producen el mismo bundle. Tampoco se revisaron los avisos ni la duración del build. Para comprobarlo, abre en Render el servicio `aura-intelligence`, ve a **Events** y entra en el último despliegue. Revisa el commit marcado como *Live* y, al inicio del log, las versiones de `node` y `npm`.
+
 ## 2026-11-25 — `backend/static` sale de git
 
 El usuario confirmó que el despliegue en Render con el build nuevo funcionó y autorizó quitar `backend/static` del repositorio.
