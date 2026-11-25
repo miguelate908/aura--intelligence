@@ -1,5 +1,31 @@
 # EDITH — Registro diario
 
+## 2026-11-25 — Render compila el frontend en cada despliegue
+
+**Riesgo.** `render.yaml` desplegaba con `rootDir: backend` y solo `pip install`. Producción servía el `backend/static` guardado en git, así que un cambio en `frontend/src` sin `npm run build` ni commit de `backend/static` dejaba el sitio desactualizado sin aviso.
+
+**Cambio.**
+- `render.yaml`: sin `rootDir`. El build ejecuta `npm ci --include=dev && npm run build` en `frontend/` y luego `pip install -r backend/requirements.txt`. El arranque hace `cd backend && uvicorn ...`. Se fija `NODE_VERSION=22.22.0`. El build imprime primero `node --version` y `npm --version` para detectar enseguida si falta Node.
+- `Dockerfile`: copiaba `/web/dist`, que no existe porque Vite compila en `../backend/static` (en esa etapa, `/backend/static`). Ahora copia esa carpeta a `backend/static`, que es de donde `backend/main.py` sirve el sitio. No se probó con Docker en esta sesión.
+- `docs/DESPLIEGUE.md`: nueva sección 6 con el cambio, el riesgo del primer despliegue y los pasos en Render. La Shell de Render ahora abre en la raíz del repositorio, así que hay que hacer `cd backend` antes de los scripts.
+- `README-ENTORNO.md`: corregida la carpeta de salida de `npm run build`.
+
+**Verificación local** (copia limpia del repositorio, Python 3.11, Node 22.23.5):
+
+| Verificación | Resultado |
+|---|---|
+| `buildCommand` de `render.yaml`, ejecutado desde la raíz | `tsc` y `vite build` correctos; dependencias de Python instaladas |
+| `cd backend && python -m pytest -q` | 33 passed |
+| `startCommand` de `render.yaml` con SQLite temporal | `/`, `/login`, `/app/customers` → 200 HTML; `/health` → 200; JS y CSS de `/static/assets/` → 200 |
+
+`pytest -q` a secas falló en la recogida (`No module named 'database'`) porque el ejecutable de pytest del entorno no añade `backend/` a la ruta de importación. Con `python -m pytest` pasa; no es un efecto de este cambio.
+
+El bundle compilado aquí tiene otro hash que el de `master`, pero la diferencia son solo nombres de variables del minificador: `backend/static` de `master` corresponde al `frontend/src` actual.
+
+**Pendiente, con autorización del usuario.**
+- Aplicar el cambio en Render y revisar el primer log de build (ver `docs/DESPLIEGUE.md`, sección 6). La documentación de Render no confirma de forma explícita que el runtime Python traiga Node; si falta, el build falla y Render mantiene la versión anterior.
+- Después de un despliegue correcto, dejar de guardar `backend/static` en git. Antes hay que hacer que `backend/main.py` arranque aunque falte la carpeta. **No se borró nada.**
+
 ## 2026-11-25 — Precisión de precios en CSV y registro público en Docker
 
 **Precios con tres decimales.** Si un producto tiene un precio numérico de `12.345`, el panel lo exporta como `12,345`. Al reimportar ese texto, el panel lo interpreta como `12345`. La API aplica la misma convención a los precios enviados como texto. El caso es ambiguo porque un único separador seguido de tres cifras también representa miles. Se comprobó que el importador convierte tanto `12,345` como `12.345` en `12345`, mientras que `1.250,75` se convierte en `1250.75`. Si se admiten precios con tres decimales, queda por definir un formato que conserve ese valor en la exportación y posterior importación. [Informe del 23 de noviembre](https://github.com/miguelate908/aura--intelligence/blob/5ba973fa28a0e14f4391b1107e3f431a19d44b20/docs/supervision/2026-11-23.md)
