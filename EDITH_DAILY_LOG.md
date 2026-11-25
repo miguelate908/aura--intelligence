@@ -10,6 +10,31 @@ Tres ramas sin fusionar tenían el código ya en `master`, pero guardaban inform
 
 `docs/bitacora/README.md` indica la rama y el commit de origen de cada uno. Las ramas se borran después de fusionar este cambio.
 
+## 2026-11-25 — Correo de autorización para solicitudes anteriores
+
+**Rama:** `claude/determined-hamilton-ljygsk`, recreada desde `master`. No está fusionada. No se envió ningún correo.
+
+**Cambio:** `docs/comercial/KIT-VENTAS.md` §9 (nuevo) incluye el correo para quienes enviaron el formulario de demo antes de que se actualizara la política de privacidad. Esas personas aceptaron la política anterior, que preveía el borrado a los 7 días.
+
+El correo hace dos cosas:
+
+- Responde a su solicitud de demostración.
+- Pide una autorización explícita («Sí, autorizo») para conservar sus datos en el registro de seguimiento comercial hasta 12 meses después del último contacto.
+
+**Reglas del procedimiento:**
+
+- Se envía un solo correo, sin insistir.
+- Si la persona no responde, sus datos no se copian al registro.
+- Cada autorización se anota en «Notas» del registro y su respuesta se guarda como prueba (Ley 1581).
+- El correo de notificación se usa solo para atender la solicitud original.
+
+**Pendiente de tu parte:**
+
+- Completar los corchetes.
+- Comprobar que la política nueva ya esté publicada.
+- Hacer revisar el correo junto con la política.
+- Enviarlo tú: Claude no envía correos.
+
 ## 2026-11-25 — Marca única: EDITH Intelligence
 
 **Decisión del usuario (25-11-2026):** la marca comercial es **EDITH Intelligence**. El sitio, el panel y el dominio (`www.edith-intelligence.com`) ya la usaban. Faltaban los documentos comerciales.
