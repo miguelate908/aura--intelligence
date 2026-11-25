@@ -138,7 +138,7 @@ Ahora el servicio no tiene `rootDir`, así que los comandos parten de la raíz d
 | Start Command | `cd backend && uvicorn main:app --host 0.0.0.0 --port $PORT --proxy-headers --forwarded-allow-ips="*"` |
 | `NODE_VERSION` | `22.22.0` |
 
-- `npm run build` ejecuta `tsc --noEmit` y `vite build`. Vite escribe en `backend/static` (`frontend/vite.config.ts`) y reemplaza la copia de git. `backend/main.py` sirve el sitio desde esa carpeta.
+- `npm run build` ejecuta `tsc --noEmit` y `vite build`. Vite escribe en `backend/static` (`frontend/vite.config.ts`) y `backend/main.py` sirve el sitio desde esa carpeta. Desde el 2026-11-25 la carpeta no se guarda en git (ver más abajo).
 - `--include=dev` hace falta porque TypeScript y Vite son dependencias de desarrollo.
 - Sin `rootDir`, cualquier fusión en `master` dispara un despliegue, también si solo cambia `frontend/`. Con `rootDir: backend`, Render ignora los cambios de fuera de `backend/`.
 - Si `tsc` encuentra un error de tipos, el build falla y Render mantiene la versión anterior funcionando. Es preferible a publicar un sitio roto.
@@ -160,13 +160,14 @@ La documentación de Render no dice de forma explícita que el runtime Python tr
 5. Abre `/health`, `/`, `/login` y `/app/customers` en el dominio. Las cuatro deben cargar.
 6. Recuerda que en la **Shell** ahora hay que hacer `cd backend` antes de los scripts.
 
-### Paso final propuesto: dejar de guardar `backend/static` en git
+### `backend/static` ya no se guarda en git
 
-**No está hecho.** Requiere tu autorización explícita, porque hoy esa carpeta es lo que sirve producción. Hazlo solo después de al menos un despliegue correcto con el build nuevo:
+Se quitó del repositorio el 2026-11-25, después de comprobar un despliegue correcto con el build nuevo. La carpeta está en `.gitignore`.
 
-1. Cambiar en `backend/main.py` el montaje de `/static` para que no falle si la carpeta no existe. Hoy `StaticFiles(directory="static")` lanza un error al arrancar sin ella, por ejemplo al correr las pruebas sin compilar.
-2. `git rm -r --cached backend/static` y añadir `backend/static/` a `.gitignore`.
-3. En local, compilar con `cd frontend; npm run build` antes de abrir el sitio desde `uvicorn`. Para desarrollo diario sigue sirviendo `dev.ps1` con Vite.
+- Render y el `Dockerfile` la generan en cada despliegue. Si el build del frontend falla, no se publica nada y sigue la versión anterior.
+- `backend/main.py` arranca aunque la carpeta no exista. La API funciona igual, `/` responde con el mensaje de la API y `/login`, `/privacidad` y `/app/...` devuelven 404 con el aviso `Sitio no compilado`.
+- En local, para ver el sitio desde `uvicorn` en el puerto 8000, compila antes con `cd frontend; npm run build`. Para el desarrollo diario sigue usando `dev.ps1`, que abre Vite en el puerto 5173.
+- Para volver atrás, basta revertir el commit que quitó la carpeta: vuelve a quedar en git y `.gitignore` deja de ignorarla.
 
 ## Lista de verificación antes del primer cliente
 
