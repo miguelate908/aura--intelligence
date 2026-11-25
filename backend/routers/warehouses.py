@@ -3,10 +3,11 @@ from sqlalchemy.orm import Session
 
 from database import get_db
 from models import Company, Warehouse
-from schemas import WarehouseCreate
+from schemas import WarehouseCreate, WarehouseUpdate
 
 from services.relationships import create_relationship
 from services.events import create_event
+from services.records import delete_record, update_record
 from core.security import get_current_user, require_company_access
 from models import User
 
@@ -77,4 +78,23 @@ def get_warehouses(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    return db.query(Warehouse).filter(Warehouse.company_id == current_user.company_id).all()
+    return db.query(Warehouse).filter(Warehouse.company_id == current_user.company_id).order_by(Warehouse.id).all()
+
+
+@router.put("/{record_id}")
+def update_warehouse(
+    record_id: int,
+    payload: WarehouseUpdate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    return update_record(db, Warehouse, record_id, current_user.company_id, payload.model_dump(), "warehouse", "Bodega no encontrada")
+
+
+@router.delete("/{record_id}", status_code=204)
+def delete_warehouse(
+    record_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    delete_record(db, Warehouse, record_id, current_user.company_id, "warehouse", "Bodega no encontrada")

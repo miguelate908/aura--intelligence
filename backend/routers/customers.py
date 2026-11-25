@@ -3,10 +3,11 @@ from sqlalchemy.orm import Session
 
 from database import get_db
 from models import Company, Customer
-from schemas import CustomerCreate
+from schemas import CustomerCreate, CustomerUpdate
 
 from services.relationships import create_relationship
 from services.events import create_event
+from services.records import delete_record, update_record
 from core.security import get_current_user, require_company_access
 from models import User
 
@@ -78,7 +79,7 @@ def get_customers(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    return db.query(Customer).filter(Customer.company_id == current_user.company_id).all()
+    return db.query(Customer).filter(Customer.company_id == current_user.company_id).order_by(Customer.id).all()
 
 
 @router.get("/{customer_id}")
@@ -100,3 +101,22 @@ def get_customer(
         )
 
     return customer
+
+
+@router.put("/{record_id}")
+def update_customer(
+    record_id: int,
+    payload: CustomerUpdate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    return update_record(db, Customer, record_id, current_user.company_id, payload.model_dump(), "customer", "Cliente no encontrado")
+
+
+@router.delete("/{record_id}", status_code=204)
+def delete_customer(
+    record_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    delete_record(db, Customer, record_id, current_user.company_id, "customer", "Cliente no encontrado")

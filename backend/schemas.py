@@ -27,6 +27,23 @@ class WarehouseCreate(BaseModel):
     location: Optional[str] = Field(default=None, max_length=200)
 
 
+class CustomerUpdate(BaseModel):
+    name: str = Field(min_length=1, max_length=150)
+    email: Optional[str] = Field(default=None, max_length=150, pattern=r"^[^\s@]+@[^\s@]+\.[^\s@]+$")
+    phone: Optional[str] = Field(default=None, max_length=50)
+
+
+class ProductUpdate(BaseModel):
+    sku: str = Field(min_length=1, max_length=100)
+    name: str = Field(min_length=1, max_length=150)
+    price: float = Field(default=0, ge=0)
+
+
+class WarehouseUpdate(BaseModel):
+    name: str = Field(min_length=1, max_length=150)
+    location: Optional[str] = Field(default=None, max_length=200)
+
+
 class InventoryCreate(BaseModel):
     product_id: int
     warehouse_id: int

@@ -11,6 +11,11 @@
 .panel button:disabled{opacity:.55;cursor:default}
 .panel button.ghost{background:transparent;color:var(--tx);border:1px solid var(--line)}
 .panel button.ghost:hover{border-color:var(--cy)}
+.panel button.ghost.danger{color:var(--danger-text)}
+.panel button.ghost.danger:hover{border-color:var(--danger)}
+.panel td.actions{display:flex;gap:6px}
+.panel td.actions button{padding:5px 10px;font-size:.85em}
+.panel td input{min-width:110px;padding:5px 8px}
 .panel input,.panel select,.panel textarea{width:100%;background:var(--bg);border:1px solid var(--line);border-radius:9px;padding:10px;color:var(--tx);font:inherit}
 .panel label{display:block;font-size:13px;color:var(--mu);margin:10px 0 4px}
 .panel .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:16px}
