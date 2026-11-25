@@ -22,10 +22,10 @@ jobs:
       JWT_SECRET_KEY: "public-test-only-key-for-in-memory-auth-tests"
       REGISTRATION_ENABLED: "true"
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7.0.1
         with:
           persist-credentials: false
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7.1.0
         with:
           python-version: "3.11"
       - name: Install test dependencies
