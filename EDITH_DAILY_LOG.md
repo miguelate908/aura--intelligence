@@ -1,5 +1,19 @@
 # EDITH — Registro diario
 
+## 2026-11-25 — Docker verificado y `backend/static` recompilado
+
+**Rama:** `claude/admiring-wright-nba927` (sin fusión). PR #24.
+
+**Contexto.** En `master`, el `Dockerfile` copiaba `COPY --from=web /web/dist /srv/frontend/dist`. Esa ruta no existe, porque Vite compila en `../backend/static`, que en la etapa `web` es `/backend/static`. Sobre `559e1f5`, `docker build` fallaba en ese paso con `"/web/dist": not found`. El PR #23 ya corrigió esa línea (`COPY --from=web /backend/static ./static`), pero no se probó con Docker. Este PR se quedó con esa versión y añade la verificación.
+
+**Verificación con Docker** (sobre el `Dockerfile` de `master`; para que el contenedor de pruebas pudiera salir a npm y PyPI por el proxy de red, se usó una copia temporal con el certificado del proxy):
+- `docker build` termina sin errores.
+- Dentro de la imagen, `static/index.html` apunta a `assets/index-xmmbltQo.js`, el archivo compilado en la etapa `web`.
+- Con el contenedor en marcha, `GET /` y `GET /static/assets/index-xmmbltQo.js` devuelven HTTP 200.
+- `docker-compose.prod.yml` (`build: .`), `docker-compose.yml/docker-compose.yml` (solo Postgres) y `docs/DESPLIEGUE.md` no mencionan `/srv/frontend/dist`.
+
+**Recompilación de `backend/static`.** Se recompiló el frontend con `npm ci && npm run build` (incluye `tsc --noEmit`) y se versionó el resultado: `index-CezIjX0-.js` pasa a ser `index-xmmbltQo.js`. Es el mismo archivo que generan Docker (Node 20) y Node 22, así que el resultado es reproducible. Como ya se indicó en la entrada anterior, la copia previa no estaba desactualizada. El único texto distinto son los dos logotipos SVG incrustados, que en la copia anterior tenían saltos de línea CRLF porque se compiló en Windows. El resto son nombres del minificador. `index.html` pasa también de CRLF a LF. El CSS no cambia. El comportamiento del sitio no varía.
+
 ## 2026-11-25 — Render compila el frontend en cada despliegue
 
 **Riesgo.** `render.yaml` desplegaba con `rootDir: backend` y solo `pip install`. Producción servía el `backend/static` guardado en git, así que un cambio en `frontend/src` sin `npm run build` ni commit de `backend/static` dejaba el sitio desactualizado sin aviso.
