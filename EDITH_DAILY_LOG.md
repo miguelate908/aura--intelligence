@@ -1,5 +1,29 @@
 # EDITH — Registro diario
 
+## 2026-11-25 — Limpieza de python-jose en el `.venv` local y en `backend/.runtime-deps`
+
+Seguimiento de CORE-001 en la copia de trabajo principal. Estos cambios son locales y no pasan por git: `.venv` y `backend/.runtime-deps` están ignorados.
+
+**`.venv` principal.** python-jose y ecdsa ya no estaban instalados. Quedaban `rsa` 4.9.1, `pyasn1` 0.6.5 y `six` 1.17.0, que solo había instalado python-jose: ningún paquete los requería y ningún archivo del backend los importaba. Se desinstalaron. Se guardó antes un `pip freeze` por si hacía falta reinstalar algo.
+
+**`backend/.runtime-deps`** (paquetes copiados fuera del `.venv`; ningún script la usa):
+- Se eliminó `jose/` (30 archivos de python-jose 3.5.0).
+- Se eliminaron los restos de la misma instalación: `ecdsa` 0.19.2 (PYSEC-2026-1325), `python_jose-3.5.0.dist-info`, `rsa`, `pyasn1`, `six.py`, sus `.dist-info` y los 6 ejecutables `bin/pyrsa-*.exe`. Antes se comprobó que ningún otro paquete de la carpeta los importaba.
+- `pip-audit --path` encontró `opentelemetry-api` 1.45.1 (CVE-2026-126360). FastAPI 0.162.0 lo requiere de forma obligatoria, así que se actualizó a 1.45.2 con `--no-deps`; su única dependencia, `typing-extensions`, ya estaba. Se quitó el `.dist-info` de 1.45.1 que pip deja al instalar con `--target`.
+- Se quitó `sqlalchemy-2.1.6.dist-info`. El código instalado es 2.0.51, y ninguno de los archivos exclusivos de 2.1.6 existía en disco: eran metadatos sobrantes que hacían creer que había SQLAlchemy 2.1.6.
+
+**Verificación**
+
+| Comprobación | Resultado |
+|---|---|
+| `pip-audit` en el `.venv` principal | No known vulnerabilities found |
+| `pip check` en el `.venv` principal | No broken requirements found |
+| `pip-audit --path backend/.runtime-deps` | No known vulnerabilities found |
+| `pytest` del backend con el `.venv` principal | 5 passed |
+| jose, ecdsa, rsa, pyasn1, six en el `.venv` | no se encuentran |
+
+**Pendiente.** La FastAPI de `backend/.runtime-deps` no se pudo probar. Sus binarios, como `_pydantic_core.cp312-win_amd64.pyd`, son para Python 3.12 y el equipo solo tiene 3.11. Al importarla falla `pydantic_core`, un problema que ya existía. Hay que decidir si se regenera la carpeta para 3.11 o se elimina.
+
 ## 2026-11-25 — Marca única: EDITH Intelligence
 
 **Decisión del usuario (25-11-2026):** la marca comercial es **EDITH Intelligence**. El sitio, el panel y el dominio (`www.edith-intelligence.com`) ya la usaban. Faltaban los documentos comerciales.
@@ -336,4 +360,5 @@ sin token 401, contraseña incorrecta 401.
 - Los tokens emitidos con python-jose siguen siendo válidos con PyJWT (mismo formato, HS256, `sub` como cadena, `exp`).
 - El `.venv` local de la copia principal aún tiene python-jose 3.5.0 y ecdsa 0.19.2, porque `master` todavía los usa.
   Tras fusionar el PR: `pip uninstall python-jose ecdsa rsa pyasn1 six` y `pip install -r backend/requirements.txt`.
+  Hecho el 2026-11-25: ver «Limpieza de python-jose en el `.venv` local y en `backend/.runtime-deps`».
 - No se avanzó a CORE-002.
