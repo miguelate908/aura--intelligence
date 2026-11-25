@@ -41,7 +41,7 @@ cd backend
 Luego crea el usuario:
 
 ```bash
-python scripts/create_client.py --company "AURA Intelligence" --name "Tu nombre" --email tu-correo@dominio.com
+python scripts/create_client.py --company "EDITH Intelligence" --name "Tu nombre" --email tu-correo@dominio.com
 ```
 
 Usa para tu usuario el mismo correo que pusiste en `ADMIN_EMAILS`, así ves el menú **Solicitudes**. El script imprime una contraseña temporal una sola vez; al entrar, cámbiala en **Cuenta**. Para cada cliente nuevo, repite el comando con sus datos y envíale la contraseña por un canal distinto al del correo de bienvenida (por ejemplo, WhatsApp).

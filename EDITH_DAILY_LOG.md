@@ -1,5 +1,25 @@
 # EDITH — Registro diario
 
+## 2026-11-25 — Marca única: EDITH Intelligence
+
+**Decisión del usuario (25-11-2026):** la marca comercial es **EDITH Intelligence**. El sitio, el panel y el dominio (`www.edith-intelligence.com`) ya la usaban. Faltaban los documentos comerciales.
+
+**Cambio.** Se rehízo sobre el `master` actual el commit `0be0a9a` de la rama `claude/laughing-curie-leps3u`, que estaba construida sobre un `master` antiguo.
+- `docs/comercial/KIT-VENTAS.md` (36 menciones) y `PLAN-COMERCIAL.md` (14): «AURA» pasa a «EDITH», también en los mensajes, la propuesta de piloto y el borrador del acuerdo de referidos. Incluye las secciones añadidas después de esa rama: posicionamiento frente a Siigo y Alegra, y acuerdo de referidos.
+- `docs/DESPLIEGUE.md`: el ejemplo `create_client.py --company` usa «EDITH Intelligence».
+- `KIT-VENTAS.md`: la respuesta a la objeción «¿Y si después me quiero ir?» ya no dice que falta la exportación. **Exportar CSV** existe en el panel desde el PR #21.
+
+**Se mantienen a propósito** los identificadores técnicos con «aura»:
+- servicio `aura-intelligence` y base `aura-db` en `render.yaml`: si se renombran, Render crea recursos nuevos y vacíos;
+- nombre del repositorio;
+- clave `aura_token` del navegador: si se cambia, se cierra la sesión de todos los usuarios;
+- logger `aura.contact`;
+- correo de ejemplo `demo@aura.local`.
+
+Ningún cliente ve estos identificadores.
+
+**Plantilla `docs/comercial/plantillas/registro-oportunidades.xlsx`.** Se actualizó después de que se fusionara el PR #30, que modificaba el mismo archivo. Se editaron directamente los XML internos, sin regenerar el libro. Cambian el título de «Leyenda», el texto sobre referidos de contadores y el autor de los comentarios de cuatro celdas, que pasa de «AURA» a «EDITH». Al comparar con openpyxl, solo difieren esas 2 celdas y esos autores. Las 2.325 fórmulas, las 8 validaciones y el formato condicional siguen iguales. LibreOffice recalculó el libro sin errores.
+
 ## 2026-11-25 — `pytest` funciona sin `python -m`
 
 `pytest -q` desde `backend/` fallaba al recoger las pruebas (`No module named 'database'`), porque el ejecutable `pytest` no añade la carpeta actual a la ruta de importación. Con `python -m pytest` sí funcionaba, y así lo ejecuta el CI.

@@ -1,4 +1,4 @@
-# AURA Intelligence — Plan de comercialización (90 días)
+# EDITH Intelligence — Plan de comercialización (90 días)
 
 Fecha: 16 de noviembre de 2026 · Supuesto de mercado: Colombia, precios en COP (referencia ≈ 4.000 COP/USD). Si vendes en otro país, ajusta la moneda y el apartado legal; la lógica no cambia.
 
@@ -20,7 +20,7 @@ Fecha: 16 de noviembre de 2026 · Supuesto de mercado: Colombia, precios en COP 
 | IA generativa, oportunidades y riesgos | En desarrollo | Solo como hoja de ruta |
 | Cobro automático / suscripciones en la plataforma | No existe | No hace falta en los primeros 10 clientes |
 
-**Conclusión.** AURA aún no es un SaaS de autoservicio: nadie va a registrarse solo, cargar datos a mano y pagar con tarjeta. Sí es suficiente para una **oferta híbrida servicio + software**: tú cargas y organizas los datos del cliente, AURA es la herramienta donde los ve, y cobras por el resultado (orden y visibilidad), no por las funciones. Los ingresos de servicio financian el producto, y cada piloto te dice qué construir a continuación.
+**Conclusión.** EDITH aún no es un SaaS de autoservicio: nadie va a registrarse solo, cargar datos a mano y pagar con tarjeta. Sí es suficiente para una **oferta híbrida servicio + software**: tú cargas y organizas los datos del cliente, EDITH es la herramienta donde los ve, y cobras por el resultado (orden y visibilidad), no por las funciones. Los ingresos de servicio financian el producto, y cada piloto te dice qué construir a continuación.
 
 **Regla operativa desde hoy:** no se construye ninguna funcionalidad nueva que no haya sido pedida por un cliente que pagó o que firmó un piloto.
 
@@ -32,10 +32,10 @@ Fecha: 16 de noviembre de 2026 · Supuesto de mercado: Colombia, precios en COP 
 
 - **Quién decide:** gerente general o dueño; **quién usa:** gerente de operaciones, logística o comercial.
 - **Señales de dolor:** "tenemos todo en Excel", "cada bodega lleva su archivo", "no sé qué clientes compran qué", "dependo de una persona para saber dónde está la información".
-- **Por qué te compran a ti y no a un ERP:** un ERP cuesta decenas de millones y meses de implantación; AURA les da orden en semanas, con acompañamiento personal y a precio de pyme.
-- **Lo que ya usan:** la mayoría lleva la contabilidad y la facturación electrónica en Siigo o Alegra. AURA no compite con ese software: lo complementa (ver §3.1).
+- **Por qué te compran a ti y no a un ERP:** un ERP cuesta decenas de millones y meses de implantación; EDITH les da orden en semanas, con acompañamiento personal y a precio de pyme.
+- **Lo que ya usan:** la mayoría lleva la contabilidad y la facturación electrónica en Siigo o Alegra. EDITH no compite con ese software: lo complementa (ver §3.1).
 
-**Secundario (oportunista):** consultores y contadores que atienden varias pymes y podrían revender o recomendar AURA (canal de referidos, sección 6).
+**Secundario (oportunista):** consultores y contadores que atienden varias pymes y podrían revender o recomendar EDITH (canal de referidos, sección 6).
 
 **Evitar por ahora:** empresas grandes (piden certificaciones, SSO, contratos de seguridad), startups sin datos y clientes que piden IA como requisito principal.
 
@@ -53,13 +53,13 @@ Mensajes de apoyo (todos verdaderos hoy):
 
 ### 3.1 Posicionamiento frente a Siigo y Alegra
 
-> **"Siigo o Alegra llevan tu contabilidad. AURA ordena y conecta lo que hoy vive en Excel: tus clientes, tus productos y tus bodegas."**
+> **"Siigo o Alegra llevan tu contabilidad. EDITH ordena y conecta lo que hoy vive en Excel: tus clientes, tus productos y tus bodegas."**
 
 - **No es un software contable ni lo reemplaza.** No factura, no lleva contabilidad, no liquida nómina ni declara impuestos. El cliente sigue usando su Siigo o Alegra como hoy.
 - **Qué aporta encima:** un solo lugar para la información operativa que el software contable no ordena por ellos (archivos de Excel por bodega, listas de clientes y productos duplicadas) y el servicio de cargarla, depurarla y mostrar cómo se relaciona.
 - **Se vende como servicio + software, no como "otro programa".** El Piloto es la entrada; el plan mensual paga que los datos sigan ordenados.
-- **Lo que no se dice:** que AURA se integra con Siigo o Alegra (no existe; §1). Sí se puede decir: *"si tu software te deja exportar a Excel o CSV, cargamos ese archivo"*. Confírmalo con un archivo real del prospecto antes de prometerlo.
-- **Cuándo no somos la respuesta:** si el prospecto ya usa de verdad los módulos de inventario de su software contable y tiene clientes y productos ordenados ahí, AURA aporta poco. Agradece y descalifica.
+- **Lo que no se dice:** que EDITH se integra con Siigo o Alegra (no existe; §1). Sí se puede decir: *"si tu software te deja exportar a Excel o CSV, cargamos ese archivo"*. Confírmalo con un archivo real del prospecto antes de prometerlo.
+- **Cuándo no somos la respuesta:** si el prospecto ya usa de verdad los módulos de inventario de su software contable y tiene clientes y productos ordenados ahí, EDITH aporta poco. Agradece y descalifica.
 
 ---
 
@@ -69,7 +69,7 @@ Se vende **por empresa**, no por usuario (aún no hay multiusuario).
 
 | Oferta | Precio | Incluye | Objetivo |
 |---|---|---|---|
-| **Piloto AURA 30 días** | **COP 1.200.000** pago único (≈ USD 300) | Carga inicial desde Excel/CSV (hasta 5.000 registros), configuración de la cuenta, 2 sesiones de trabajo, informe de hallazgos sobre la calidad y organización de los datos | Puerta de entrada. 100 % acreditable al plan anual si contratan en los 15 días siguientes |
+| **Piloto EDITH 30 días** | **COP 1.200.000** pago único (≈ USD 300) | Carga inicial desde Excel/CSV (hasta 5.000 registros), configuración de la cuenta, 2 sesiones de trabajo, informe de hallazgos sobre la calidad y organización de los datos | Puerta de entrada. 100 % acreditable al plan anual si contratan en los 15 días siguientes |
 | **Plan Esencial** | **COP 290.000 / mes** | Cuenta de empresa, hasta 10.000 registros, una recarga mensual asistida, soporte por correo en 2 días hábiles | Pymes pequeñas |
 | **Plan Profesional** | **COP 690.000 / mes** | Hasta 50.000 registros, recargas asistidas ilimitadas, reunión mensual de revisión con informe, soporte por WhatsApp en 1 día hábil, prioridad en la hoja de ruta | Cliente objetivo |
 | **Desarrollo a medida** | Desde COP 3.500.000 (cotización) | Módulo o integración que el cliente necesite (p. ej. inventario con cantidades, importación desde su software) | Financia producto; lo desarrollado entra al producto general |
@@ -96,7 +96,7 @@ Se vende **por empresa**, no por usuario (aún no hay multiusuario).
 
 Ninguna fuente indica si los precios incluyen IVA. Las páginas oficiales de precios de Siigo consultadas (`siigo.com/planes/`, `/precios/`, `/planes-precios/`) respondieron 404 el 25-11-2026, y las de Alegra (`alegra.com/colombia/precios/`, `/contabilidad/precios/`) cargaron sin mostrar planes. El rango "COP 89.000–191.000" de la investigación anterior se queda corto por abajo: el plan de entrada de Alegra aparece en COP 74.900 (o menos con pago anual), y sus planes superiores (Pro y Plus) cuestan lo mismo o más que el Esencial. El blog de Alegra es de un competidor de Siigo; la guía declara enlaces de afiliado y advierte que los descuentos de Siigo aplican solo a clientes nuevos. Antes de citar una cifra a un prospecto, revísala en la web del proveedor ese mismo día.
 
-**Lectura:** el Plan Esencial (COP 290.000) cuesta más que los planes pyme de entrada de Siigo y Alegra, que son los que usa el ICP. Además, esos planes ya incluyen manejo de bodegas o inventario (Alegra Pyme: 2 bodegas; Siigo Nube Emprendedor: contabilidad e inventario, según el blog de Alegra). Quien compare "programa contra programa" verá a AURA como caro. La comparación correcta es contra el tiempo de un auxiliar consolidando Excel y contra un servicio de depuración de datos, porque el Esencial incluye trabajo tuyo (una recarga asistida al mes) que el software contable no incluye.
+**Lectura:** el Plan Esencial (COP 290.000) cuesta más que los planes pyme de entrada de Siigo y Alegra, que son los que usa el ICP. Además, esos planes ya incluyen manejo de bodegas o inventario (Alegra Pyme: 2 bodegas; Siigo Nube Emprendedor: contabilidad e inventario, según el blog de Alegra). Quien compare "programa contra programa" verá a EDITH como caro. La comparación correcta es contra el tiempo de un auxiliar consolidando Excel y contra un servicio de depuración de datos, porque el Esencial incluye trabajo tuyo (una recarga asistida al mes) que el software contable no incluye.
 
 **Opciones evaluadas:**
 
@@ -122,7 +122,7 @@ Ninguna fuente indica si los precios incluyen IVA. Las páginas oficiales de pre
 Primeros 10 clientes: **cobro manual**. No integres pasarela de pagos en el código todavía.
 
 1. **Inscríbete en el RUT** como persona natural con actividad económica de software/consultoría (códigos CIIU 6201 / 6202) y habilita la **facturación electrónica** (la DIAN ofrece un facturador gratuito). Evalúa con un contador el Régimen Simple de Tributación frente al ordinario, y si conviene constituir una SAS cuando superes ~5 clientes.
-2. **Cuenta bancaria separada** para AURA.
+2. **Cuenta bancaria separada** para EDITH.
 3. **Medios de cobro:** transferencia bancaria + link de pago de una pasarela local (Wompi, Mercado Pago, ePayco o PayU). Abre la cuenta tú mismo y genera links por factura.
 4. **Documentos que necesitas antes del primer cobro** (borradores en `KIT-VENTAS.md`): propuesta de piloto, términos de servicio y acuerdo de tratamiento de datos (el cliente te entrega datos personales de *sus* clientes: eres encargado del tratamiento según la Ley 1581 de 2012). Haz revisar los términos por un abogado o contador antes de firmar el primer contrato anual.
 5. **Automatizar el cobro** (suscripciones recurrentes desde la plataforma) solo cuando tengas ≥ 10 clientes pagando. Antes de eso, una factura mensual manual toma 15 minutos.
@@ -137,7 +137,7 @@ En orden de prioridad para los primeros 90 días (costo ≈ 0, tiempo alto):
 
 1. **Red personal y referidos (semanas 1–2).** Lista de 50 personas que tengan o conozcan una pyme del ICP. Mensaje directo pidiendo una conversación de 20 minutos, no una venta.
 2. **LinkedIn outbound (continuo).** 15 solicitudes de conexión diarias a gerentes de operaciones/generales de pymes de distribución y manufactura en tu ciudad; secuencia de 3 mensajes (ver kit).
-3. **Contadores y consultores (desde la semana 3).** Comisión del 20 % del primer año por cliente referido que pague. Un contador atiende 20–50 pymes, casi siempre con Siigo o Alegra: el mensaje es que AURA **no compite con su software ni con su trabajo**, sino que ordena la información operativa que les llega desordenada (guion en `KIT-VENTAS.md` §1). Son prospectos de alianza, no clientes, hasta que haya un acuerdo de referidos firmado.
+3. **Contadores y consultores (desde la semana 3).** Comisión del 20 % del primer año por cliente referido que pague. Un contador atiende 20–50 pymes, casi siempre con Siigo o Alegra: el mensaje es que EDITH **no compite con su software ni con su trabajo**, sino que ordena la información operativa que les llega desordenada (guion en `KIT-VENTAS.md` §1). Son prospectos de alianza, no clientes, hasta que haya un acuerdo de referidos firmado.
    - **Condiciones de referidos (aprobadas el 25-11-2026):** 20 % de lo que el cliente referido pague por su plan mensual o anual durante sus primeros 12 meses. **El Piloto no cuenta** para la comisión. La comisión se paga **en los 30 días siguientes a cada pago recibido del cliente**; si el cliente no paga o cancela, no se genera comisión por los meses no pagados. Déjalo por escrito con cada contador antes de su primer referido (valida el documento con tu contador o abogado, como el resto de contratos del §5).
 4. **Contenido (semanal, 1 publicación).** Casos reales anonimizados: "cómo una distribuidora pasó de 7 archivos de Excel a un solo lugar". Cada publicación termina con un llamado a la demo.
 5. **Cámara de Comercio y gremios (mes 2–3).** Charlas gratuitas de 30 minutos sobre "orden de datos en la pyme"; capturas contactos en la charla.
@@ -240,7 +240,7 @@ Cada fila se construye cuando un cliente que paga la necesita, no antes.
 | Riesgo | Mitigación |
 |---|---|
 | Dependencia de una sola persona (tú) para ventas, soporte y desarrollo | Bloques fijos en la agenda: mañanas ventas, tardes producto. Máximo 8 pilotos simultáneos |
-| El cliente percibe AURA como "un Excel bonito" | Vender el servicio de orden y el informe de hallazgos, no las pantallas |
+| El cliente percibe EDITH como "un Excel bonito" | Vender el servicio de orden y el informe de hallazgos, no las pantallas |
 | Pérdida de datos de un cliente | Base de datos administrada con copias diarias antes del primer piloto |
 | Prometer funciones que no existen | La landing ya distingue "Operativo" y "En desarrollo"; usa la misma tabla en las demos |
 | Datos personales de terceros | Acuerdo de tratamiento de datos firmado antes de cargar cualquier archivo |
