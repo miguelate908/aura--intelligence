@@ -18,7 +18,7 @@
 
 Ningún cliente ve estos identificadores.
 
-**Pendiente.** La plantilla `docs/comercial/plantillas/registro-oportunidades.xlsx` aún dice «AURA Intelligence» en el título, en un texto de la hoja y como autor de tres comentarios. No se cambió aquí porque el PR #30, sin fusionar, modifica el mismo archivo binario y git no puede combinar las dos versiones. Hay que cambiarla después de fusionar el PR #30.
+**Plantilla `docs/comercial/plantillas/registro-oportunidades.xlsx`.** Se actualizó después de que se fusionara el PR #30, que modificaba el mismo archivo. Se editaron directamente los XML internos, sin regenerar el libro. Cambian el título de «Leyenda», el texto sobre referidos de contadores y el autor de los comentarios de cuatro celdas, que pasa de «AURA» a «EDITH». Al comparar con openpyxl, solo difieren esas 2 celdas y esos autores. Las 2.325 fórmulas, las 8 validaciones y el formato condicional siguen iguales. LibreOffice recalculó el libro sin errores.
 
 ## 2026-11-25 — `pytest` funciona sin `python -m`
 
