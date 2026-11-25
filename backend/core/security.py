@@ -2,7 +2,7 @@ import os
 
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
-from jose import JWTError, jwt
+import jwt
 from sqlalchemy.orm import Session
 
 from database import get_db
@@ -10,6 +10,8 @@ from models import User
 
 
 ALGORITHM = "HS256"
+# Propiedades que todo token de acceso debe traer; PyJWT rechaza el token si falta alguna.
+REQUIRED_CLAIMS = ["sub", "exp"]
 SECRET_KEY = os.getenv("JWT_SECRET_KEY")
 if not SECRET_KEY or len(SECRET_KEY) < 32:
     raise RuntimeError("JWT_SECRET_KEY debe estar configurada con al menos 32 caracteres")
@@ -29,9 +31,14 @@ def get_current_user(
     if credentials is None:
         raise unauthorized
     try:
-        payload = jwt.decode(credentials.credentials, SECRET_KEY, algorithms=[ALGORITHM])
-        user_id = int(payload.get("sub", ""))
-    except (JWTError, TypeError, ValueError):
+        payload = jwt.decode(
+            credentials.credentials,
+            SECRET_KEY,
+            algorithms=[ALGORITHM],
+            options={"require": REQUIRED_CLAIMS},
+        )
+        user_id = int(payload["sub"])
+    except (jwt.InvalidTokenError, KeyError, TypeError, ValueError):
         raise unauthorized
 
     user = db.query(User).filter(User.id == user_id).first()
