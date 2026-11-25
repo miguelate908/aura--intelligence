@@ -167,3 +167,7 @@ def test_tampered_payload_is_rejected():
 def test_malformed_and_missing_tokens_are_rejected():
     assert get_customers("no-es-un-jwt").status_code == 401
     assert client.get("/customers/").status_code == 401
+
+
+def test_required_check_blocks_merge():
+    raise AssertionError("Fallo deliberado para verificar la protección de master")
