@@ -33,6 +33,7 @@ Fecha: 16 de noviembre de 2026 · Supuesto de mercado: Colombia, precios en COP 
 - **Quién decide:** gerente general o dueño; **quién usa:** gerente de operaciones, logística o comercial.
 - **Señales de dolor:** "tenemos todo en Excel", "cada bodega lleva su archivo", "no sé qué clientes compran qué", "dependo de una persona para saber dónde está la información".
 - **Por qué te compran a ti y no a un ERP:** un ERP cuesta decenas de millones y meses de implantación; AURA les da orden en semanas, con acompañamiento personal y a precio de pyme.
+- **Lo que ya usan:** la mayoría lleva la contabilidad y la facturación electrónica en Siigo o Alegra. AURA no compite con ese software: lo complementa (ver §3.1).
 
 **Secundario (oportunista):** consultores y contadores que atienden varias pymes y podrían revender o recomendar AURA (canal de referidos, sección 6).
 
@@ -50,6 +51,16 @@ Mensajes de apoyo (todos verdaderos hoy):
 3. Haces preguntas sencillas ("¿cuántos clientes tengo?", "productos de más de 100.000") y obtienes respuesta inmediata.
 4. Tus datos están separados de los de otras empresas y protegidos con acceso por contraseña.
 
+### 3.1 Posicionamiento frente a Siigo y Alegra
+
+> **"Siigo o Alegra llevan tu contabilidad. AURA ordena y conecta lo que hoy vive en Excel: tus clientes, tus productos y tus bodegas."**
+
+- **No es un software contable ni lo reemplaza.** No factura, no lleva contabilidad, no liquida nómina ni declara impuestos. El cliente sigue usando su Siigo o Alegra como hoy.
+- **Qué aporta encima:** un solo lugar para la información operativa que el software contable no ordena por ellos (archivos de Excel por bodega, listas de clientes y productos duplicadas) y el servicio de cargarla, depurarla y mostrar cómo se relaciona.
+- **Se vende como servicio + software, no como "otro programa".** El Piloto es la entrada; el plan mensual paga que los datos sigan ordenados.
+- **Lo que no se dice:** que AURA se integra con Siigo o Alegra (no existe; §1). Sí se puede decir: *"si tu software te deja exportar a Excel o CSV, cargamos ese archivo"*. Confírmalo con un archivo real del prospecto antes de prometerlo.
+- **Cuándo no somos la respuesta:** si el prospecto ya usa de verdad los módulos de inventario de su software contable y tiene clientes y productos ordenados ahí, AURA aporta poco. Agradece y descalifica.
+
 ---
 
 ## 4. Oferta y precios
@@ -66,6 +77,43 @@ Se vende **por empresa**, no por usuario (aún no hay multiusuario).
 - **Pago anual:** 2 meses gratis (10 × mensualidad). Prioriza vender anual: mejora tu caja.
 - **Descuento de fundador:** los 5 primeros clientes conservan su precio de por vida a cambio de un testimonio y permiso para usar su logo. No des otros descuentos.
 - **Por qué estos precios:** el piloto cubre ~12–15 horas de tu trabajo; el Plan Profesional equivale a menos que medio salario mínimo y reemplaza horas de un auxiliar consolidando archivos. Sube precios después del cliente 10.
+
+### 4.1 Referencia de mercado y decisión sobre el Plan Esencial
+
+> **Decisión (25-11-2026): opción A aprobada.** El Plan Esencial se mantiene en COP 290.000/mes; los precios de la tabla anterior no cambian.
+
+**Precios públicos de referencia (consultados el 25-11-2026; fuentes de terceros, no verificadas con los proveedores):**
+
+| Software | Plan | Precio publicado | Fuente |
+|---|---|---|---|
+| Siigo | Siigo Nube Profesional | COP 145.993/mes con pago anual (COP 1.751.920/año) | guiadesoftware.com, actualizado 11-11-2026 |
+| Siigo | Siigo Nube Emprendedor (3 usuarios) | COP 191.327/mes | guiadesoftware.com (11-11-2026) y blog.alegra.com (16-07-2026) |
+| Siigo | Siigo Nube Emprendedor, precio de lista | COP 2.869.900/año (≈ 239.000/mes) | guiadesoftware.com (11-11-2026) |
+| Alegra | Emprendedor (1 usuario, ingresos hasta COP 10 M/mes) | COP 74.900/mes; COP 56.175/mes con pago anual | blog.alegra.com (16-07-2026); guiadesoftware.com (11-11-2026) |
+| Alegra | Pyme (2 usuarios, 2 bodegas, ingresos hasta COP 40 M/mes) | COP 163.900/mes; COP 122.925/mes con pago anual | ídem |
+| Alegra | Pro (3 usuarios, 10 bodegas, ingresos hasta COP 180 M/mes) | COP 250.900/mes; COP 188.175/mes con pago anual | ídem |
+| Alegra | Plus (8 usuarios, 100 bodegas) | COP 319.900/mes | blog.alegra.com (16-07-2026) |
+
+Ninguna fuente indica si los precios incluyen IVA. Las páginas oficiales de precios de Siigo consultadas (`siigo.com/planes/`, `/precios/`, `/planes-precios/`) respondieron 404 el 25-11-2026, y las de Alegra (`alegra.com/colombia/precios/`, `/contabilidad/precios/`) cargaron sin mostrar planes. El rango "COP 89.000–191.000" de la investigación anterior se queda corto por abajo: el plan de entrada de Alegra aparece en COP 74.900 (o menos con pago anual), y sus planes superiores (Pro y Plus) cuestan lo mismo o más que el Esencial. El blog de Alegra es de un competidor de Siigo; la guía declara enlaces de afiliado y advierte que los descuentos de Siigo aplican solo a clientes nuevos. Antes de citar una cifra a un prospecto, revísala en la web del proveedor ese mismo día.
+
+**Lectura:** el Plan Esencial (COP 290.000) cuesta más que los planes pyme de entrada de Siigo y Alegra, que son los que usa el ICP. Además, esos planes ya incluyen manejo de bodegas o inventario (Alegra Pyme: 2 bodegas; Siigo Nube Emprendedor: contabilidad e inventario, según el blog de Alegra). Quien compare "programa contra programa" verá a AURA como caro. La comparación correcta es contra el tiempo de un auxiliar consolidando Excel y contra un servicio de depuración de datos, porque el Esencial incluye trabajo tuyo (una recarga asistida al mes) que el software contable no incluye.
+
+**Opciones evaluadas:**
+
+| Opción | A favor | En contra |
+|---|---|---|
+| **A. Mantener COP 290.000 y reempaquetar el mensaje** | No hay datos de ventas que pidan bajar: el repositorio no registra demos, pilotos ni clientes todavía. Protege el margen de un negocio de una sola persona. Mantiene la proyección del §9 (promedio COP 490.000). | Algunos prospectos se irán por precio sin escuchar el argumento. |
+| **B. Bajar el Esencial (p. ej. a ≈ COP 190.000)** | Quita la objeción de entrada. | Te ubica como "otro software contable" y compites por precio con empresas grandes. Los 5 clientes fundadores conservan su precio de por vida (§4): bajar antes de vender fija para siempre el precio más bajo. Necesitarías más clientes para el mismo MRR, con el mismo tiempo tuyo de soporte. |
+| **C. Añadir un plan inferior sin servicio** (autoservicio con importación CSV, sin recarga asistida) | Da una puerta barata si la objeción se confirma. | Más planes que explicar y más soporte sin cobro; sin varios usuarios ni límites por plan en el código, aún no es un producto de autoservicio (§1). |
+
+**Opción aprobada: A, con una regla para revisar.**
+
+1. **Mantener el precio de lista** del Plan Esencial en COP 290.000 y no ofrecerlo como primera opción: vender primero el **Piloto** y, al cierre, el **Profesional**; el Esencial queda como alternativa si el presupuesto no alcanza.
+2. **Reempaquetar cómo se presenta** (texto, no precio): describirlo como *"servicio mensual de datos ordenados: tu información operativa actualizada cada mes por nosotros, como complemento de tu Siigo o Alegra"*, y siempre junto al cálculo de horas ahorradas (objeción en `KIT-VENTAS.md` §5).
+3. **Regla de revisión:** registra en el CRM el motivo de cada oportunidad perdida (§7). Si tras **10 demos** al menos **3** se pierden por precio frente a Siigo o Alegra, evalúa la opción C (no la B) con esos datos. Ninguna de las dos se aplica sin tu aprobación.
+4. **Sin descuentos adicionales** fuera del de fundador y el pago anual, como ya dice este plan.
+
+**Decisión:** opción A aprobada el 25-11-2026. Cualquier cambio de precio posterior (incluida la opción C si se cumple la regla del punto 3) requiere una nueva aprobación.
 
 ---
 
@@ -89,7 +137,8 @@ En orden de prioridad para los primeros 90 días (costo ≈ 0, tiempo alto):
 
 1. **Red personal y referidos (semanas 1–2).** Lista de 50 personas que tengan o conozcan una pyme del ICP. Mensaje directo pidiendo una conversación de 20 minutos, no una venta.
 2. **LinkedIn outbound (continuo).** 15 solicitudes de conexión diarias a gerentes de operaciones/generales de pymes de distribución y manufactura en tu ciudad; secuencia de 3 mensajes (ver kit).
-3. **Contadores y consultores (desde la semana 3).** Comisión del 20 % del primer año por cliente referido que pague. Un contador atiende 20–50 pymes.
+3. **Contadores y consultores (desde la semana 3).** Comisión del 20 % del primer año por cliente referido que pague. Un contador atiende 20–50 pymes, casi siempre con Siigo o Alegra: el mensaje es que AURA **no compite con su software ni con su trabajo**, sino que ordena la información operativa que les llega desordenada (guion en `KIT-VENTAS.md` §1). Son prospectos de alianza, no clientes, hasta que haya un acuerdo de referidos firmado.
+   - **Condiciones de referidos (aprobadas el 25-11-2026):** 20 % de lo que el cliente referido pague por su plan mensual o anual durante sus primeros 12 meses. **El Piloto no cuenta** para la comisión. La comisión se paga **en los 30 días siguientes a cada pago recibido del cliente**; si el cliente no paga o cancela, no se genera comisión por los meses no pagados. Déjalo por escrito con cada contador antes de su primer referido (valida el documento con tu contador o abogado, como el resto de contratos del §5).
 4. **Contenido (semanal, 1 publicación).** Casos reales anonimizados: "cómo una distribuidora pasó de 7 archivos de Excel a un solo lugar". Cada publicación termina con un llamado a la demo.
 5. **Cámara de Comercio y gremios (mes 2–3).** Charlas gratuitas de 30 minutos sobre "orden de datos en la pyme"; capturas contactos en la charla.
 
