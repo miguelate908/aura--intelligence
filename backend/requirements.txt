@@ -4,6 +4,6 @@ sqlalchemy<2.1
 psycopg2-binary
 python-dotenv
 pydantic
-python-jose[cryptography]
+PyJWT
 passlib[bcrypt]
 bcrypt<4.1
