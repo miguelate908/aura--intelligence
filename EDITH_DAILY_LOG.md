@@ -1,5 +1,11 @@
 # EDITH — Registro diario
 
+## 2026-11-25 — Despliegue en Render con Vite 6 y React Router 7 (PR #26)
+
+El PR #26 se fusionó en `master` (`05bf16f`): `vite ^6.4.6`, `@vitejs/plugin-react ^5.2.0`, `react-router-dom ^7.18.7`, `node:22-alpine` en el `Dockerfile` y `backend/static` en `.dockerignore`. Con esto, `npm audit` en `frontend/` reporta 0 vulnerabilidades. La rama `claude/magical-cerf-238ltt` se borró después de la fusión.
+
+El responsable confirmó que el despliegue automático en Render de esa fusión salió bien. Queda cerrado el pendiente de la entrada «Actualización de dependencias del frontend»: el build de Render con Node 22.22.0 compila el sitio con Vite 6 y producción lo sirve. La confirmación es del responsable; desde esta sesión no hay acceso a Render.
+
 ## 2026-11-25 — `pytest` funciona sin `python -m`
 
 `pytest -q` desde `backend/` fallaba al recoger las pruebas (`No module named 'database'`), porque el ejecutable `pytest` no añade la carpeta actual a la ruta de importación. Con `python -m pytest` sí funcionaba, y así lo ejecuta el CI.
