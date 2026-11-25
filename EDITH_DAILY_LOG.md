@@ -29,7 +29,7 @@ La supervisión de hoy encontró 4 avisos de `npm audit` en `frontend/` (1 alto,
 
 ### Node del `Dockerfile`
 
-`@vitejs/plugin-react` 5 exige Node `^20.19.0 || >=22.12.0`; Vite 6 admite `^20`. La imagen `node:20-alpine` trae hoy Node 20.20.2, y con esa versión `npm ci` y el build salieron idénticos (mismos hashes) sin avisos de engine, así que **es compatible y no se cambió**. Propuesta (sin aplicar, pendiente de aprobación): pasar a `node:22-alpine`, porque Node 20 terminó su soporte en abril de 2026.
+`@vitejs/plugin-react` 5 exige Node `^20.19.0 || >=22.12.0`; Vite 6 admite `^20`. La imagen `node:20-alpine` trae hoy Node 20.20.2, y con esa versión `npm ci` y el build salieron idénticos (mismos hashes) sin avisos de engine, así que era compatible. Aun así, con aprobación del responsable, la imagen se cambió a **`node:22-alpine`**, porque Node 20 terminó su soporte en abril de 2026. Con Node 22 (22.23.5), `npm ci`, `npm run build` y `npm audit` (0 vulnerabilidades) pasan sin avisos de engine; plugin-react 5 exige `>=22.12.0`.
 
 Observación aparte, también previa: el `Dockerfile` copia `/web/dist`, pero `vite.config.ts` compila en `../backend/static`, así que esa etapa no encuentra `dist`. No se tocó en esta tarea.
 

@@ -1,5 +1,5 @@
 # 1) Compila el sitio (React + Vite)
-FROM node:20-alpine AS web
+FROM node:22-alpine AS web
 WORKDIR /web
 COPY frontend/package*.json ./
 RUN if [ -f package-lock.json ]; then npm ci; else npm install; fi
