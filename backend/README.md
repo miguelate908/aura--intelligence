@@ -43,3 +43,21 @@ Instala las dependencias de desarrollo y ejecuta las pruebas. Estas usan SQLite 
 python -m pip install -r requirements-dev.txt
 python -m pytest -q
 ```
+
+## Importación masiva (CSV)
+
+Cada página del panel (Clientes, Productos, Bodegas) tiene **Importar desde CSV**. Acepta separador `,` o `;` (Excel en español) y encabezados con el nombre del campo o la etiqueta en pantalla (`Nombre`, `Correo`, `SKU`, `Precio`, `Ubicación`…). Los precios pueden venir como `29.500` o `1.250,75`. "Descargar plantilla" genera el archivo vacío con las columnas.
+
+La importación es todo o nada: si una fila tiene errores (campo obligatorio vacío, SKU repetido o ya existente), no se guarda ninguna y el panel lista las filas a corregir. El límite es de 5.000 filas por archivo. API: `POST /import/{customers|products|warehouses}` con `{"rows": [...]}`.
+
+## Empresa de demostración para ventas
+
+```powershell
+python scripts/seed_demo.py
+```
+
+Crea "Distribuidora Andina Demo" con 20 clientes, 20 productos, 3 bodegas y sus relaciones, e imprime el correo y una contraseña aleatoria. Volver a ejecutarlo borra y recrea solo esa empresa. Úsalo en una base de demostración, no en la de clientes.
+
+## Plan comercial
+
+La estrategia de precios, el proceso de venta y el kit de ventas están en `docs/comercial/`.

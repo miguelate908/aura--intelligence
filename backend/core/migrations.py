@@ -13,6 +13,8 @@ _STATEMENTS = [
 
 
 def ensure_demo_request_columns(engine) -> None:
+    if engine.dialect.name != "postgresql":
+        return  # ADD COLUMN IF NOT EXISTS es de PostgreSQL; en SQLite (pruebas) create_all ya crea la tabla completa
     with engine.begin() as conn:
         for stmt in _STATEMENTS:
             conn.execute(text(stmt))

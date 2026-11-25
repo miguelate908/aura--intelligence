@@ -1,3 +1,4 @@
+import os
 from datetime import datetime, timedelta, timezone
 
 import jwt
@@ -31,12 +32,24 @@ login_ip_limit = RateLimiter(max_hits=20, window_seconds=900)
 login_email_limit = RateLimiter(max_hits=8, window_seconds=900)
 
 
+def registration_enabled() -> bool:
+    # En producción las cuentas de clientes se crean con scripts/create_client.py.
+    return os.getenv("REGISTRATION_ENABLED", "true").strip().lower() in {"1", "true", "yes"}
+
+
+@router.get("/config")
+def auth_config():
+    return {"registration_enabled": registration_enabled()}
+
+
 @router.post("/register")
 def register_user(
     user: UserCreate,
     request: Request,
     db: Session = Depends(get_db)
 ):
+    if not registration_enabled():
+        raise HTTPException(status_code=403, detail="El registro público está desactivado. Solicita una demostración.")
     register_limit.hit(client_ip(request))
     email = user.email.strip().lower()
     existing_user = (

@@ -1,11 +1,17 @@
+import asyncio
+import logging
+from contextlib import asynccontextmanager
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
-from fastapi import Depends, FastAPI
+from fastapi import Depends, FastAPI, Request
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
-from database import engine, Base
-
+from database import engine, Base, SessionLocal
+from core.migrations import ensure_demo_request_columns
 from core.security import get_current_user
+from models import DemoRequest
+
 from routers.companies import router as companies_router
 from routers.customers import router as customers_router
 from routers.products import router as products_router
@@ -16,38 +22,49 @@ from routers.relationships import router as relationships_router
 from routers.graph import router as graph_router
 from routers import auth
 from routers import assistant
-from routers.inventory import router as inventory_router
-from routers.manage import router as manage_router
+from routers import demo_requests
+from routers import imports
 from routers.contact import router as contact_router
 from routers.account import router as account_router
+# Pendientes de confirmar en el repositorio: routers.inventory y routers.manage.
+# Inclúyelos aquí cuando sus archivos estén en git; si no, el servidor no arranca.
 
 Base.metadata.create_all(bind=engine)
+ensure_demo_request_columns(engine)
 
-DIST = Path(__file__).resolve().parent.parent / "frontend" / "dist"
+DEMO_RETENTION_DAYS = 7  # debe coincidir con la política de privacidad
 
 
-class StripApiPrefix:
-    """Permite llamar a la API como /api/... (producción) o sin prefijo (pruebas y /docs)."""
+def purge_old_demo_requests() -> None:
+    cutoff = datetime.now(timezone.utc) - timedelta(days=DEMO_RETENTION_DAYS)
+    with SessionLocal() as db:
+        db.query(DemoRequest).filter(DemoRequest.created_at < cutoff).delete(synchronize_session=False)
+        db.commit()
 
-    def __init__(self, app):
-        self.app = app
 
-    async def __call__(self, scope, receive, send):
-        if scope["type"] in ("http", "websocket") and scope["path"].startswith("/api/"):
-            scope = dict(scope)
-            scope["path"] = scope["path"][4:]
-            if scope.get("raw_path"):
-                scope["raw_path"] = scope["raw_path"][4:]
-        await self.app(scope, receive, send)
+async def _purge_loop() -> None:
+    while True:
+        try:
+            await asyncio.to_thread(purge_old_demo_requests)
+        except Exception:
+            logging.exception("No se pudo purgar solicitudes antiguas")
+        await asyncio.sleep(3600)
+
+
+@asynccontextmanager
+async def lifespan(_app: FastAPI):
+    task = asyncio.create_task(_purge_loop())
+    yield
+    task.cancel()
 
 
 app = FastAPI(
+    lifespan=lifespan,
     title="EDITH Intelligence API",
     version="0.1.0"
 )
-app.add_middleware(StripApiPrefix)
 
-# Las rutas de empresas ahora exigen sesión (antes eran públicas)
+# Las rutas de empresas exigen sesión
 app.include_router(companies_router, dependencies=[Depends(get_current_user)])
 app.include_router(customers_router)
 app.include_router(products_router)
@@ -58,13 +75,35 @@ app.include_router(relationships_router)
 app.include_router(graph_router)
 app.include_router(auth.router)
 app.include_router(assistant.router)
-app.include_router(inventory_router)
-app.include_router(manage_router)
+app.include_router(demo_requests.router)
+app.include_router(imports.router)
 app.include_router(contact_router)
 app.include_router(account_router)
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
-if Path("static").is_dir():
-    app.mount("/static", StaticFiles(directory="static"), name="static")
+
+@app.middleware("http")
+async def strip_api_prefix_and_headers(request: Request, call_next):
+    # El frontend llama a /api/...; Vite lo quita en desarrollo y aquí se quita en producción.
+    path = request.scope["path"]
+    if path == "/api" or path.startswith("/api/"):
+        request.scope["path"] = path[4:] or "/"
+    response = await call_next(request)
+    response.headers.setdefault("X-Content-Type-Options", "nosniff")
+    response.headers.setdefault("X-Frame-Options", "DENY")
+    response.headers.setdefault("Referrer-Policy", "strict-origin-when-cross-origin")
+    return response
+
+
+INDEX = Path("static/index.html")
+
+
+@app.get("/", include_in_schema=False)
+def root():
+    # Si el frontend está compilado se sirve la landing; si no, el mensaje de la API.
+    if INDEX.is_file():
+        return FileResponse(INDEX)
+    return {"message": "EDITH Intelligence API funcionando"}
 
 
 @app.get("/health")
@@ -72,21 +111,10 @@ def health():
     return {"status": "ok"}
 
 
-if DIST.is_dir():
-    # Sitio compilado (npm run build): la API y la página viven en el mismo servidor
-    if (DIST / "assets").is_dir():
-        app.mount("/assets", StaticFiles(directory=DIST / "assets"), name="assets")
-
-    def spa(rest: str = ""):
-        return FileResponse(DIST / "index.html")
-
-    for _p in ("/", "/login", "/privacidad", "/app", "/app/{rest:path}"):
-        app.add_api_route(_p, spa, methods=["GET"], include_in_schema=False)
-else:
-    @app.get("/")
-    def root():
-        return {"message": "EDITH Intelligence API funcionando"}
-
-    @app.get("/app", include_in_schema=False)
-    def web_app():
-        return FileResponse("static/index.html")
+# Rutas de React (recargar la página en ellas debe seguir mostrando el sitio).
+@app.get("/app", include_in_schema=False)
+@app.get("/app/{rest:path}", include_in_schema=False)
+@app.get("/privacidad", include_in_schema=False)
+@app.get("/login", include_in_schema=False)
+def web_app(rest: str = ""):
+    return FileResponse("static/index.html")

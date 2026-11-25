@@ -24,6 +24,10 @@ export async function api<T = any>(path: string, method = "GET", body?: unknown)
   if (r.status === 401 && t) { setToken(null); location.href = "/login"; }
   if (!r.ok) {
     const m = d?.detail;
+    if (m && typeof m === "object" && !Array.isArray(m)) {
+      // Errores con estructura (p. ej. importación: { message, errors }).
+      throw Object.assign(new Error(m.message || `Error ${r.status}`), { detail: m });
+    }
     throw new Error(Array.isArray(m) ? m.map((x: any) => x.msg).join("; ") : m || `Error ${r.status}`);
   }
   return d as T;
