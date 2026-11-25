@@ -164,7 +164,7 @@ Revisa la hoja cada lunes: ninguna oportunidad activa debe quedar sin "próximo 
 
 ## 8. Borrador de acuerdo de referidos (contadores y consultores)
 
-> **Borrador para revisión.** No es asesoría legal ni tributaria. Hazlo revisar por tu contador o abogado antes de firmar el primero (ver `PLAN-COMERCIAL.md` §5). Las condiciones de comisión son las aprobadas el 25-11-2026 (`PLAN-COMERCIAL.md` §6); la vigencia del registro (90 días), la duración (un año) y el preaviso (30 días) también quedaron aprobados ese día. Lo que está entre `[corchetes]` debes completarlo o decidirlo; las cifras marcadas como *sugerido* no están aprobadas.
+> **Borrador para revisión.** No es asesoría legal ni tributaria. Hazlo revisar por tu contador o abogado antes de firmar el primero (ver `PLAN-COMERCIAL.md` §5). Las condiciones de comisión son las aprobadas el 25-11-2026 (`PLAN-COMERCIAL.md` §6); la vigencia del registro (90 días), la duración (un año), el preaviso (30 días) y la cláusula de controversias (30 días de arreglo directo y luego centro de conciliación) también quedaron aprobados ese día. Lo que está entre `[corchetes]` son datos que debes completar en cada acuerdo.
 
 > **ACUERDO DE REFERIDOS — AURA INTELLIGENCE**
 >
@@ -194,13 +194,13 @@ Revisa la hoja cada lunes: ninguna oportunidad activa debe quedar sin "próximo 
 >
 > **12. Cambios.** Cualquier cambio en la comisión o en estas condiciones debe constar por escrito y firmado por ambas partes. Los cambios no afectan a los referidos que ya hayan contratado un plan.
 >
-> **13. Ley y controversias.** Se rige por la ley colombiana. Las partes intentarán resolver cualquier diferencia de forma directa durante [30 días — *sugerido*] antes de acudir a [la jurisdicción ordinaria / un centro de conciliación de [ciudad]].
+> **13. Ley y controversias.** Se rige por la ley colombiana. Las partes intentarán resolver cualquier diferencia de forma directa durante **treinta (30) días** calendario. Si no llegan a un acuerdo, acudirán a conciliación en un **centro de conciliación de [ciudad]**, antes de cualquier otra vía.
 >
 > **Firmas.**
 > AURA: [nombre], [C.C./NIT], firma, fecha.
 > EL REFERIDOR: [nombre], [C.C./NIT], firma, fecha.
 
 **Antes de enviarlo a un contador:**
-1. Decide el único valor que sigue como *sugerido*: el plazo de arreglo directo de la cláusula 13 (30 días), y si las diferencias van a la jurisdicción ordinaria o a un centro de conciliación.
+1. Completa los datos entre `[corchetes]`: partes, identificación, fecha y ciudad (también la del centro de conciliación de la cláusula 13).
 2. Confirma con tu contador si la comisión se calcula antes o después de IVA, qué documento te debe entregar el referidor y qué retenciones aplicas.
 3. Registra cada contador en la hoja de oportunidades (§7) con canal `referido-contador` y estado `alianza propuesta` → `alianza firmada`. Hasta que firme, es un prospecto de alianza, no un socio.

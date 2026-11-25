@@ -37,7 +37,7 @@
 **Pendientes para ti.**
 
 1. ~~Decidir entre A, B o C.~~ Hecho: opción A aprobada el 25-11-2026.
-2. ~~Definir por escrito si el Piloto cuenta para la comisión de referidos y en qué plazo se paga.~~ Hecho el 25-11-2026: el Piloto no cuenta, y la comisión se paga en los 30 días siguientes a cada pago del cliente (`PLAN-COMERCIAL.md` §6, `KIT-VENTAS.md` §1). Borrador del acuerdo de referidos añadido en `KIT-VENTAS.md` §8. Antes de firmar el primero falta: validarlo con un contador o abogado; decidir el plazo y la vía de la cláusula 13 (controversias); la vigencia del registro (90 días), la duración (un año) y el preaviso (30 días) se aprobaron el 25-11-2026; y confirmar el tratamiento del IVA y las retenciones.
+2. ~~Definir por escrito si el Piloto cuenta para la comisión de referidos y en qué plazo se paga.~~ Hecho el 25-11-2026: el Piloto no cuenta, y la comisión se paga en los 30 días siguientes a cada pago del cliente (`PLAN-COMERCIAL.md` §6, `KIT-VENTAS.md` §1). Borrador del acuerdo de referidos añadido en `KIT-VENTAS.md` §8. Antes de firmar el primero falta: validarlo con un contador o abogado; completar los datos de cada acuerdo; el 25-11-2026 se aprobaron la vigencia del registro (90 días), la duración (un año), el preaviso (30 días) y la cláusula de controversias (30 días de arreglo directo y luego centro de conciliación); y confirmar el tratamiento del IVA y las retenciones.
 3. Revisar las cifras en las webs de Siigo y Alegra antes de citarlas a un prospecto.
 4. La rama `claude/laughing-curie-leps3u` cambia la marca a "EDITH Intelligence". Este cambio conserva "AURA", igual que `master`. Si fusionas ambas, habrá que unificar el nombre en las secciones nuevas.
 
