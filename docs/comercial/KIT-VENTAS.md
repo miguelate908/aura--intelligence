@@ -159,3 +159,48 @@ Columnas mínimas para tu hoja o CRM: fecha · empresa · contacto · cargo · c
 Estados: `nuevo → contactado → descubrimiento → demo → propuesta → piloto → cliente` / `perdido (motivo)`.
 
 Revisa la hoja cada lunes: ninguna oportunidad activa debe quedar sin "próximo paso" con fecha.
+
+---
+
+## 8. Borrador de acuerdo de referidos (contadores y consultores)
+
+> **Borrador para revisión.** No es asesoría legal ni tributaria. Hazlo revisar por tu contador o abogado antes de firmar el primero (ver `PLAN-COMERCIAL.md` §5). Las condiciones de comisión son las aprobadas el 25-11-2026 (`PLAN-COMERCIAL.md` §6). Lo que está entre `[corchetes]` debes completarlo o decidirlo; las cifras marcadas como *sugerido* no están aprobadas.
+
+> **ACUERDO DE REFERIDOS — AURA INTELLIGENCE**
+>
+> Entre **[tu nombre completo o razón social]**, identificado con [C.C./NIT] [número], en adelante **AURA**, y **[nombre del contador o consultor]**, identificado con [C.C./NIT] [número], en adelante **EL REFERIDOR**, se celebra este acuerdo el [fecha], en [ciudad].
+>
+> **1. Objeto.** EL REFERIDOR podrá presentar a AURA empresas interesadas en sus servicios. AURA pagará una comisión por cada empresa referida que contrate y pague un plan, en los términos de este acuerdo.
+>
+> **2. Cómo se registra un referido.** El referido existe solo cuando EL REFERIDOR envía a AURA, por escrito (correo o WhatsApp), el nombre de la empresa y de la persona de contacto, y AURA confirma por escrito que esa empresa no estaba ya en su registro de oportunidades. Si la empresa ya estaba registrada, no se genera comisión. El registro vale por [90 días — *sugerido*]: si en ese plazo la empresa no contrata un plan, el referido vence. EL REFERIDOR puede volver a registrarlo después.
+>
+> **3. Comisión.** AURA pagará a EL REFERIDOR el **veinte por ciento (20 %)** de los valores efectivamente pagados por la empresa referida por su **Plan Esencial o Plan Profesional**, mensual o anual, durante los **doce (12) primeros meses** contados desde el inicio de ese plan. La base de cálculo excluye el IVA [*confirmar con tu contador*].
+>
+> **4. Pagos que no generan comisión.** No generan comisión: (a) el **Piloto AURA 30 días**, incluido el valor del Piloto que se acredite al plan anual; (b) los desarrollos a medida; (c) los pagos recibidos después de los doce primeros meses; (d) los valores que AURA devuelva o no logre cobrar.
+>
+> **5. Forma y plazo de pago.** AURA pagará la comisión dentro de los **treinta (30) días calendario siguientes a cada pago efectivamente recibido** de la empresa referida, mediante transferencia a la cuenta que indique EL REFERIDOR. Si la empresa no paga, se atrasa o cancela, no se causa comisión por los períodos no pagados. Si la empresa paga un año por adelantado, la comisión se calcula sobre ese pago y se paga en el mismo plazo.
+>
+> **6. Documentos y tributos.** Para cada pago, EL REFERIDOR entregará a AURA factura electrónica o documento soporte / cuenta de cobro, según su régimen tributario. AURA aplicará las retenciones que exija la ley. Cada parte responde por sus propios impuestos. [*Confirmar con tu contador qué documento y qué retenciones aplican.*]
+>
+> **7. Independencia.** EL REFERIDOR actúa de forma independiente. Este acuerdo no crea relación laboral, sociedad, agencia comercial ni representación. EL REFERIDOR no puede firmar contratos, fijar precios, ofrecer descuentos ni recibir pagos a nombre de AURA.
+>
+> **8. Qué puede y qué no puede decir EL REFERIDOR.** Puede describir AURA como un servicio y una herramienta que ordena y conecta clientes, productos y bodegas, como complemento del software contable de la empresa. **No puede** afirmar que AURA se integra con Siigo, Alegra u otro software, que maneja inventario con cantidades, que usa inteligencia artificial, ni ofrecer funciones o precios distintos a los publicados por AURA. AURA le entregará el material de presentación vigente.
+>
+> **9. Datos personales y confidencialidad.** Cada parte trata los datos personales que reciba conforme a la Ley 1581 de 2012 y sus normas reglamentarias. EL REFERIDOR solo compartirá datos de contacto de personas que hayan aceptado ser contactadas por AURA. AURA no compartirá con EL REFERIDOR la información de negocio de la empresa referida (clientes, productos, bodegas, precios) sin autorización escrita de esa empresa. Ambas partes mantendrán confidencial la información de la otra parte que no sea pública.
+>
+> **10. No exclusividad.** Ninguna parte tiene exclusividad. EL REFERIDOR puede recomendar otros servicios y AURA puede tener otros referidores.
+>
+> **11. Duración y terminación.** Este acuerdo dura [un (1) año — *sugerido*] y se renueva automáticamente por períodos iguales, salvo aviso escrito de cualquiera de las partes con [30 días — *sugerido*] de anticipación. Si el acuerdo termina, AURA seguirá pagando la comisión de los referidos que ya hayan contratado un plan, hasta completar sus doce primeros meses.
+>
+> **12. Cambios.** Cualquier cambio en la comisión o en estas condiciones debe constar por escrito y firmado por ambas partes. Los cambios no afectan a los referidos que ya hayan contratado un plan.
+>
+> **13. Ley y controversias.** Se rige por la ley colombiana. Las partes intentarán resolver cualquier diferencia de forma directa durante [30 días — *sugerido*] antes de acudir a [la jurisdicción ordinaria / un centro de conciliación de [ciudad]].
+>
+> **Firmas.**
+> AURA: [nombre], [C.C./NIT], firma, fecha.
+> EL REFERIDOR: [nombre], [C.C./NIT], firma, fecha.
+
+**Antes de enviarlo a un contador:**
+1. Decide los valores marcados como *sugerido* (vigencia del registro, duración, preaviso).
+2. Confirma con tu contador si la comisión se calcula antes o después de IVA, qué documento te debe entregar el referidor y qué retenciones aplicas.
+3. Registra cada contador en la hoja de oportunidades (§7) con canal `referido-contador` y estado `alianza propuesta` → `alianza firmada`. Hasta que firme, es un prospecto de alianza, no un socio.
