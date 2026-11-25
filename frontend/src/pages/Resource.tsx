@@ -24,11 +24,14 @@ export default function Resource({ path, title, fields }: { path: string; title:
   const [page, setPage] = useState(0);
   const [importing, setImporting] = useState(false);
   const [importErrors, setImportErrors] = useState<ImportError[]>([]);
+  const [editing, setEditing] = useState<number | null>(null);
+  const [draft, setDraft] = useState<Record<string, string>>({});
+  const [busy, setBusy] = useState(false);
   const load = useCallback(() => {
     setLoading(true);
     return api<any[]>(path).then(setRows).catch((e) => setErr(e.message)).finally(() => setLoading(false));
   }, [path]);
-  useEffect(() => { setRows([]); setErr(""); setOk(""); setImportErrors([]); setQ(""); setPage(0); load(); }, [load]);
+  useEffect(() => { setRows([]); setErr(""); setOk(""); setImportErrors([]); setQ(""); setPage(0); setEditing(null); load(); }, [load]);
 
   const submit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -71,6 +74,29 @@ export default function Resource({ path, title, fields }: { path: string; title:
       setImporting(false);
     }
   };
+  const startEdit = (r: any) => {
+    setEditing(r.id);
+    setDraft(Object.fromEntries(fields.map((f) => [f.name, r[f.name] == null ? "" : String(r[f.name])])));
+  };
+  const saveEdit = async (id: number) => {
+    const body: Record<string, unknown> = {};
+    for (const f of fields) {
+      const v = (draft[f.name] ?? "").trim();
+      if (f.required && !v) { setOk(""); setErr(`El campo ${f.label} es obligatorio.`); return; }
+      body[f.name] = v === "" ? (f.type === "number" ? 0 : null) : f.type === "number" ? Number(toNumber(v)) : v;
+    }
+    setBusy(true);
+    try { await api(`${path}/${id}`, "PUT", body); setEditing(null); setErr(""); setOk("Registro actualizado."); await load(); }
+    catch (x: any) { setOk(""); setErr(x.message); }
+    finally { setBusy(false); }
+  };
+  const remove = async (r: any) => {
+    if (!window.confirm(`¿Eliminar “${r.name ?? r.id}”? Esta acción no se puede deshacer.`)) return;
+    setBusy(true);
+    try { await api(`${path}/${r.id}`, "DELETE"); setErr(""); setOk("Registro eliminado."); await load(); }
+    catch (x: any) { setOk(""); setErr(x.message); }
+    finally { setBusy(false); }
+  };
   const template = `data:text/csv;charset=utf-8,${encodeURIComponent(fields.map((f) => f.label).join(";") + "\r\n")}`;
 
   const labels: Record<string, string> = Object.fromEntries(fields.map((f) => [f.name, f.label]));
@@ -111,8 +137,31 @@ export default function Resource({ path, title, fields }: { path: string; title:
         </div>
         {loading ? <span className="mut">Cargando…</span> : rows.length === 0 ? <span className="mut">Todavía no hay registros.</span> : filtered.length === 0 ? <span className="mut">Sin resultados para “{q}”.</span> : (
           <table>
-            <thead><tr>{cols.map((c) => <th key={c}>{labels[c] ?? c}</th>)}</tr></thead>
-            <tbody>{view.map((r) => <tr key={r.id}>{cols.map((c) => <td key={c}>{cell(c, r[c])}</td>)}</tr>)}</tbody>
+            <thead><tr>{cols.map((c) => <th key={c}>{labels[c] ?? c}</th>)}<th>Acciones</th></tr></thead>
+            <tbody>{view.map((r) => editing === r.id ? (
+              <tr key={r.id}>
+                {cols.map((c) => {
+                  const f = fields.find((x) => x.name === c);
+                  return <td key={c}>{f ? (
+                    <input aria-label={f.label} type={f.type === "number" ? "text" : f.type} inputMode={f.type === "number" ? "decimal" : undefined}
+                      value={draft[c] ?? ""} onChange={(e) => setDraft({ ...draft, [c]: e.target.value })}
+                      onKeyDown={(e) => { if (e.key === "Enter") saveEdit(r.id); if (e.key === "Escape") setEditing(null); }} />
+                  ) : cell(c, r[c])}</td>;
+                })}
+                <td className="actions">
+                  <button disabled={busy} onClick={() => saveEdit(r.id)}>Guardar</button>
+                  <button className="ghost" disabled={busy} onClick={() => setEditing(null)}>Cancelar</button>
+                </td>
+              </tr>
+            ) : (
+              <tr key={r.id}>
+                {cols.map((c) => <td key={c}>{cell(c, r[c])}</td>)}
+                <td className="actions">
+                  <button className="ghost" disabled={busy || editing !== null} onClick={() => startEdit(r)}>Editar</button>
+                  <button className="ghost danger" disabled={busy || editing !== null} onClick={() => remove(r)}>Eliminar</button>
+                </td>
+              </tr>
+            ))}</tbody>
           </table>
         )}
         {pages > 1 && (

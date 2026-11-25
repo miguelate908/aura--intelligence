@@ -3,10 +3,11 @@ from sqlalchemy.orm import Session
 
 from database import get_db
 from models import Company, Product
-from schemas import ProductCreate
+from schemas import ProductCreate, ProductUpdate
 
 from services.relationships import create_relationship
 from services.events import create_event
+from services.records import delete_record, update_record
 from core.security import get_current_user, require_company_access
 from models import User
 
@@ -78,7 +79,7 @@ def get_products(
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    return db.query(Product).filter(Product.company_id == current_user.company_id).all()
+    return db.query(Product).filter(Product.company_id == current_user.company_id).order_by(Product.id).all()
 
 
 @router.get("/{product_id}")
@@ -100,3 +101,22 @@ def get_product(
         )
 
     return product
+
+
+@router.put("/{record_id}")
+def update_product(
+    record_id: int,
+    payload: ProductUpdate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    return update_record(db, Product, record_id, current_user.company_id, payload.model_dump(), "product", "Producto no encontrado")
+
+
+@router.delete("/{record_id}", status_code=204)
+def delete_product(
+    record_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    delete_record(db, Product, record_id, current_user.company_id, "product", "Producto no encontrado")
