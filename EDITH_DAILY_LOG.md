@@ -1,5 +1,30 @@
 # EDITH — Registro diario
 
+## 2026-11-25 — Correo de autorización para solicitudes anteriores
+
+**Rama:** `claude/determined-hamilton-ljygsk`, recreada desde `master`. No está fusionada. No se envió ningún correo.
+
+**Cambio:** `docs/comercial/KIT-VENTAS.md` §9 (nuevo) incluye el correo para quienes enviaron el formulario de demo antes de que se actualizara la política de privacidad. Esas personas aceptaron la política anterior, que preveía el borrado a los 7 días.
+
+El correo hace dos cosas:
+
+- Responde a su solicitud de demostración.
+- Pide una autorización explícita («Sí, autorizo») para conservar sus datos en el registro de seguimiento comercial hasta 12 meses después del último contacto.
+
+**Reglas del procedimiento:**
+
+- Se envía un solo correo, sin insistir.
+- Si la persona no responde, sus datos no se copian al registro.
+- Cada autorización se anota en «Notas» del registro y su respuesta se guarda como prueba (Ley 1581).
+- El correo de notificación se usa solo para atender la solicitud original.
+
+**Pendiente de tu parte:**
+
+- Completar los corchetes.
+- Comprobar que la política nueva ya esté publicada.
+- Hacer revisar el correo junto con la política.
+- Enviarlo tú: Claude no envía correos.
+
 ## 2026-11-25 — Logs de Render: el build compila el frontend en cada despliegue
 
 **Alcance.** Revisión con la API de Render (clave de solo lectura del usuario) del servicio `aura-intelligence` (`srv-dc0t08jl550s73bge5eg`, rama `master`, despliegue automático activado), hecha entre las 21:58 y las 22:01 UTC. Responde a lo que quedó **no verificado** en la entrada «Verificación externa de producción tras el PR #24».
@@ -9,6 +34,7 @@
 | Commit | PR | Vite | Bundle compilado | `npm ci` |
 |---|---|---|---|---|
 | `09ed1ce` | #24 | 5.4.21 | `index-xmmbltQo.js` y `index-D6PzXnmm.css` | 4 vulnerabilidades (3 moderadas, 1 alta) |
+| `05bf16f` | #26 | 6.4.6 | `index-G1M1fVdK.js` y `index-BsvzXWJM.css` | 0 vulnerabilidades |
 | `935d9ff` | #30 | 6.4.6 | `index-wBjVE1yG.js` y `index-BsvzXWJM.css` | 0 vulnerabilidades |
 | `f100ec8` | #33 | 6.4.6 | `index-wBjVE1yG.js` y `index-BsvzXWJM.css` (sin cambios en `frontend/`) | 0 vulnerabilidades |
 
@@ -17,7 +43,7 @@
 - `tsc --noEmit` y `vite build` terminan sin errores (59 módulos). Después, `pip install -r backend/requirements.txt` instala Python 3.11.9.
 - Cada build dura alrededor de un minuto. Lo siguen `Build successful`, el arranque de `uvicorn` con `Application startup complete` y `Your service is live` en `https://www.edith-intelligence.com`.
 
-**Producción** (22:01 UTC): `/` carga `index-wBjVE1yG.js`; `/health`, `/login` y `/auth/config` responden 200. El bundle de #24 (`index-xmmbltQo.js`) devuelve 404 desde el despliegue de #30. Es lo esperado: Render compila en cada despliegue y no guarda bundles anteriores. Por eso la verificación de las 21:32 UTC (activo `d76d43a`, bundle `xmmbltQo`) era correcta en su momento.
+**Producción** (22:01 UTC): `/` carga `index-wBjVE1yG.js`; `/health`, `/login` y `/auth/config` responden 200. El bundle de #24 (`index-xmmbltQo.js`) devuelve 404. Dejó de servirse con el despliegue de #26, que pasó a Vite 6 (ver «Despliegue en Render con Vite 6 y React Router 7 (PR #26)»); #30 cambió `frontend/src` y generó el bundle actual. Es lo esperado: Render compila en cada despliegue y no guarda bundles anteriores. Por eso la verificación de las 21:32 UTC (activo `d76d43a`, bundle `xmmbltQo`) era correcta en su momento.
 
 **Observación menor.** Durante el arranque, una petición `HEAD /` desde `127.0.0.1` recibió `405 Method Not Allowed`. Render da el servicio por activo mediante `GET /health`, que responde 200, así que no afecta al despliegue. Solo importaría para un monitor externo que comprobara la disponibilidad con `HEAD /`.
 
@@ -40,6 +66,11 @@
 Ningún cliente ve estos identificadores.
 
 **Plantilla `docs/comercial/plantillas/registro-oportunidades.xlsx`.** Se actualizó después de que se fusionara el PR #30, que modificaba el mismo archivo. Se editaron directamente los XML internos, sin regenerar el libro. Cambian el título de «Leyenda», el texto sobre referidos de contadores y el autor de los comentarios de cuatro celdas, que pasa de «AURA» a «EDITH». Al comparar con openpyxl, solo difieren esas 2 celdas y esos autores. Las 2.325 fórmulas, las 8 validaciones y el formato condicional siguen iguales. LibreOffice recalculó el libro sin errores.
+## 2026-11-25 — Despliegue en Render con Vite 6 y React Router 7 (PR #26)
+
+El PR #26 se fusionó en `master` (`05bf16f`): `vite ^6.4.6`, `@vitejs/plugin-react ^5.2.0`, `react-router-dom ^7.18.7`, `node:22-alpine` en el `Dockerfile` y `backend/static` en `.dockerignore`. Con esto, `npm audit` en `frontend/` reporta 0 vulnerabilidades. La rama `claude/magical-cerf-238ltt` se borró después de la fusión.
+
+El responsable confirmó que el despliegue automático en Render de esa fusión salió bien. Queda cerrado el pendiente de la entrada «Actualización de dependencias del frontend»: el build de Render con Node 22.22.0 compila el sitio con Vite 6 y producción lo sirve. La confirmación es del responsable; desde esta sesión no hay acceso a Render.
 
 ## 2026-11-25 — `pytest` funciona sin `python -m`
 

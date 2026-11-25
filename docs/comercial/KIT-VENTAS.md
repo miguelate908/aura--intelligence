@@ -210,3 +210,39 @@ Revisa la hoja cada lunes: ninguna oportunidad activa debe quedar sin "próximo 
 1. Completa los datos entre `[corchetes]`: partes, identificación, fecha y ciudad (también la del centro de conciliación de la cláusula 13).
 2. Confirma con tu contador si la comisión se calcula antes o después de IVA, qué documento te debe entregar el referidor y qué retenciones aplicas.
 3. Registra cada contador en la hoja de oportunidades (§7) con canal `referido-contador` y estado `alianza propuesta` → `alianza firmada`. Hasta que firme, es un prospecto de alianza, no un socio.
+
+---
+
+## 9. Correo para pedir autorización a solicitudes anteriores al 25-11-2026
+
+**A quién aplica.** Solo a quien envió el formulario de demo **antes** de que se publicara la política de privacidad actualizada (sección Conservación). Esas personas aceptaron la política anterior, que decía que su solicitud se borraba a los 7 días. Sin su autorización no se copian al registro de oportunidades.
+
+**Cuándo enviarlo.**
+
+- **Solicitud que aún está en el panel** (menos de 7 días): responde a su solicitud y pide la autorización en el mismo correo.
+- **Solicitud que ya se borró del panel:** solo puedes escribir si conservas el correo de notificación. Responde a la solicitud que hizo; es la finalidad para la que dio sus datos. No uses ese correo para nada más.
+- Envía **un solo correo**. Si no responde, no insistas y no copies sus datos al registro.
+
+**Asunto:** Tu solicitud de demostración de AURA Intelligence
+
+> Hola [nombre],
+>
+> Gracias por pedir una demostración de AURA el [fecha de la solicitud]. Me gustaría mostrarte cómo [empresa] podría tener sus clientes, productos y bodegas en un solo lugar, como complemento de su software contable. ¿Te sirve una llamada de 30 minutos el [día] a las [hora], o prefieres proponer otro momento?
+>
+> Antes de seguir, necesito tu autorización para una cosa. Cuando nos escribiste, nuestra política decía que borraríamos tu solicitud a los 7 días. Para poder darte seguimiento, queremos guardar tu nombre, cargo, empresa, sector, tamaño y necesidad en nuestro registro privado de seguimiento comercial. Los conservaríamos hasta 12 meses después de nuestro último contacto y luego los borraríamos. No los compartimos con terceros. Si en algún momento quieres que los borremos, basta con escribirnos.
+>
+> Si estás de acuerdo, respóndeme **«Sí, autorizo»**. Si no respondes o prefieres que no los guardemos, no los guardaremos, y eliminaré también este correo cuando termine de atender tu solicitud.
+>
+> Puedes leer la política actualizada en [dirección de la web]/privacidad.
+>
+> Un saludo,
+> [tu nombre]
+> AURA Intelligence · [correo de contacto]
+
+**Después de enviarlo:**
+
+1. **Si responde «Sí, autorizo» (o una aceptación igual de clara):** copia la oportunidad al registro (§7). En «Notas» escribe `Autorización de conservación: [fecha], por correo` y guarda su respuesta como prueba (Ley 1581 de 2012). La «Fecha del último contacto» es la de su respuesta.
+2. **Si pide una demo pero no responde sobre la autorización:** atiende la demo, pero no la copies al registro hasta que lo autorice. Puedes pedírselo de nuevo en la llamada y anotar la respuesta.
+3. **Si no responde o dice que no:** no la copies. Borra el correo de notificación cuando termine de atender la solicitud.
+
+> Antes de enviarlo, completa los `[corchetes]` y revisa que la política actualizada ya esté publicada en la web. Este correo forma parte del borrador de política y debe revisarlo el mismo profesional que revise la política.
