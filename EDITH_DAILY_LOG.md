@@ -37,7 +37,7 @@
 **Pendientes para ti.**
 
 1. ~~Decidir entre A, B o C.~~ Hecho: opción A aprobada el 25-11-2026.
-2. Definir por escrito si el Piloto cuenta para la comisión de referidos y en qué plazo se paga.
+2. ~~Definir por escrito si el Piloto cuenta para la comisión de referidos y en qué plazo se paga.~~ Hecho el 25-11-2026: el Piloto no cuenta, y la comisión se paga en los 30 días siguientes a cada pago del cliente (`PLAN-COMERCIAL.md` §6, `KIT-VENTAS.md` §1). Falta redactar el acuerdo escrito con cada contador y validarlo con un profesional.
 3. Revisar las cifras en las webs de Siigo y Alegra antes de citarlas a un prospecto.
 4. La rama `claude/laughing-curie-leps3u` cambia la marca a "EDITH Intelligence". Este cambio conserva "AURA", igual que `master`. Si fusionas ambas, habrá que unificar el nombre en las secciones nuevas.
 

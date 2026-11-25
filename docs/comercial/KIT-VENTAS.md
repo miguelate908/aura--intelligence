@@ -41,9 +41,9 @@ Un contador es un **prospecto de alianza**, no un cliente ni un socio, hasta que
 > Justo por eso. No cambian nada de lo que ya usan contigo. Lo que ordenamos es la parte operativa que no está en el contable, o que está repetida en varios Excel: listas de clientes, catálogos de productos, un archivo por bodega. Si el software les permite exportar a Excel, cargamos ese archivo también.
 
 **Si pregunta cuánto gana:**
-> El 20 % de lo que el cliente pague el primer año. Por ejemplo, un cliente en el Plan Profesional mensual paga COP 8.280.000 el primer año; tu parte serían COP 1.656.000. En el Esencial mensual serían COP 696.000. Se paga cuando el cliente paga, y te lo dejo por escrito antes de que me presentes a nadie.
+> El 20 % de lo que el cliente pague por su plan el primer año; el piloto inicial no cuenta. Por ejemplo, un cliente en el Plan Profesional mensual paga COP 8.280.000 el primer año; tu parte serían COP 1.656.000. En el Esencial mensual serían COP 696.000. Te pago tu parte en los 30 días siguientes a cada pago que hace el cliente, y si el cliente no paga no hay comisión. Te lo dejo por escrito antes de que me presentes a nadie.
 
-*(Cálculo: 20 % × mensualidad × 12. Si el cliente paga anual —10 mensualidades— la base es menor: COP 1.380.000 en Profesional y COP 580.000 en Esencial. Antes del primer referido, define por escrito si el Piloto cuenta para la comisión y en qué plazo pagas; `PLAN-COMERCIAL.md` no lo fija todavía.)*
+*(Cálculo: 20 % × mensualidad × 12. Si el cliente paga anual —10 mensualidades— la base es menor: COP 1.380.000 en Profesional y COP 580.000 en Esencial. Condiciones aprobadas el 25-11-2026 en `PLAN-COMERCIAL.md` §6: el Piloto no cuenta para la comisión, y cada pago al contador se hace en los 30 días siguientes a cada pago recibido del cliente.)*
 
 **Cierre de la conversación con el contador:** pide que te presente a **una** pyme concreta que viva el problema, no una lista. Registra al contador en la hoja de oportunidades con canal `referido-contador`.
 
