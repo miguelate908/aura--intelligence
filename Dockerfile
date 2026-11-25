@@ -13,7 +13,8 @@ WORKDIR /srv/backend
 COPY backend/requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 COPY backend/ ./
-COPY --from=web /web/dist /srv/frontend/dist
+# Vite compila en ../backend/static (ver frontend/vite.config.ts); reemplaza la copia versionada
+COPY --from=web /backend/static ./static
 RUN useradd -m app && chown -R app /srv
 USER app
 EXPOSE 8000

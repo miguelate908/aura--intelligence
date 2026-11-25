@@ -31,7 +31,15 @@ La supervisión de hoy encontró 4 avisos de `npm audit` en `frontend/` (1 alto,
 
 `@vitejs/plugin-react` 5 exige Node `^20.19.0 || >=22.12.0`; Vite 6 admite `^20`. La imagen `node:20-alpine` trae hoy Node 20.20.2, y con esa versión `npm ci` y el build salieron idénticos (mismos hashes) sin avisos de engine, así que era compatible. Aun así, con aprobación del responsable, la imagen se cambió a **`node:22-alpine`**, porque Node 20 terminó su soporte en abril de 2026. Con Node 22 (22.23.5), `npm ci`, `npm run build` y `npm audit` (0 vulnerabilidades) pasan sin avisos de engine; plugin-react 5 exige `>=22.12.0`.
 
-Observación aparte, también previa: el `Dockerfile` copia `/web/dist`, pero `vite.config.ts` compila en `../backend/static`, así que esa etapa no encuentra `dist`. No se tocó en esta tarea.
+### Ruta del build en el `Dockerfile`
+
+Error previo: la segunda etapa copiaba `COPY --from=web /web/dist /srv/frontend/dist`, pero `vite.config.ts` compila en `../backend/static` (en la etapa `web`, `/backend/static`). Como `/web/dist` no existe, `docker build` fallaba en ese paso. Además, FastAPI sirve `static/` desde `/srv/backend`, no desde `/srv/frontend/dist`.
+
+- `Dockerfile`: ahora `COPY --from=web /backend/static ./static`, después de `COPY backend/ ./`, para que el sitio recién compilado sustituya la copia versionada.
+- `README-ENTORNO.md`: decía que el build genera `frontend/dist`; ahora indica `backend/static/`.
+- `vite.config.ts` no cambió, porque Render depende de `backend/static/`.
+
+Verificación: `docker build` completo. Solo para esta prueba se usó una copia del Dockerfile que añade el certificado del proxy del entorno de verificación; el Dockerfile del repositorio no lo lleva. `npm ci` y `npm run build` corrieron en `node:22-alpine`, y la imagen final contiene los mismos `index-G1M1fVdK.js` e `index-BsvzXWJM.css` que `backend/static/`. Con el contenedor en marcha (SQLite), `/`, `/login`, `/privacidad`, `/app/customers`, `/health` y el JS enlazado desde `index.html` respondieron 200.
 
 ## 2026-11-25 — Precisión de precios en CSV y registro público en Docker
 
