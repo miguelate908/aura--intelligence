@@ -1,5 +1,25 @@
 # EDITH — Registro diario
 
+## 2026-11-25 — `backend/static` sale de git
+
+El usuario confirmó que el despliegue en Render con el build nuevo funcionó y autorizó quitar `backend/static` del repositorio.
+
+**Cambio.**
+- `git rm -r --cached backend/static` y `backend/static/` en `.gitignore`. Se quitaron `index.html` y dos recursos de `assets/`.
+- `backend/main.py`: monta `/static` solo si la carpeta existe y, si no, registra un aviso. Sin sitio compilado, `/` responde con el mensaje de la API y las rutas de React devuelven 404 con `Sitio no compilado. Ejecuta 'npm run build' en frontend/.` Antes, sin la carpeta, la aplicación no arrancaba.
+- `backend/tests/test_app_startup.py`: una prueba arranca con un sitio compilado simulado en una carpeta temporal y otra sin sitio. Ya no dependen de que exista `backend/static`.
+- `docs/DESPLIEGUE.md` (sección 6), `README-ENTORNO.md` y los comentarios de `render.yaml` y `Dockerfile`, actualizados.
+
+**Verificación local** (Python 3.11, Node 22):
+
+| Verificación | Resultado |
+|---|---|
+| `python -m pytest -q` sin `backend/static` | 34 passed |
+| Clon limpio de la rama: no contiene `backend/static` | correcto |
+| `buildCommand` y `startCommand` de `render.yaml` sobre ese clon | `/`, `/login`, `/app/customers`, `/health` y recursos de `/static/assets/` → 200 |
+
+**Para volver atrás:** revertir el commit que quitó la carpeta.
+
 ## 2026-11-25 — Plantilla del registro de oportunidades
 
 **Rama:** `claude/determined-hamilton-ljygsk`, recreada desde `master` (`09ed1ce`). No está fusionada.
