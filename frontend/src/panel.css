@@ -43,6 +43,7 @@
 .panel tbody tr:hover{background:rgba(59,130,246,.07)}
 .panel .bar{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:12px}
 .panel .bar input{max-width:280px}
+.panel .bar button{margin-left:auto}
 .panel .pager{display:flex;gap:10px;align-items:center;justify-content:flex-end;margin-top:12px}
 .panel .log{display:flex;flex-direction:column;gap:10px;max-height:52vh;overflow-y:auto;margin-bottom:14px}
 .panel .msg{padding:10px 14px;border-radius:12px;max-width:80%;white-space:pre-wrap}

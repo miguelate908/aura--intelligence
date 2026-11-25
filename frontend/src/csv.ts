@@ -26,3 +26,15 @@ export function parseCsv(text: string): string[][] {
 
 export const normalize = (s: string) =>
   s.normalize("NFD").replace(/[̀-ͯ]/g, "").trim().toLowerCase();
+
+// Escritor CSV para exportar: separador ";" y BOM para que Excel en español lo abra con tildes y columnas.
+// Neutraliza fórmulas (=, @, +, -) anteponiendo un apóstrofo; los teléfonos y números como "+57 300 1234567" o "-5" no se alteran.
+export function csvCell(v: unknown): string {
+  let s = v == null ? "" : String(v);
+  if (/^[=@\t\r]/.test(s) || (/^[+-]/.test(s) && !/^[+-][\d\s().,-]*$/.test(s))) s = "'" + s;
+  return /[;"\r\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+}
+
+export function toCsv(header: string[], rows: unknown[][]): string {
+  return "﻿" + [header, ...rows].map((r) => r.map(csvCell).join(";")).join("\r\n") + "\r\n";
+}
