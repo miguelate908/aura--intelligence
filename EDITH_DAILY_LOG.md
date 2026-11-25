@@ -1,5 +1,27 @@
 # EDITH — Registro diario
 
+## 2026-11-25 — Dockerfile: el sitio compilado no llegaba a la imagen
+
+**Rama:** `claude/admiring-wright-nba927` (desde `master` en `559e1f5`; sin fusión)
+
+**Problema.** `frontend/vite.config.ts` compila en `build.outDir: "../backend/static"`. En la etapa `web` del `Dockerfile` (`WORKDIR /web`), eso escribe en `/backend/static`, pero la etapa final copiaba `COPY --from=web /web/dist /srv/frontend/dist`. Además, `backend/main.py` sirve `static/` relativo a `/srv/backend`, no `/srv/frontend/dist`.
+
+**Fallo reproducido.** `docker build` sobre `master` falla en ese paso:
+
+```
+COPY --from=web /web/dist /srv/frontend/dist
+ERROR: failed to calculate checksum ...: "/web/dist": not found
+```
+
+**Corrección.** Después de `COPY backend/ ./`, el `Dockerfile` ahora hace `COPY --from=web /backend/static /srv/backend/static`, así que la imagen sirve el sitio recién compilado y no depende de la copia versionada. `vite.config.ts` no cambia, porque Render sigue sirviendo `backend/static` desde el repositorio.
+
+**Verificación.**
+- `docker build` termina sin errores. Para que el contenedor de pruebas pudiera salir a npm y PyPI a través de su proxy, se usó una copia temporal del `Dockerfile` con el certificado del proxy añadido; las instrucciones del proyecto no cambiaron.
+- Dentro de la imagen, `static/index.html` hace referencia a `assets/index-xmmbltQo.js`, el archivo generado durante la compilación. Con `uvicorn` en marcha, `GET /` y `GET /static/assets/index-xmmbltQo.js` devuelven HTTP 200.
+- `docker-compose.yml/docker-compose.yml` (solo Postgres), `docker-compose.prod.yml` (`build: .`) y `docs/DESPLIEGUE.md` no mencionaban `/srv/frontend/dist`. `README-ENTORNO.md` decía que `npm run build` genera `frontend/dist`; se corrigió a `backend/static`.
+
+**Pendiente.** El JavaScript versionado en `backend/static/assets/` (`index-CezIjX0-.js`) no coincide con el que genera hoy el código de `frontend/` (`index-xmmbltQo.js`). Es posible que lo que sirve Render no corresponda al último código del frontend. Se recomienda recompilar con `npm run build` y versionar `backend/static` en un cambio separado. Por otra parte, la copia versionada sigue entrando en la imagen con `COPY backend/ ./`, por lo que el JavaScript antiguo queda como archivo huérfano. No afecta al funcionamiento, porque `index.html` apunta al nuevo.
+
 ## 2026-11-25 — Precisión de precios en CSV y registro público en Docker
 
 **Precios con tres decimales.** Si un producto tiene un precio numérico de `12.345`, el panel lo exporta como `12,345`. Al reimportar ese texto, el panel lo interpreta como `12345`. La API aplica la misma convención a los precios enviados como texto. El caso es ambiguo porque un único separador seguido de tres cifras también representa miles. Se comprobó que el importador convierte tanto `12,345` como `12.345` en `12345`, mientras que `1.250,75` se convierte en `1250.75`. Si se admiten precios con tres decimales, queda por definir un formato que conserve ese valor en la exportación y posterior importación. [Informe del 23 de noviembre](https://github.com/miguelate908/aura--intelligence/blob/5ba973fa28a0e14f4391b1107e3f431a19d44b20/docs/supervision/2026-11-23.md)
