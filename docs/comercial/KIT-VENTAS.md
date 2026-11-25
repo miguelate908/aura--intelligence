@@ -164,7 +164,7 @@ Revisa la hoja cada lunes: ninguna oportunidad activa debe quedar sin "próximo 
 
 ## 8. Borrador de acuerdo de referidos (contadores y consultores)
 
-> **Borrador para revisión.** No es asesoría legal ni tributaria. Hazlo revisar por tu contador o abogado antes de firmar el primero (ver `PLAN-COMERCIAL.md` §5). Las condiciones de comisión son las aprobadas el 25-11-2026 (`PLAN-COMERCIAL.md` §6). Lo que está entre `[corchetes]` debes completarlo o decidirlo; las cifras marcadas como *sugerido* no están aprobadas.
+> **Borrador para revisión.** No es asesoría legal ni tributaria. Hazlo revisar por tu contador o abogado antes de firmar el primero (ver `PLAN-COMERCIAL.md` §5). Las condiciones de comisión son las aprobadas el 25-11-2026 (`PLAN-COMERCIAL.md` §6); la vigencia del registro (90 días), la duración (un año) y el preaviso (30 días) también quedaron aprobados ese día. Lo que está entre `[corchetes]` debes completarlo o decidirlo; las cifras marcadas como *sugerido* no están aprobadas.
 
 > **ACUERDO DE REFERIDOS — AURA INTELLIGENCE**
 >
@@ -172,7 +172,7 @@ Revisa la hoja cada lunes: ninguna oportunidad activa debe quedar sin "próximo 
 >
 > **1. Objeto.** EL REFERIDOR podrá presentar a AURA empresas interesadas en sus servicios. AURA pagará una comisión por cada empresa referida que contrate y pague un plan, en los términos de este acuerdo.
 >
-> **2. Cómo se registra un referido.** El referido existe solo cuando EL REFERIDOR envía a AURA, por escrito (correo o WhatsApp), el nombre de la empresa y de la persona de contacto, y AURA confirma por escrito que esa empresa no estaba ya en su registro de oportunidades. Si la empresa ya estaba registrada, no se genera comisión. El registro vale por [90 días — *sugerido*]: si en ese plazo la empresa no contrata un plan, el referido vence. EL REFERIDOR puede volver a registrarlo después.
+> **2. Cómo se registra un referido.** El referido existe solo cuando EL REFERIDOR envía a AURA, por escrito (correo o WhatsApp), el nombre de la empresa y de la persona de contacto, y AURA confirma por escrito que esa empresa no estaba ya en su registro de oportunidades. Si la empresa ya estaba registrada, no se genera comisión. El registro vale por **noventa (90) días**: si en ese plazo la empresa no contrata un plan, el referido vence. EL REFERIDOR puede volver a registrarlo después.
 >
 > **3. Comisión.** AURA pagará a EL REFERIDOR el **veinte por ciento (20 %)** de los valores efectivamente pagados por la empresa referida por su **Plan Esencial o Plan Profesional**, mensual o anual, durante los **doce (12) primeros meses** contados desde el inicio de ese plan. La base de cálculo excluye el IVA [*confirmar con tu contador*].
 >
@@ -190,7 +190,7 @@ Revisa la hoja cada lunes: ninguna oportunidad activa debe quedar sin "próximo 
 >
 > **10. No exclusividad.** Ninguna parte tiene exclusividad. EL REFERIDOR puede recomendar otros servicios y AURA puede tener otros referidores.
 >
-> **11. Duración y terminación.** Este acuerdo dura [un (1) año — *sugerido*] y se renueva automáticamente por períodos iguales, salvo aviso escrito de cualquiera de las partes con [30 días — *sugerido*] de anticipación. Si el acuerdo termina, AURA seguirá pagando la comisión de los referidos que ya hayan contratado un plan, hasta completar sus doce primeros meses.
+> **11. Duración y terminación.** Este acuerdo dura **un (1) año** y se renueva automáticamente por períodos iguales, salvo aviso escrito de cualquiera de las partes con **treinta (30) días** de anticipación. Si el acuerdo termina, AURA seguirá pagando la comisión de los referidos que ya hayan contratado un plan, hasta completar sus doce primeros meses.
 >
 > **12. Cambios.** Cualquier cambio en la comisión o en estas condiciones debe constar por escrito y firmado por ambas partes. Los cambios no afectan a los referidos que ya hayan contratado un plan.
 >
@@ -201,6 +201,6 @@ Revisa la hoja cada lunes: ninguna oportunidad activa debe quedar sin "próximo 
 > EL REFERIDOR: [nombre], [C.C./NIT], firma, fecha.
 
 **Antes de enviarlo a un contador:**
-1. Decide los valores marcados como *sugerido* (vigencia del registro, duración, preaviso).
+1. Decide el único valor que sigue como *sugerido*: el plazo de arreglo directo de la cláusula 13 (30 días), y si las diferencias van a la jurisdicción ordinaria o a un centro de conciliación.
 2. Confirma con tu contador si la comisión se calcula antes o después de IVA, qué documento te debe entregar el referidor y qué retenciones aplicas.
 3. Registra cada contador en la hoja de oportunidades (§7) con canal `referido-contador` y estado `alianza propuesta` → `alianza firmada`. Hasta que firme, es un prospecto de alianza, no un socio.
