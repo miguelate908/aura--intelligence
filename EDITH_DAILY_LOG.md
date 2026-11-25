@@ -20,6 +20,20 @@ El usuario confirmó que el despliegue en Render con el build nuevo funcionó y 
 
 **Para volver atrás:** revertir el commit que quitó la carpeta.
 
+## 2026-11-25 — Docker verificado y `backend/static` recompilado
+
+**Rama:** `claude/admiring-wright-nba927` (sin fusión). PR #24.
+
+**Contexto.** En `master`, el `Dockerfile` copiaba `COPY --from=web /web/dist /srv/frontend/dist`. Esa ruta no existe, porque Vite compila en `../backend/static`, que en la etapa `web` es `/backend/static`. Sobre `559e1f5`, `docker build` fallaba en ese paso con `"/web/dist": not found`. El PR #23 ya corrigió esa línea (`COPY --from=web /backend/static ./static`), pero no se probó con Docker. Este PR se quedó con esa versión y añade la verificación.
+
+**Verificación con Docker** (sobre el `Dockerfile` de `master`; para que el contenedor de pruebas pudiera salir a npm y PyPI por el proxy de red, se usó una copia temporal con el certificado del proxy):
+- `docker build` termina sin errores.
+- Dentro de la imagen, `static/index.html` apunta a `assets/index-xmmbltQo.js`, el archivo compilado en la etapa `web`.
+- Con el contenedor en marcha, `GET /` y `GET /static/assets/index-xmmbltQo.js` devuelven HTTP 200.
+- `docker-compose.prod.yml` (`build: .`), `docker-compose.yml/docker-compose.yml` (solo Postgres) y `docs/DESPLIEGUE.md` no mencionan `/srv/frontend/dist`.
+
+**Recompilación de `backend/static`.** Se recompiló el frontend con `npm ci && npm run build` (incluye `tsc --noEmit`) y se versionó el resultado: `index-CezIjX0-.js` pasa a ser `index-xmmbltQo.js`. Es el mismo archivo que generan Docker (Node 20) y Node 22, así que el resultado es reproducible. Como ya se indicó en la entrada anterior, la copia previa no estaba desactualizada. El único texto distinto son los dos logotipos SVG incrustados, que en la copia anterior tenían saltos de línea CRLF porque se compiló en Windows. El resto son nombres del minificador. `index.html` pasa también de CRLF a LF. El CSS no cambia. El comportamiento del sitio no varía.
+
 ## 2026-11-25 — Render compila el frontend en cada despliegue
 
 **Riesgo.** `render.yaml` desplegaba con `rootDir: backend` y solo `pip install`. Producción servía el `backend/static` guardado en git, así que un cambio en `frontend/src` sin `npm run build` ni commit de `backend/static` dejaba el sitio desactualizado sin aviso.
@@ -45,6 +59,49 @@ El bundle compilado aquí tiene otro hash que el de `master`, pero la diferencia
 **Pendiente, con autorización del usuario.**
 - Aplicar el cambio en Render y revisar el primer log de build (ver `docs/DESPLIEGUE.md`, sección 6). La documentación de Render no confirma de forma explícita que el runtime Python traiga Node; si falta, el build falla y Render mantiene la versión anterior.
 - Después de un despliegue correcto, dejar de guardar `backend/static` en git. Antes hay que hacer que `backend/main.py` arranque aunque falte la carpeta. **No se borró nada.**
+
+## 2026-11-25 — Posicionamiento frente a Siigo/Alegra y propuesta sobre el Plan Esencial
+
+**Rama:** `claude/determined-hamilton-ljygsk`, creada desde `master` (`559e1f5`). Está sin fusionar y requiere tu revisión. No se envió ni se publicó nada.
+
+**Origen.** Es la sección C–E de la investigación comercial del 25 de noviembre. Esa sección está en la rama `claude/laughing-curie-m34ua3`, que no se ha fusionado en `master`, y por eso no aparece en este archivo. Allí se detectó que el Plan Esencial (COP 290.000/mes) cuesta más que los planes pyme de Siigo y Alegra, lo que facilita la objeción "¿por qué pago más que por Siigo?".
+
+**Verificación de precios (25-11-2026).**
+
+- Las páginas oficiales de Siigo `siigo.com/planes/`, `/precios/` y `/planes-precios/` devolvieron HTTP 404. Las de Alegra `alegra.com/colombia/precios/` y `/contabilidad/precios/` cargaron, pero no mostraban planes. No se pudo confirmar ningún precio con el proveedor.
+- Hay dos fuentes de terceros que coinciden entre sí: blog.alegra.com/colombia/alegra-vs-siigo-colombia/, actualizada el 16-07-2026, y guiadesoftware.com/blog/mejor-software-contabilidad-colombia, actualizada el 11-11-2026.
+  - Siigo Nube Profesional: COP 145.993/mes con pago anual.
+  - Siigo Nube Emprendedor: COP 191.327/mes con 3 usuarios, y COP 2.869.900/año a precio de lista.
+  - Alegra: Emprendedor COP 74.900, Pyme COP 163.900, Pro COP 250.900 y Plus COP 319.900 al mes. Con pago anual hay un 25 % menos.
+  - Ninguna de las dos fuentes indica el IVA.
+- El rango anterior, COP 89.000–191.000, no recoge los extremos. El plan de entrada de Alegra cuesta menos, y Alegra Pro y Plus cuestan lo mismo o más que el Esencial. Además, Alegra Pyme ya incluye 2 bodegas.
+
+**Cambios propuestos.**
+
+- `docs/comercial/PLAN-COMERCIAL.md`:
+  - §2: indica que el ICP ya usa Siigo o Alegra.
+  - §3.1 (nuevo): posicionamiento como complemento. Recoge lo que no se promete, como la integración, y cuándo descalificar.
+  - §4.1 (nuevo): tabla de precios de referencia con su fuente y fecha, las opciones A, B y C, y una recomendación.
+  - §6.3: los contadores figuran como prospectos de alianza.
+- `docs/comercial/KIT-VENTAS.md`:
+  - §0 (nuevo): mensaje base.
+  - §1: nueva variante para contadores, con respuestas de seguimiento y el cálculo de la comisión del 20 %.
+  - §5: tres objeciones nuevas: "¿por qué pago más que por Siigo/Alegra?", "Siigo/Alegra ya maneja inventario" y "¿se conecta con mi Siigo/Alegra?".
+
+**Recomendación de precios: opción A, aprobada por ti el 25-11-2026; no cambia ningún precio.** La opción A consiste en mantener el Esencial en COP 290.000, ofrecerlo después del Piloto y del Profesional, y presentarlo como servicio mensual de datos ordenados que complementa el software contable.
+
+- Hoy no hay datos de ventas que justifiquen bajarlo.
+- El descuento de fundador congelaría de por vida un precio más bajo.
+- Regla de revisión: si al menos 3 de las primeras 10 demos se pierden por precio frente a Siigo o Alegra, se evalúa un plan inferior sin servicio (opción C).
+
+**Pendientes para ti.**
+
+1. ~~Decidir entre A, B o C.~~ Hecho: opción A aprobada el 25-11-2026.
+2. ~~Definir por escrito si el Piloto cuenta para la comisión de referidos y en qué plazo se paga.~~ Hecho el 25-11-2026: el Piloto no cuenta, y la comisión se paga en los 30 días siguientes a cada pago del cliente (`PLAN-COMERCIAL.md` §6, `KIT-VENTAS.md` §1). Borrador del acuerdo de referidos añadido en `KIT-VENTAS.md` §8. Antes de firmar el primero falta: validarlo con un contador o abogado; completar los datos de cada acuerdo; el 25-11-2026 se aprobaron la vigencia del registro (90 días), la duración (un año), el preaviso (30 días) y la cláusula de controversias (30 días de arreglo directo y luego centro de conciliación); y confirmar el tratamiento del IVA y las retenciones.
+3. Revisar las cifras en las webs de Siigo y Alegra antes de citarlas a un prospecto.
+4. La rama `claude/laughing-curie-leps3u` cambia la marca a "EDITH Intelligence". Este cambio conserva "AURA", igual que `master`. Si fusionas ambas, habrá que unificar el nombre en las secciones nuevas.
+
+**Clientes confirmados:** ninguno. **Ingresos registrados:** COP 0. Los contadores mencionados son prospectos de alianza, no clientes.
 
 ## 2026-11-25 — Precisión de precios en CSV y registro público en Docker
 
