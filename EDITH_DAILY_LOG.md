@@ -1,5 +1,11 @@
 # EDITH — Registro diario
 
+## 2026-11-25 — `pytest` funciona sin `python -m`
+
+`pytest -q` desde `backend/` fallaba al recoger las pruebas (`No module named 'database'`), porque el ejecutable `pytest` no añade la carpeta actual a la ruta de importación. Con `python -m pytest` sí funcionaba, y así lo ejecuta el CI.
+
+Nuevo `backend/pytest.ini` con `pythonpath = .` y `testpaths = tests`. Con pytest 9.2.0 y Python 3.11: `pytest -q` desde `backend/`, `python -m pytest -q` y `pytest -q backend` desde la raíz → 34 passed en los tres casos. El CI no cambia.
+
 ## 2026-11-25 — Política de privacidad: conservación del registro de oportunidades
 
 **Rama:** `claude/determined-hamilton-ljygsk`, recreada desde `master`. No está fusionada.
@@ -110,6 +116,46 @@ Contiene cinco hojas:
 **Pendiente de tu parte:** las solicitudes de demo se borran a los 7 días según la política de privacidad. Si las copias a esta hoja las conservas más tiempo, primero actualiza la política o define un plazo para borrar los registros inactivos. No subas al repositorio la copia con datos reales.
 
 **Clientes confirmados:** ninguno. **Ingresos registrados:** COP 0.
+## 2026-11-25 — Actualización de dependencias del frontend (avisos de `npm audit`)
+
+**Rama:** `claude/magical-cerf-238ltt` (creada desde `master` en `559e1f5`; sin fusión, lista para revisión)
+
+### Motivo
+
+La supervisión de hoy encontró 4 avisos de `npm audit` en `frontend/` (1 alto, 3 moderados): `vite 5.4.21` + `esbuild <=0.24.2` (solo afectan al servidor de desarrollo) y `react-router-dom`/`react-router 6.30.6` (GHSA-wrjc-x8rr-h8h6, GHSA-337j-9hxr-rhxg). Corregirlos exigía subir de versión mayor.
+
+### Cambios
+
+| Paquete | Antes | Después |
+|---|---|---|
+| vite | ^5.4.10 (5.4.21) | ^6.4.6 (esbuild 0.25.12) |
+| @vitejs/plugin-react | ^4.3.3 | ^5.2.0 |
+| react-router-dom | ^6.28.0 (6.30.6) | ^7.18.7 (react-router 7.18.7) |
+
+- Se eligió Vite 6.4.x (no 8.x) porque corrige los avisos con el menor salto y mantiene compatibilidad con Node 18/20/22.
+- No hizo falta tocar `App.tsx`, `pages/*.tsx` ni `vite.config.ts`: las importaciones desde `react-router-dom` (`Navigate`, `NavLink`, `Outlet`, `Route`, `Routes`, `Link`, `BrowserRouter`) siguen funcionando en v7.
+- Render compila el sitio en cada despliegue desde el PR #23, y `backend/static/` ya no está en git desde el PR #27.
+
+### Verificación
+
+- `npm ci` y `npm run build` (tsc + vite) sin errores; `npm audit`: **0 vulnerabilidades**.
+- `python -m pytest -q` en `backend/` (SQLite): **33 pasadas**. Nota: `pytest -q` a secas falla al importar `database`/`core` porque no añade `backend/` al `sys.path`; el CI ya usa `python -m pytest`.
+- Navegador (Chromium) con `uvicorn main:app`: `/`, `/login` y `/privacidad` responden 200 y renderizan; `/app/customers` sin sesión redirige a `/login`; tras iniciar sesión carga «Clientes» y la navegación del panel funciona. Sin errores de JavaScript.
+- Único error de consola: `GET /inventory` → 404 desde el Resumen. Es previo a este cambio (el backend aún no incluye `routers.inventory`, ver `backend/main.py`) y la página lo maneja sin romperse.
+
+### Node del `Dockerfile`
+
+`@vitejs/plugin-react` 5 exige Node `^20.19.0 || >=22.12.0`; Vite 6 admite `^20`. La imagen `node:20-alpine` trae hoy Node 20.20.2, y con esa versión `npm ci` y el build salieron idénticos (mismos hashes) sin avisos de engine, así que era compatible. Aun así, con aprobación del responsable, la imagen se cambió a **`node:22-alpine`**, porque Node 20 terminó su soporte en abril de 2026. Con Node 22 (22.23.5), `npm ci`, `npm run build` y `npm audit` (0 vulnerabilidades) pasan sin avisos de engine; plugin-react 5 exige `>=22.12.0`.
+
+### Ruta del build en el `Dockerfile`
+
+La misma corrección (`COPY --from=web /backend/static ./static`) llegó a `master` con el PR #23, «Compila el frontend en el despliegue de Render». Al fusionar `master` en esta rama se conservó esa versión del `Dockerfile` y de `README-ENTORNO.md`, y esta rama aporta solo el cambio a `node:22-alpine`. Ese PR también hace que Render compile el frontend en cada despliegue (`NODE_VERSION` 22.22.0, compatible con plugin-react 5, que exige `>=22.12.0`). Así, Render ya no usa la copia de `backend/static/` guardada en git.
+
+Verificación de la imagen en esta rama: `docker build` completo. Solo para la prueba se usó una copia del Dockerfile con el certificado del proxy del entorno de verificación. `npm ci` y `npm run build` corrieron en `node:22-alpine`, y con el contenedor en marcha (SQLite), `/`, `/login`, `/privacidad`, `/app/customers`, `/health` y el JS del sitio respondieron 200.
+
+### `backend/static` fuera de git (fusión con el PR #27)
+
+Esta rama también quitó `backend/static` de git, pero el PR #27 llegó antes a `master` con el mismo cambio. Al fusionar se conservó la versión de `master` (`main.py`, `test_app_startup.py`, `.gitignore`, `docs/DESPLIEGUE.md`), y esta rama aporta solo `backend/static` en `.dockerignore`. Así, `docker build` no copia al contexto un build local viejo, y la imagen usa solo el sitio que compila su etapa `web`. Verificado: `docker build` completo, y en el contenedor `/`, `/login`, `/privacidad`, `/app/customers`, `/health` y el JS respondieron 200.
 
 ## 2026-11-25 — Docker verificado y `backend/static` recompilado
 
