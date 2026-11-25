@@ -1,5 +1,21 @@
 # EDITH — Registro diario
 
+## 2026-11-25 — Verificación externa de producción tras el PR #24
+
+**Alcance.** Comprobación desde fuera de `https://www.edith-intelligence.com`, hecha entre las 21:30 y las 21:32 UTC, sin acceso a Render. El log del despliegue no se revisó, porque no había clave de API ni conector de Render en la sesión. `https://edith-intelligence.com` redirige a `www`.
+
+| Comprobación | Resultado |
+|---|---|
+| `GET /` | 200; `index.html` carga `assets/index-xmmbltQo.js` y `assets/index-D6PzXnmm.css` |
+| `GET /health` | 200, `{"status":"ok"}` |
+| `GET /login`, `GET /auth/config` | 200 |
+| `GET /static/assets/index-xmmbltQo.js` | 200; SHA-256 `d4122cef07f2b6fd247379c92b26e589b3feaed4ac49f8fbdac7d88113db968d`, igual al compilado en el PR #24 con Node 22 y en la etapa `web` de Docker |
+| `GET /static/assets/index-CezIjX0-.js` (copia antigua compilada en Windows) | 404 |
+
+**Conclusión.** Producción sirve el bundle compilado en Linux a partir del `frontend/src` actual, y el JavaScript antiguo ya no se sirve. Con el `buildCommand` de `render.yaml`, un fallo de compilación (por ejemplo, la falta de Node) habría mantenido la versión anterior. Por tanto, al menos un despliegue con la compilación nueva terminó bien, lo que coincide con lo que confirmó el usuario en la entrada anterior.
+
+**No verificado.** Qué commit está activo (`09ed1ce`, del PR #24, o `d76d43a`, del PR #27): todos producen el mismo bundle. Tampoco se revisaron los avisos ni la duración del build. Para comprobarlo, abre en Render el servicio `aura-intelligence`, ve a **Events** y entra en el último despliegue. Revisa el commit marcado como *Live* y, al inicio del log, las versiones de `node` y `npm`.
+
 ## 2026-11-25 — `backend/static` sale de git
 
 El usuario confirmó que el despliegue en Render con el build nuevo funcionó y autorizó quitar `backend/static` del repositorio.
@@ -20,6 +36,38 @@ El usuario confirmó que el despliegue en Render con el build nuevo funcionó y 
 
 **Para volver atrás:** revertir el commit que quitó la carpeta.
 
+## 2026-11-25 — Plantilla del registro de oportunidades
+
+**Rama:** `claude/determined-hamilton-ljygsk`, recreada desde `master` (`09ed1ce`). No está fusionada.
+
+**Archivo nuevo:** `docs/comercial/plantillas/registro-oportunidades.xlsx`. Es la plantilla del `KIT-VENTAS.md` §7 y está vacía, salvo una fila de ejemplo ficticia marcada «EJEMPLO» que hay que borrar.
+
+Contiene cinco hojas:
+
+- **Leyenda:** cómo llenarla y avisos de datos personales.
+- **Oportunidades:** listas desplegables para estado, canal, tamaño, software contable, plan y motivo de pérdida. Calcula el valor estimado del primer año, la comisión del 20 %, el vencimiento del registro del referido a 90 días y alertas.
+- **Resumen:** embudo frente a las metas del `PLAN-COMERCIAL.md` §8 y regla de las 10 demos del §4.1.
+- **Referidores:** contadores como prospectos de alianza, con sus referidos y su comisión.
+- **Listas:** precios y parámetros, con su fuente en el plan comercial.
+
+**Reglas que aplica:**
+
+- El Piloto no genera comisión.
+- La fila de ejemplo no cuenta en el resumen.
+- «Cliente» se reserva para quien ya pagó.
+
+**Verificación:**
+
+- LibreOffice recalculó las 2.324 fórmulas sin errores.
+- En una copia aparte, que luego se borró, se cargaron cuatro filas de prueba. Los resultados fueron los esperados:
+  - Esencial anual: valor de COP 2.900.000 y comisión de COP 580.000.
+  - Piloto: comisión de COP 0.
+  - Alertas de «Próximo paso vencido» y «Falta motivo de pérdida».
+  - Regla de las 10 demos: «Faltan 8 demos».
+
+**Pendiente de tu parte:** las solicitudes de demo se borran a los 7 días según la política de privacidad. Si las copias a esta hoja las conservas más tiempo, primero actualiza la política o define un plazo para borrar los registros inactivos. No subas al repositorio la copia con datos reales.
+
+**Clientes confirmados:** ninguno. **Ingresos registrados:** COP 0.
 ## 2026-11-25 — Actualización de dependencias del frontend (avisos de `npm audit`)
 
 **Rama:** `claude/magical-cerf-238ltt` (creada desde `master` en `559e1f5`; sin fusión, lista para revisión)

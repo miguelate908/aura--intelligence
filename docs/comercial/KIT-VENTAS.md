@@ -160,6 +160,10 @@ Estados: `nuevo → contactado → descubrimiento → demo → propuesta → pil
 
 Revisa la hoja cada lunes: ninguna oportunidad activa debe quedar sin "próximo paso" con fecha.
 
+**Plantilla lista:** `docs/comercial/plantillas/registro-oportunidades.xlsx`. Tiene estas columnas más canal y referidor, software contable (Siigo, Alegra…), fecha de la demo, plan propuesto y motivo de pérdida. Calcula sola el valor estimado del primer año, la comisión del contador, el vencimiento del registro del referido a 90 días y una alerta cuando falta el próximo paso o ya venció. La hoja «Resumen» compara el embudo con las metas del `PLAN-COMERCIAL.md` §8 y aplica la regla de las 10 demos del §4.1.
+
+**No subas al repositorio la copia con datos reales.** Contiene datos personales (Ley 1581 de 2012): guarda tu copia en un lugar privado y deja aquí solo la plantilla vacía.
+
 ---
 
 ## 8. Borrador de acuerdo de referidos (contadores y consultores)
