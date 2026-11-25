@@ -1,5 +1,11 @@
 # EDITH — Registro diario
 
+## 2026-11-25 — `pytest` funciona sin `python -m`
+
+`pytest -q` desde `backend/` fallaba al recoger las pruebas (`No module named 'database'`), porque el ejecutable `pytest` no añade la carpeta actual a la ruta de importación. Con `python -m pytest` sí funcionaba, y así lo ejecuta el CI.
+
+Nuevo `backend/pytest.ini` con `pythonpath = .` y `testpaths = tests`. Con pytest 9.2.0 y Python 3.11: `pytest -q` desde `backend/`, `python -m pytest -q` y `pytest -q backend` desde la raíz → 34 passed en los tres casos. El CI no cambia.
+
 ## 2026-11-25 — Verificación externa de producción tras el PR #24
 
 **Alcance.** Comprobación desde fuera de `https://www.edith-intelligence.com`, hecha entre las 21:30 y las 21:32 UTC, sin acceso a Render. El log del despliegue no se revisó, porque no había clave de API ni conector de Render en la sesión. `https://edith-intelligence.com` redirige a `www`.
