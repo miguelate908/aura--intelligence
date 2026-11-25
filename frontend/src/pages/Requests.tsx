@@ -18,7 +18,7 @@ export default function Requests() {
   return (
     <>
       <h2>Solicitudes de demostración</h2>
-      <p className="mut">Personas que completaron el formulario de la landing. Se eliminan automáticamente a los 7 días: gestiona cada contacto antes de ese plazo.</p>
+      <p className="mut">Personas que completaron el formulario de la landing. Se eliminan automáticamente a los 7 días: antes de ese plazo, copia las solicitudes calificadas al registro de oportunidades (se conservan allí hasta 12 meses sin actividad, según la política de privacidad).</p>
       {err && <p className="err" role="alert">{err}</p>}
       <div className="card tw">
         {loading ? <span className="mut">Cargando…</span> : rows.length === 0 && !err ? <span className="mut">Aún no hay solicitudes.</span> : (

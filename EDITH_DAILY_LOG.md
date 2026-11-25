@@ -1,5 +1,24 @@
 # EDITH — Registro diario
 
+## 2026-11-25 — Marca única: EDITH Intelligence
+
+**Decisión del usuario (25-11-2026):** la marca comercial es **EDITH Intelligence**. El sitio, el panel y el dominio (`www.edith-intelligence.com`) ya la usaban. Faltaban los documentos comerciales.
+
+**Cambio.** Se rehízo sobre el `master` actual el commit `0be0a9a` de la rama `claude/laughing-curie-leps3u`, que estaba construida sobre un `master` antiguo.
+- `docs/comercial/KIT-VENTAS.md` (36 menciones) y `PLAN-COMERCIAL.md` (14): «AURA» pasa a «EDITH», también en los mensajes, la propuesta de piloto y el borrador del acuerdo de referidos. Incluye las secciones añadidas después de esa rama: posicionamiento frente a Siigo y Alegra, y acuerdo de referidos.
+- `docs/DESPLIEGUE.md`: el ejemplo `create_client.py --company` usa «EDITH Intelligence».
+- `KIT-VENTAS.md`: la respuesta a la objeción «¿Y si después me quiero ir?» ya no dice que falta la exportación. **Exportar CSV** existe en el panel desde el PR #21.
+
+**Se mantienen a propósito** los identificadores técnicos con «aura»:
+- servicio `aura-intelligence` y base `aura-db` en `render.yaml`: si se renombran, Render crea recursos nuevos y vacíos;
+- nombre del repositorio;
+- clave `aura_token` del navegador: si se cambia, se cierra la sesión de todos los usuarios;
+- logger `aura.contact`;
+- correo de ejemplo `demo@aura.local`.
+
+Ningún cliente ve estos identificadores.
+
+**Plantilla `docs/comercial/plantillas/registro-oportunidades.xlsx`.** Se actualizó después de que se fusionara el PR #30, que modificaba el mismo archivo. Se editaron directamente los XML internos, sin regenerar el libro. Cambian el título de «Leyenda», el texto sobre referidos de contadores y el autor de los comentarios de cuatro celdas, que pasa de «AURA» a «EDITH». Al comparar con openpyxl, solo difieren esas 2 celdas y esos autores. Las 2.325 fórmulas, las 8 validaciones y el formato condicional siguen iguales. LibreOffice recalculó el libro sin errores.
 ## 2026-11-25 — Despliegue en Render con Vite 6 y React Router 7 (PR #26)
 
 El PR #26 se fusionó en `master` (`05bf16f`): `vite ^6.4.6`, `@vitejs/plugin-react ^5.2.0`, `react-router-dom ^7.18.7`, `node:22-alpine` en el `Dockerfile` y `backend/static` en `.dockerignore`. Con esto, `npm audit` en `frontend/` reporta 0 vulnerabilidades. La rama `claude/magical-cerf-238ltt` se borró después de la fusión.
@@ -11,6 +30,48 @@ El responsable confirmó que el despliegue automático en Render de esa fusión 
 `pytest -q` desde `backend/` fallaba al recoger las pruebas (`No module named 'database'`), porque el ejecutable `pytest` no añade la carpeta actual a la ruta de importación. Con `python -m pytest` sí funcionaba, y así lo ejecuta el CI.
 
 Nuevo `backend/pytest.ini` con `pythonpath = .` y `testpaths = tests`. Con pytest 9.2.0 y Python 3.11: `pytest -q` desde `backend/`, `python -m pytest -q` y `pytest -q backend` desde la raíz → 34 passed en los tres casos. El CI no cambia.
+
+## 2026-11-25 — Política de privacidad: conservación del registro de oportunidades
+
+**Rama:** `claude/determined-hamilton-ljygsk`, recreada desde `master`. No está fusionada.
+
+**Plazos que decidiste:**
+
+- Las oportunidades que no son cliente se conservan hasta 12 meses después del último contacto.
+- Los datos de clientes se conservan mientras dure la relación comercial. Al terminar, solo se guarda lo que exija la ley contable o tributaria.
+
+**Cambios:**
+
+- `frontend/src/pages/Privacy.tsx`:
+  - La finalidad incluye el seguimiento comercial de la solicitud.
+  - Si el prospecto llegó por un contador, a ese contador solo se le informa si contrató y cuánto pagó, para calcular su comisión.
+  - La sección Conservación explica que la plataforma sigue borrando a los 7 días y que las solicitudes calificadas se copian a un registro privado, con los plazos anteriores.
+  - Una solicitud de eliminación también borra los datos del registro, aunque no se haya cumplido el plazo.
+- `frontend/src/pages/Requests.tsx`: el aviso del panel dice que hay que copiar las solicitudes calificadas antes de los 7 días.
+- `docs/comercial/plantillas/registro-oportunidades.xlsx`:
+  - Nueva columna «Fecha del último contacto».
+  - Nuevo parámetro de 12 meses en «Listas».
+  - Nueva alerta «Borrar: 12 meses sin actividad», que no se aplica a clientes.
+  - Nuevo conteo en «Resumen» y Leyenda actualizada.
+- `KIT-VENTAS.md` §7 y `PLAN-COMERCIAL.md` §7: reflejan los nuevos plazos.
+
+**Sin cambios:** el borrado automático a los 7 días en el backend (`DEMO_RETENTION_DAYS = 7`) y el texto de consentimiento del formulario, que remite a la política.
+
+**Verificación:**
+
+- `npm run build` (tsc y vite) compila sin errores.
+- LibreOffice recalculó la plantilla sin errores.
+- Prueba en una copia aparte, ya borrada:
+  - un perdido sin actividad desde 10-2025 muestra «Borrar: 12 meses sin actividad»;
+  - un cliente con el último contacto en 01-2025 no muestra alerta;
+  - un prospecto activo no muestra alerta;
+  - el resumen cuenta 1 registro por borrar.
+
+**Pendiente de tu parte:**
+
+- Que un profesional revise la política; sigue marcada como borrador.
+- El consentimiento de quien envió el formulario antes de este cambio se dio con la política anterior, que preveía el borrado a los 7 días. No copies esas solicitudes al registro sin pedirles autorización.
+- La política se publica al desplegar `master` en Render.
 
 ## 2026-11-25 — Verificación externa de producción tras el PR #24
 
