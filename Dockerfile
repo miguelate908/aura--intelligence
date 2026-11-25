@@ -13,7 +13,9 @@ WORKDIR /srv/backend
 COPY backend/requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 COPY backend/ ./
-COPY --from=web /web/dist /srv/frontend/dist
+# vite.config.ts compila en ../backend/static, que en esta etapa es /backend/static.
+# main.py sirve el sitio desde backend/static, así que la compilación reemplaza la copia de git.
+COPY --from=web /backend/static ./static
 RUN useradd -m app && chown -R app /srv
 USER app
 EXPOSE 8000
