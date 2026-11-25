@@ -3,6 +3,7 @@
 El panel convierte el CSV en filas JSON. La importación es todo o nada: si una fila
 falla, no se guarda ninguna y se devuelve la lista de errores por fila.
 """
+import re
 from typing import Any
 
 from fastapi import APIRouter, Depends, HTTPException
@@ -25,6 +26,24 @@ ENTITIES: dict[str, tuple[type[BaseModel], type, tuple[str, ...], str, str]] = {
     "products": (ProductCreate, Product, ("sku", "name", "price"), "owns", "producto"),
     "warehouses": (WarehouseCreate, Warehouse, ("name", "location"), "operates", "bodega"),
 }
+
+
+_THOUSANDS_DOT = re.compile(r"^-?\d{1,3}(\.\d{3})+(,\d+)?$")    # 150.000 · 1.250,75 (Colombia)
+_THOUSANDS_COMMA = re.compile(r"^-?\d{1,3}(,\d{3})+(\.\d+)?$")  # 150,000 · 1,250.75
+
+
+def normalize_price(value: str) -> str:
+    """Convierte un precio escrito como texto a número con punto decimal.
+
+    Replica toNumber() del panel (frontend/src/pages/Resource.tsx) para que cualquier
+    cliente de la API obtenga el mismo resultado: "150.000" es ciento cincuenta mil, no 150.
+    """
+    t = re.sub(r"[\s$]", "", value)
+    if _THOUSANDS_DOT.match(t):
+        return t.replace(".", "").replace(",", ".")
+    if _THOUSANDS_COMMA.match(t):
+        return t.replace(",", "")
+    return t.replace(",", ".")
 
 
 class ImportRequest(BaseModel):
@@ -64,7 +83,7 @@ def import_rows(
     for index, raw in enumerate(body.rows, start=1):
         data = _clean(raw, fields)
         if entity == "products" and isinstance(data.get("price"), str):
-            data["price"] = data["price"].replace(" ", "").replace(",", ".")
+            data["price"] = normalize_price(data["price"])
         try:
             item = schema(company_id=cid, **data)
         except ValidationError as exc:
