@@ -31,4 +31,4 @@ El formulario limita cada IP a cinco envíos por diez minutos y usa un campo se�
 ## Para crecer
 - Cada módulo nuevo (inventario, pedidos, reportes) va en `frontend/src/pages/` y se registra en `App.tsx`.
 - Cuando un módulo tenga lógica propia, agrúpalo en `src/features/<modulo>/`.
-- Producción: `npm run build` genera `backend/static` (ver `build.outDir` en `frontend/vite.config.ts`), que FastAPI sirve en `/` y `/static`. La imagen Docker recompila el sitio y lo copia en `/srv/backend/static`.
+- Producción: `npm run build` genera `backend/static`, que FastAPI sirve. Render compila el sitio en cada despliegue (`docs/DESPLIEGUE.md`, sección 6).

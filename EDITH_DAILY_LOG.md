@@ -1,26 +1,44 @@
 # EDITH — Registro diario
 
-## 2026-11-25 — Dockerfile: el sitio compilado no llegaba a la imagen
+## 2026-11-25 — Docker verificado y `backend/static` recompilado
 
-**Rama:** `claude/admiring-wright-nba927` (desde `master` en `559e1f5`; sin fusión)
+**Rama:** `claude/admiring-wright-nba927` (sin fusión). PR #24.
 
-**Problema.** `frontend/vite.config.ts` compila en `build.outDir: "../backend/static"`. En la etapa `web` del `Dockerfile` (`WORKDIR /web`), eso escribe en `/backend/static`, pero la etapa final copiaba `COPY --from=web /web/dist /srv/frontend/dist`. Además, `backend/main.py` sirve `static/` relativo a `/srv/backend`, no `/srv/frontend/dist`.
+**Contexto.** En `master`, el `Dockerfile` copiaba `COPY --from=web /web/dist /srv/frontend/dist`. Esa ruta no existe, porque Vite compila en `../backend/static`, que en la etapa `web` es `/backend/static`. Sobre `559e1f5`, `docker build` fallaba en ese paso con `"/web/dist": not found`. El PR #23 ya corrigió esa línea (`COPY --from=web /backend/static ./static`), pero no se probó con Docker. Este PR se quedó con esa versión y añade la verificación.
 
-**Fallo reproducido.** `docker build` sobre `master` falla en ese paso:
+**Verificación con Docker** (sobre el `Dockerfile` de `master`; para que el contenedor de pruebas pudiera salir a npm y PyPI por el proxy de red, se usó una copia temporal con el certificado del proxy):
+- `docker build` termina sin errores.
+- Dentro de la imagen, `static/index.html` apunta a `assets/index-xmmbltQo.js`, el archivo compilado en la etapa `web`.
+- Con el contenedor en marcha, `GET /` y `GET /static/assets/index-xmmbltQo.js` devuelven HTTP 200.
+- `docker-compose.prod.yml` (`build: .`), `docker-compose.yml/docker-compose.yml` (solo Postgres) y `docs/DESPLIEGUE.md` no mencionan `/srv/frontend/dist`.
 
-```
-COPY --from=web /web/dist /srv/frontend/dist
-ERROR: failed to calculate checksum ...: "/web/dist": not found
-```
+**Recompilación de `backend/static`.** Se recompiló el frontend con `npm ci && npm run build` (incluye `tsc --noEmit`) y se versionó el resultado: `index-CezIjX0-.js` pasa a ser `index-xmmbltQo.js`. Es el mismo archivo que generan Docker (Node 20) y Node 22, así que el resultado es reproducible. Como ya se indicó en la entrada anterior, la copia previa no estaba desactualizada. El único texto distinto son los dos logotipos SVG incrustados, que en la copia anterior tenían saltos de línea CRLF porque se compiló en Windows. El resto son nombres del minificador. `index.html` pasa también de CRLF a LF. El CSS no cambia. El comportamiento del sitio no varía.
 
-**Corrección.** Después de `COPY backend/ ./`, el `Dockerfile` ahora hace `COPY --from=web /backend/static /srv/backend/static`, así que la imagen sirve el sitio recién compilado y no depende de la copia versionada. `vite.config.ts` no cambia, porque Render sigue sirviendo `backend/static` desde el repositorio.
+## 2026-11-25 — Render compila el frontend en cada despliegue
 
-**Verificación.**
-- `docker build` termina sin errores. Para que el contenedor de pruebas pudiera salir a npm y PyPI a través de su proxy, se usó una copia temporal del `Dockerfile` con el certificado del proxy añadido; las instrucciones del proyecto no cambiaron.
-- Dentro de la imagen, `static/index.html` hace referencia a `assets/index-xmmbltQo.js`, el archivo generado durante la compilación. Con `uvicorn` en marcha, `GET /` y `GET /static/assets/index-xmmbltQo.js` devuelven HTTP 200.
-- `docker-compose.yml/docker-compose.yml` (solo Postgres), `docker-compose.prod.yml` (`build: .`) y `docs/DESPLIEGUE.md` no mencionaban `/srv/frontend/dist`. `README-ENTORNO.md` decía que `npm run build` genera `frontend/dist`; se corrigió a `backend/static`.
+**Riesgo.** `render.yaml` desplegaba con `rootDir: backend` y solo `pip install`. Producción servía el `backend/static` guardado en git, así que un cambio en `frontend/src` sin `npm run build` ni commit de `backend/static` dejaba el sitio desactualizado sin aviso.
 
-**Recompilación de `backend/static`.** Se recompiló el frontend con `npm ci && npm run build`, que incluye `tsc --noEmit`, y se versionó el resultado: `index-CezIjX0-.js` pasa a ser `index-xmmbltQo.js`. Es el mismo archivo que genera la etapa `web` de Docker, así que el resultado es reproducible entre Node 20 y Node 22. La diferencia con la copia anterior no venía de código desactualizado, porque `frontend/` no tenía commits posteriores a esa copia. El único texto distinto son los dos logotipos SVG incrustados: la copia anterior los incluía con saltos de línea CRLF, lo que indica que se compiló en Windows. El resto son nombres de variables reasignados por el minificador. `index.html` pasa también de CRLF a LF. El CSS (`index-D6PzXnmm.css`) no cambia. El comportamiento del sitio no varía.
+**Cambio.**
+- `render.yaml`: sin `rootDir`. El build ejecuta `npm ci --include=dev && npm run build` en `frontend/` y luego `pip install -r backend/requirements.txt`. El arranque hace `cd backend && uvicorn ...`. Se fija `NODE_VERSION=22.22.0`. El build imprime primero `node --version` y `npm --version` para detectar enseguida si falta Node.
+- `Dockerfile`: copiaba `/web/dist`, que no existe porque Vite compila en `../backend/static` (en esa etapa, `/backend/static`). Ahora copia esa carpeta a `backend/static`, que es de donde `backend/main.py` sirve el sitio. No se probó con Docker en esta sesión.
+- `docs/DESPLIEGUE.md`: nueva sección 6 con el cambio, el riesgo del primer despliegue y los pasos en Render. La Shell de Render ahora abre en la raíz del repositorio, así que hay que hacer `cd backend` antes de los scripts.
+- `README-ENTORNO.md`: corregida la carpeta de salida de `npm run build`.
+
+**Verificación local** (copia limpia del repositorio, Python 3.11, Node 22.23.5):
+
+| Verificación | Resultado |
+|---|---|
+| `buildCommand` de `render.yaml`, ejecutado desde la raíz | `tsc` y `vite build` correctos; dependencias de Python instaladas |
+| `cd backend && python -m pytest -q` | 33 passed |
+| `startCommand` de `render.yaml` con SQLite temporal | `/`, `/login`, `/app/customers` → 200 HTML; `/health` → 200; JS y CSS de `/static/assets/` → 200 |
+
+`pytest -q` a secas falló en la recogida (`No module named 'database'`) porque el ejecutable de pytest del entorno no añade `backend/` a la ruta de importación. Con `python -m pytest` pasa; no es un efecto de este cambio.
+
+El bundle compilado aquí tiene otro hash que el de `master`, pero la diferencia son solo nombres de variables del minificador: `backend/static` de `master` corresponde al `frontend/src` actual.
+
+**Pendiente, con autorización del usuario.**
+- Aplicar el cambio en Render y revisar el primer log de build (ver `docs/DESPLIEGUE.md`, sección 6). La documentación de Render no confirma de forma explícita que el runtime Python traiga Node; si falta, el build falla y Render mantiene la versión anterior.
+- Después de un despliegue correcto, dejar de guardar `backend/static` en git. Antes hay que hacer que `backend/main.py` arranque aunque falte la carpeta. **No se borró nada.**
 
 ## 2026-11-25 — Precisión de precios en CSV y registro público en Docker
 
