@@ -50,6 +50,10 @@ Cada página del panel (Clientes, Productos, Bodegas) tiene **Importar desde CSV
 
 La importación es todo o nada: si una fila tiene errores (campo obligatorio vacío, SKU repetido o ya existente), no se guarda ninguna y el panel lista las filas a corregir. El límite es de 5.000 filas por archivo. API: `POST /import/{customers|products|warehouses}` con `{"rows": [...]}`.
 
+## Exportación (CSV para Excel)
+
+En Clientes, Productos y Bodegas, **Exportar CSV** descarga todos los registros que coinciden con la búsqueda, incluidas las demás páginas, con los mismos encabezados que acepta la importación, separador `;`, BOM UTF-8 y decimales con coma, para que Excel en español lo abra sin pasos extra. El archivo usa el formato de importación y se aplican las mismas validaciones, incluida la de SKU duplicado. Los valores que empiezan por `=`, `@`, `+` o `-` se neutralizan con un apóstrofo para evitar inyección de fórmulas en Excel (los teléfonos como `+57 300 1234567` y los números negativos se dejan igual). La exportación ocurre en el navegador; no hay ruta nueva en la API.
+
 ## Empresa de demostración para ventas
 
 ```powershell

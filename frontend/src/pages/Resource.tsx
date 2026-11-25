@@ -1,6 +1,6 @@
 import { FormEvent, useCallback, useEffect, useState } from "react";
 import { api, companyId } from "../api";
-import { normalize, parseCsv } from "../csv";
+import { normalize, parseCsv, toCsv } from "../csv";
 
 type Field = { name: string; label: string; type: string; required: boolean };
 const PAGE = 10;
@@ -99,13 +99,29 @@ export default function Resource({ path, title, fields }: { path: string; title:
   };
   const template = `data:text/csv;charset=utf-8,${encodeURIComponent(fields.map((f) => f.label).join(";") + "\r\n")}`;
 
-  const labels: Record<string, string> = Object.fromEntries(fields.map((f) => [f.name, f.label]));
-  const cols = rows[0] ? Object.keys(rows[0]).filter((c) => c !== "company_id") : [];
+  const labels: Record<string, string> = { ...Object.fromEntries(fields.map((f) => [f.name, f.label])), created_at: "Creado" };
+  // Columnas en el mismo orden del formulario y de la plantilla; los identificadores internos no se muestran.
+  const hidden = new Set(["id", "company_id"]);
+  const extra = rows[0] ? Object.keys(rows[0]).filter((c) => !hidden.has(c) && !fields.some((f) => f.name === c)) : [];
+  const cols = rows[0] ? [...fields.map((f) => f.name), ...extra] : [];
   const needle = q.trim().toLowerCase();
   const filtered = needle ? rows.filter((r) => Object.values(r).join(" ").toLowerCase().includes(needle)) : rows;
   const pages = Math.max(1, Math.ceil(filtered.length / PAGE));
   const cur = Math.min(page, pages - 1);
   const view = filtered.slice(cur * PAGE, cur * PAGE + PAGE);
+  // Exporta lo que se ve (respeta la búsqueda) con los mismos encabezados que acepta la importación.
+  const exportCsv = () => {
+    const data = filtered.map((r) => fields.map((f) => {
+      const v = r[f.name];
+      return f.type === "number" && v != null && v !== "" ? String(v).replace(".", ",") : v;
+    }));
+    const blob = new Blob([toCsv(fields.map((f) => f.label), data)], { type: "text/csv;charset=utf-8" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = `${path.slice(1)}-${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 0);
+  };
   const cell = (c: string, v: unknown) => (c === "created_at" && v ? new Date(String(v)).toLocaleString() : String(v ?? ""));
 
   return (
@@ -133,6 +149,8 @@ export default function Resource({ path, title, fields }: { path: string; title:
       <div className="card tw">
         <div className="bar">
           <span className="mut">{filtered.length} registro{filtered.length === 1 ? "" : "s"}</span>
+          <button type="button" className="ghost" disabled={filtered.length === 0} onClick={exportCsv}
+            title="Descarga los registros visibles en un archivo que abre Excel">Exportar CSV</button>
           <input type="search" aria-label="Buscar" placeholder="Buscar…" value={q} onChange={(e) => { setQ(e.target.value); setPage(0); }} />
         </div>
         {loading ? <span className="mut">Cargando…</span> : rows.length === 0 ? <span className="mut">Todavía no hay registros.</span> : filtered.length === 0 ? <span className="mut">Sin resultados para “{q}”.</span> : (
