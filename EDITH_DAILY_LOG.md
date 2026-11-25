@@ -26,6 +26,48 @@ Ningún cliente ve estos identificadores.
 
 Nuevo `backend/pytest.ini` con `pythonpath = .` y `testpaths = tests`. Con pytest 9.2.0 y Python 3.11: `pytest -q` desde `backend/`, `python -m pytest -q` y `pytest -q backend` desde la raíz → 34 passed en los tres casos. El CI no cambia.
 
+## 2026-11-25 — Política de privacidad: conservación del registro de oportunidades
+
+**Rama:** `claude/determined-hamilton-ljygsk`, recreada desde `master`. No está fusionada.
+
+**Plazos que decidiste:**
+
+- Las oportunidades que no son cliente se conservan hasta 12 meses después del último contacto.
+- Los datos de clientes se conservan mientras dure la relación comercial. Al terminar, solo se guarda lo que exija la ley contable o tributaria.
+
+**Cambios:**
+
+- `frontend/src/pages/Privacy.tsx`:
+  - La finalidad incluye el seguimiento comercial de la solicitud.
+  - Si el prospecto llegó por un contador, a ese contador solo se le informa si contrató y cuánto pagó, para calcular su comisión.
+  - La sección Conservación explica que la plataforma sigue borrando a los 7 días y que las solicitudes calificadas se copian a un registro privado, con los plazos anteriores.
+  - Una solicitud de eliminación también borra los datos del registro, aunque no se haya cumplido el plazo.
+- `frontend/src/pages/Requests.tsx`: el aviso del panel dice que hay que copiar las solicitudes calificadas antes de los 7 días.
+- `docs/comercial/plantillas/registro-oportunidades.xlsx`:
+  - Nueva columna «Fecha del último contacto».
+  - Nuevo parámetro de 12 meses en «Listas».
+  - Nueva alerta «Borrar: 12 meses sin actividad», que no se aplica a clientes.
+  - Nuevo conteo en «Resumen» y Leyenda actualizada.
+- `KIT-VENTAS.md` §7 y `PLAN-COMERCIAL.md` §7: reflejan los nuevos plazos.
+
+**Sin cambios:** el borrado automático a los 7 días en el backend (`DEMO_RETENTION_DAYS = 7`) y el texto de consentimiento del formulario, que remite a la política.
+
+**Verificación:**
+
+- `npm run build` (tsc y vite) compila sin errores.
+- LibreOffice recalculó la plantilla sin errores.
+- Prueba en una copia aparte, ya borrada:
+  - un perdido sin actividad desde 10-2025 muestra «Borrar: 12 meses sin actividad»;
+  - un cliente con el último contacto en 01-2025 no muestra alerta;
+  - un prospecto activo no muestra alerta;
+  - el resumen cuenta 1 registro por borrar.
+
+**Pendiente de tu parte:**
+
+- Que un profesional revise la política; sigue marcada como borrador.
+- El consentimiento de quien envió el formulario antes de este cambio se dio con la política anterior, que preveía el borrado a los 7 días. No copies esas solicitudes al registro sin pedirles autorización.
+- La política se publica al desplegar `master` en Render.
+
 ## 2026-11-25 — Verificación externa de producción tras el PR #24
 
 **Alcance.** Comprobación desde fuera de `https://www.edith-intelligence.com`, hecha entre las 21:30 y las 21:32 UTC, sin acceso a Render. El log del despliegue no se revisó, porque no había clave de API ni conector de Render en la sesión. `https://edith-intelligence.com` redirige a `www`.
