@@ -24,6 +24,63 @@ Seguimiento de CORE-001 en la copia de trabajo principal. Estos cambios son loca
 
 **Pendiente.** La FastAPI de `backend/.runtime-deps` no se pudo probar. Sus binarios, como `_pydantic_core.cp312-win_amd64.pyd`, son para Python 3.12 y el equipo solo tiene 3.11. Al importarla falla `pydantic_core`, un problema que ya existía. Hay que decidir si se regenera la carpeta para 3.11 o se elimina.
 
+## 2026-11-25 — Bitácoras antiguas archivadas en `docs/bitacora/`
+
+Tres ramas sin fusionar tenían el código ya en `master`, pero guardaban informes de supervisión que no estaban en `master`. Antes de borrarlas, con la autorización del usuario, esos informes se copiaron sin cambios a `docs/bitacora/`:
+
+- `2026-11-21.md`, de `claude/ecstatic-wright-gdujta`;
+- `2026-11-24.md`, de `claude/laughing-curie-leps3u`;
+- `2026-11-25-supervision.md`, de `claude/laughing-curie-m34ua3`. Es el informe que detectó el riesgo de `backend/static`.
+
+`docs/bitacora/README.md` indica la rama y el commit de origen de cada uno. Las ramas se borran después de fusionar este cambio.
+
+## 2026-11-25 — Correo de autorización para solicitudes anteriores
+
+**Rama:** `claude/determined-hamilton-ljygsk`, recreada desde `master`. No está fusionada. No se envió ningún correo.
+
+**Cambio:** `docs/comercial/KIT-VENTAS.md` §9 (nuevo) incluye el correo para quienes enviaron el formulario de demo antes de que se actualizara la política de privacidad. Esas personas aceptaron la política anterior, que preveía el borrado a los 7 días.
+
+El correo hace dos cosas:
+
+- Responde a su solicitud de demostración.
+- Pide una autorización explícita («Sí, autorizo») para conservar sus datos en el registro de seguimiento comercial hasta 12 meses después del último contacto.
+
+**Reglas del procedimiento:**
+
+- Se envía un solo correo, sin insistir.
+- Si la persona no responde, sus datos no se copian al registro.
+- Cada autorización se anota en «Notas» del registro y su respuesta se guarda como prueba (Ley 1581).
+- El correo de notificación se usa solo para atender la solicitud original.
+
+**Pendiente de tu parte:**
+
+- Completar los corchetes.
+- Comprobar que la política nueva ya esté publicada.
+- Hacer revisar el correo junto con la política.
+- Enviarlo tú: Claude no envía correos.
+
+## 2026-11-25 — Logs de Render: el build compila el frontend en cada despliegue
+
+**Alcance.** Revisión con la API de Render (clave de solo lectura del usuario) del servicio `aura-intelligence` (`srv-dc0t08jl550s73bge5eg`, rama `master`, despliegue automático activado), hecha entre las 21:58 y las 22:01 UTC. Responde a lo que quedó **no verificado** en la entrada «Verificación externa de producción tras el PR #24».
+
+**Despliegues.** Los nueve más recientes, de `208a587` (#25) a `f100ec8` (#33), terminaron bien. Ninguno tiene estado `build_failed`. El activo a las 22:01 UTC es `f100ec8` (#33), en vivo desde las 22:00:55.
+
+| Commit | PR | Vite | Bundle compilado | `npm ci` |
+|---|---|---|---|---|
+| `09ed1ce` | #24 | 5.4.21 | `index-xmmbltQo.js` y `index-D6PzXnmm.css` | 4 vulnerabilidades (3 moderadas, 1 alta) |
+| `05bf16f` | #26 | 6.4.6 | `index-G1M1fVdK.js` y `index-BsvzXWJM.css` | 0 vulnerabilidades |
+| `935d9ff` | #30 | 6.4.6 | `index-wBjVE1yG.js` y `index-BsvzXWJM.css` | 0 vulnerabilidades |
+| `f100ec8` | #33 | 6.4.6 | `index-wBjVE1yG.js` y `index-BsvzXWJM.css` (sin cambios en `frontend/`) | 0 vulnerabilidades |
+
+**Log del build** (`935d9ff` y `f100ec8`, el mismo resultado):
+- Render ejecuta el `buildCommand` de `render.yaml`. `node --version` imprime `v22.22.0` (desde `NODE_VERSION`) y `npm --version`, `10.9.4`. **El runtime Python de Render sí dispone de Node**, que era lo que la documentación de Render no confirmaba.
+- `tsc --noEmit` y `vite build` terminan sin errores (59 módulos). Después, `pip install -r backend/requirements.txt` instala Python 3.11.9.
+- Cada build dura alrededor de un minuto. Lo siguen `Build successful`, el arranque de `uvicorn` con `Application startup complete` y `Your service is live` en `https://www.edith-intelligence.com`.
+
+**Producción** (22:01 UTC): `/` carga `index-wBjVE1yG.js`; `/health`, `/login` y `/auth/config` responden 200. El bundle de #24 (`index-xmmbltQo.js`) devuelve 404. Dejó de servirse con el despliegue de #26, que pasó a Vite 6 (ver «Despliegue en Render con Vite 6 y React Router 7 (PR #26)»); #30 cambió `frontend/src` y generó el bundle actual. Es lo esperado: Render compila en cada despliegue y no guarda bundles anteriores. Por eso la verificación de las 21:32 UTC (activo `d76d43a`, bundle `xmmbltQo`) era correcta en su momento.
+
+**Observación menor.** Durante el arranque, una petición `HEAD /` desde `127.0.0.1` recibió `405 Method Not Allowed`. Render da el servicio por activo mediante `GET /health`, que responde 200, así que no afecta al despliegue. Solo importaría para un monitor externo que comprobara la disponibilidad con `HEAD /`.
+
 ## 2026-11-25 — Marca única: EDITH Intelligence
 
 **Decisión del usuario (25-11-2026):** la marca comercial es **EDITH Intelligence**. El sitio, el panel y el dominio (`www.edith-intelligence.com`) ya la usaban. Faltaban los documentos comerciales.
@@ -43,6 +100,11 @@ Seguimiento de CORE-001 en la copia de trabajo principal. Estos cambios son loca
 Ningún cliente ve estos identificadores.
 
 **Plantilla `docs/comercial/plantillas/registro-oportunidades.xlsx`.** Se actualizó después de que se fusionara el PR #30, que modificaba el mismo archivo. Se editaron directamente los XML internos, sin regenerar el libro. Cambian el título de «Leyenda», el texto sobre referidos de contadores y el autor de los comentarios de cuatro celdas, que pasa de «AURA» a «EDITH». Al comparar con openpyxl, solo difieren esas 2 celdas y esos autores. Las 2.325 fórmulas, las 8 validaciones y el formato condicional siguen iguales. LibreOffice recalculó el libro sin errores.
+## 2026-11-25 — Despliegue en Render con Vite 6 y React Router 7 (PR #26)
+
+El PR #26 se fusionó en `master` (`05bf16f`): `vite ^6.4.6`, `@vitejs/plugin-react ^5.2.0`, `react-router-dom ^7.18.7`, `node:22-alpine` en el `Dockerfile` y `backend/static` en `.dockerignore`. Con esto, `npm audit` en `frontend/` reporta 0 vulnerabilidades. La rama `claude/magical-cerf-238ltt` se borró después de la fusión.
+
+El responsable confirmó que el despliegue automático en Render de esa fusión salió bien. Queda cerrado el pendiente de la entrada «Actualización de dependencias del frontend»: el build de Render con Node 22.22.0 compila el sitio con Vite 6 y producción lo sirve. La confirmación es del responsable; desde esta sesión no hay acceso a Render.
 
 ## 2026-11-25 — `pytest` funciona sin `python -m`
 
