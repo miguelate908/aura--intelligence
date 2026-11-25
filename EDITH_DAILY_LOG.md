@@ -1,5 +1,26 @@
 # EDITH — Registro diario
 
+## 2026-11-25 — Logs de Render: el build compila el frontend en cada despliegue
+
+**Alcance.** Revisión con la API de Render (clave de solo lectura del usuario) del servicio `aura-intelligence` (`srv-dc0t08jl550s73bge5eg`, rama `master`, despliegue automático activado), hecha entre las 21:58 y las 22:01 UTC. Responde a lo que quedó **no verificado** en la entrada «Verificación externa de producción tras el PR #24».
+
+**Despliegues.** Los nueve más recientes, de `208a587` (#25) a `f100ec8` (#33), terminaron bien. Ninguno tiene estado `build_failed`. El activo a las 22:01 UTC es `f100ec8` (#33), en vivo desde las 22:00:55.
+
+| Commit | PR | Vite | Bundle compilado | `npm ci` |
+|---|---|---|---|---|
+| `09ed1ce` | #24 | 5.4.21 | `index-xmmbltQo.js` y `index-D6PzXnmm.css` | 4 vulnerabilidades (3 moderadas, 1 alta) |
+| `935d9ff` | #30 | 6.4.6 | `index-wBjVE1yG.js` y `index-BsvzXWJM.css` | 0 vulnerabilidades |
+| `f100ec8` | #33 | 6.4.6 | `index-wBjVE1yG.js` y `index-BsvzXWJM.css` (sin cambios en `frontend/`) | 0 vulnerabilidades |
+
+**Log del build** (`935d9ff` y `f100ec8`, el mismo resultado):
+- Render ejecuta el `buildCommand` de `render.yaml`. `node --version` imprime `v22.22.0` (desde `NODE_VERSION`) y `npm --version`, `10.9.4`. **El runtime Python de Render sí dispone de Node**, que era lo que la documentación de Render no confirmaba.
+- `tsc --noEmit` y `vite build` terminan sin errores (59 módulos). Después, `pip install -r backend/requirements.txt` instala Python 3.11.9.
+- Cada build dura alrededor de un minuto. Lo siguen `Build successful`, el arranque de `uvicorn` con `Application startup complete` y `Your service is live` en `https://www.edith-intelligence.com`.
+
+**Producción** (22:01 UTC): `/` carga `index-wBjVE1yG.js`; `/health`, `/login` y `/auth/config` responden 200. El bundle de #24 (`index-xmmbltQo.js`) devuelve 404 desde el despliegue de #30. Es lo esperado: Render compila en cada despliegue y no guarda bundles anteriores. Por eso la verificación de las 21:32 UTC (activo `d76d43a`, bundle `xmmbltQo`) era correcta en su momento.
+
+**Observación menor.** Durante el arranque, una petición `HEAD /` desde `127.0.0.1` recibió `405 Method Not Allowed`. Render da el servicio por activo mediante `GET /health`, que responde 200, así que no afecta al despliegue. Solo importaría para un monitor externo que comprobara la disponibilidad con `HEAD /`.
+
 ## 2026-11-25 — Marca única: EDITH Intelligence
 
 **Decisión del usuario (25-11-2026):** la marca comercial es **EDITH Intelligence**. El sitio, el panel y el dominio (`www.edith-intelligence.com`) ya la usaban. Faltaban los documentos comerciales.
