@@ -1,5 +1,38 @@
 # EDITH — Registro diario
 
+## 2026-11-25 — Actualización de dependencias del frontend (avisos de `npm audit`)
+
+**Rama:** `claude/magical-cerf-238ltt` (creada desde `master` en `559e1f5`; sin fusión, lista para revisión)
+
+### Motivo
+
+La supervisión de hoy encontró 4 avisos de `npm audit` en `frontend/` (1 alto, 3 moderados): `vite 5.4.21` + `esbuild <=0.24.2` (solo afectan al servidor de desarrollo) y `react-router-dom`/`react-router 6.30.6` (GHSA-wrjc-x8rr-h8h6, GHSA-337j-9hxr-rhxg). Corregirlos exigía subir de versión mayor.
+
+### Cambios
+
+| Paquete | Antes | Después |
+|---|---|---|
+| vite | ^5.4.10 (5.4.21) | ^6.4.6 (esbuild 0.25.12) |
+| @vitejs/plugin-react | ^4.3.3 | ^5.2.0 |
+| react-router-dom | ^6.28.0 (6.30.6) | ^7.18.7 (react-router 7.18.7) |
+
+- Se eligió Vite 6.4.x (no 8.x) porque corrige los avisos con el menor salto y mantiene compatibilidad con Node 18/20/22.
+- No hizo falta tocar `App.tsx`, `pages/*.tsx` ni `vite.config.ts`: las importaciones desde `react-router-dom` (`Navigate`, `NavLink`, `Outlet`, `Route`, `Routes`, `Link`, `BrowserRouter`) siguen funcionando en v7.
+- `backend/static/` se regeneró con el nuevo build (Render sirve esos archivos ya compilados).
+
+### Verificación
+
+- `npm ci` y `npm run build` (tsc + vite) sin errores; `npm audit`: **0 vulnerabilidades**.
+- `python -m pytest -q` en `backend/` (SQLite): **33 pasadas**. Nota: `pytest -q` a secas falla al importar `database`/`core` porque no añade `backend/` al `sys.path`; el CI ya usa `python -m pytest`.
+- Navegador (Chromium) con `uvicorn main:app`: `/`, `/login` y `/privacidad` responden 200 y renderizan; `/app/customers` sin sesión redirige a `/login`; tras iniciar sesión carga «Clientes» y la navegación del panel funciona. Sin errores de JavaScript.
+- Único error de consola: `GET /inventory` → 404 desde el Resumen. Es previo a este cambio (el backend aún no incluye `routers.inventory`, ver `backend/main.py`) y la página lo maneja sin romperse.
+
+### Node del `Dockerfile`
+
+`@vitejs/plugin-react` 5 exige Node `^20.19.0 || >=22.12.0`; Vite 6 admite `^20`. La imagen `node:20-alpine` trae hoy Node 20.20.2, y con esa versión `npm ci` y el build salieron idénticos (mismos hashes) sin avisos de engine, así que **es compatible y no se cambió**. Propuesta (sin aplicar, pendiente de aprobación): pasar a `node:22-alpine`, porque Node 20 terminó su soporte en abril de 2026.
+
+Observación aparte, también previa: el `Dockerfile` copia `/web/dist`, pero `vite.config.ts` compila en `../backend/static`, así que esa etapa no encuentra `dist`. No se tocó en esta tarea.
+
 ## 2026-11-25 — Precisión de precios en CSV y registro público en Docker
 
 **Precios con tres decimales.** Si un producto tiene un precio numérico de `12.345`, el panel lo exporta como `12,345`. Al reimportar ese texto, el panel lo interpreta como `12345`. La API aplica la misma convención a los precios enviados como texto. El caso es ambiguo porque un único separador seguido de tres cifras también representa miles. Se comprobó que el importador convierte tanto `12,345` como `12.345` en `12345`, mientras que `1.250,75` se convierte en `1250.75`. Si se admiten precios con tres decimales, queda por definir un formato que conserve ese valor en la exportación y posterior importación. [Informe del 23 de noviembre](https://github.com/miguelate908/aura--intelligence/blob/5ba973fa28a0e14f4391b1107e3f431a19d44b20/docs/supervision/2026-11-23.md)
