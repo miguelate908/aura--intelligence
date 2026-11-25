@@ -99,3 +99,32 @@ def test_public_registration_can_be_disabled():
     finally:
         os.environ.pop("REGISTRATION_ENABLED", None)
     assert client.get("/auth/config").json() == {"registration_enabled": True}
+
+
+def test_price_text_in_colombian_and_us_formats_is_normalized():
+    from routers.imports import normalize_price
+
+    cases = {
+        "150.000": "150000",
+        "$ 150.000": "150000",
+        "1.250,75": "1250.75",
+        "1.500.000": "1500000",
+        "150,000": "150000",
+        "1,250.75": "1250.75",
+        "29,5": "29.5",
+        "29.5": "29.5",
+        "1500": "1500",
+    }
+    for raw, expected in cases.items():
+        assert normalize_price(raw) == expected, raw
+
+
+def test_import_stores_colombian_thousands_price_correctly():
+    a = token("Empresa A", "a@x.com")
+    response = client.post("/import/products", headers=a, json={"rows": [
+        {"sku": "P1", "name": "Mil", "price": "150.000"},
+        {"sku": "P2", "name": "Decimal", "price": "$ 1.250,75"},
+    ]})
+    assert response.status_code == 200, response.text
+    prices = {p["sku"]: p["price"] for p in client.get("/products/", headers=a).json()}
+    assert prices == {"P1": 150000, "P2": 1250.75}
