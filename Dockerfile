@@ -14,7 +14,7 @@ COPY backend/requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 COPY backend/ ./
 # vite.config.ts compila en ../backend/static, que en esta etapa es /backend/static.
-# main.py sirve el sitio desde backend/static (no está en git ni en el contexto: ver .dockerignore).
+# main.py sirve el sitio desde backend/static, que no se guarda en git ni entra al contexto (.dockerignore).
 COPY --from=web /backend/static ./static
 RUN useradd -m app && chown -R app /srv
 USER app

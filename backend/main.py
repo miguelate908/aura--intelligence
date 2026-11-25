@@ -5,7 +5,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from fastapi import Depends, FastAPI, Request
-from fastapi.responses import FileResponse, HTMLResponse
+from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from database import engine, Base, SessionLocal
 from core.migrations import ensure_demo_request_columns
@@ -79,9 +79,16 @@ app.include_router(demo_requests.router)
 app.include_router(imports.router)
 app.include_router(contact_router)
 app.include_router(account_router)
-# backend/static no se guarda en git: lo genera `npm run build` en frontend/ (Render y Docker lo
-# compilan en cada despliegue). check_dir=False deja arrancar la API aunque no se haya compilado.
-app.mount("/static", StaticFiles(directory="static", check_dir=False), name="static")
+# El sitio compilado (npm run build en frontend/) vive en backend/static y no se guarda en git.
+# Render y el Dockerfile lo compilan en cada despliegue. En local, sin compilar, la API funciona igual.
+STATIC_DIR = Path("static")
+INDEX = STATIC_DIR / "index.html"
+if STATIC_DIR.is_dir():
+    app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
+else:
+    logging.getLogger(__name__).warning(
+        "No existe backend/static: el sitio no está compilado. Ejecuta 'npm run build' en frontend/."
+    )
 
 
 @app.middleware("http")
@@ -95,14 +102,6 @@ async def strip_api_prefix_and_headers(request: Request, call_next):
     response.headers.setdefault("X-Frame-Options", "DENY")
     response.headers.setdefault("Referrer-Policy", "strict-origin-when-cross-origin")
     return response
-
-
-INDEX = Path("static/index.html")
-SITE_NOT_BUILT = (
-    "<!doctype html><meta charset=\"utf-8\"><title>Sitio sin compilar</title>"
-    "<p>El sitio no está compilado. Ejecuta <code>npm ci &amp;&amp; npm run build</code> en "
-    "<code>frontend/</code>; se genera <code>backend/static/</code>.</p>"
-)
 
 
 @app.get("/", include_in_schema=False)
@@ -126,4 +125,6 @@ def health():
 def web_app(rest: str = ""):
     if INDEX.is_file():
         return FileResponse(INDEX)
-    return HTMLResponse(SITE_NOT_BUILT, status_code=503)
+    return JSONResponse(
+        {"detail": "Sitio no compilado. Ejecuta 'npm run build' en frontend/."}, status_code=404
+    )

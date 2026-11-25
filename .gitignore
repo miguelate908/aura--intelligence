@@ -6,5 +6,5 @@ __pycache__/
 *.pyc
 .vscode/
 
-# Sitio compilado por `npm run build` (frontend/vite.config.ts); Render y Docker lo generan al desplegar
+# Sitio compilado: Render y el Dockerfile lo generan en cada despliegue (docs/DESPLIEGUE.md, sección 6)
 backend/static/

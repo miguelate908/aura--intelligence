@@ -1,24 +1,24 @@
 # EDITH — Registro diario
 
-## 2026-11-25 — `backend/static` deja de guardarse en git
+## 2026-11-25 — `backend/static` sale de git
 
-**Rama:** `claude/magical-cerf-238ltt` (PR #26; sin fusión). Con autorización del responsable.
+El usuario confirmó que el despliegue en Render con el build nuevo funcionó y autorizó quitar `backend/static` del repositorio.
 
-**Motivo.** `backend/static/` es el resultado de `npm run build`. En pocos minutos, tres PR (#23, #24 y este) lo recompilaron por separado y causaron conflictos de fusión en archivos generados. Desde el PR #23, Render compila el sitio en cada despliegue, y el `Dockerfile` también lo compila, así que la copia en git ya no hace falta.
+**Cambio.**
+- `git rm -r --cached backend/static` y `backend/static/` en `.gitignore`. Se quitaron `index.html` y dos recursos de `assets/`.
+- `backend/main.py`: monta `/static` solo si la carpeta existe y, si no, registra un aviso. Sin sitio compilado, `/` responde con el mensaje de la API y las rutas de React devuelven 404 con `Sitio no compilado. Ejecuta 'npm run build' en frontend/.` Antes, sin la carpeta, la aplicación no arrancaba.
+- `backend/tests/test_app_startup.py`: una prueba arranca con un sitio compilado simulado en una carpeta temporal y otra sin sitio. Ya no dependen de que exista `backend/static`.
+- `docs/DESPLIEGUE.md` (sección 6), `README-ENTORNO.md` y los comentarios de `render.yaml` y `Dockerfile`, actualizados.
 
-**Cambios.**
-- `git rm -r --cached backend/static`; `backend/static/` añadido a `.gitignore` y a `.dockerignore`. La imagen usa solo el build de su etapa `web`.
-- `backend/main.py`: `StaticFiles(..., check_dir=False)`, para que la API arranque sin el sitio compilado. Sin él, `/` mantiene el mensaje JSON de la API, y `/login`, `/privacidad` y `/app/...` responden 503 con una página que indica ejecutar `npm run build`, en lugar de un error 500.
-- `backend/tests/test_app_startup.py`: ya no depende de que exista `backend/static`. Una prueba usa un sitio compilado de ejemplo en un directorio temporal (rutas del sitio, `/static/assets/...` y cabeceras). Otra prueba el arranque sin compilar (`/health` 200, rutas del sitio 503).
-- `docs/DESPLIEGUE.md` y `render.yaml`: se actualizó la descripción. Volver a `rootDir: backend` ya no es una salida de emergencia válida, porque sin la copia en git el sitio respondería 503. La alternativa es Docker o revertir el PR.
+**Verificación local** (Python 3.11, Node 22):
 
-**Verificación.**
-- `python -m pytest -q`: 34 pasadas, también con `backend/static` borrado del disco.
-- Sin compilar, `uvicorn main:app` responde `/health` 200, `/` 200 (JSON), y `/login` y `/app/customers` 503.
-- Con los pasos del build de Render (`npm ci --include=dev && npm run build`), el navegador muestra `/`, `/login`, `/privacidad` y `/app/customers` (con sesión). `git status` no muestra archivos de `backend/static`.
-- `docker build` (copia de prueba con el certificado del proxy del entorno de verificación): la imagen contiene `index-G1M1fVdK.js`, y `/`, `/login`, `/privacidad`, `/app/customers`, `/health` y el JS respondieron 200.
+| Verificación | Resultado |
+|---|---|
+| `python -m pytest -q` sin `backend/static` | 34 passed |
+| Clon limpio de la rama: no contiene `backend/static` | correcto |
+| `buildCommand` y `startCommand` de `render.yaml` sobre ese clon | `/`, `/login`, `/app/customers`, `/health` y recursos de `/static/assets/` → 200 |
 
-**Pendiente antes de fusionar.** Confirmar en el log de Render que un despliegue con el build del PR #23 mostró `vite build` y `✓ built`. Si Render no tiene Node en el runtime Python, sin la copia en git el sitio no se publicaría.
+**Para volver atrás:** revertir el commit que quitó la carpeta.
 
 ## 2026-11-25 — Actualización de dependencias del frontend (avisos de `npm audit`)
 
@@ -38,7 +38,7 @@ La supervisión de hoy encontró 4 avisos de `npm audit` en `frontend/` (1 alto,
 
 - Se eligió Vite 6.4.x (no 8.x) porque corrige los avisos con el menor salto y mantiene compatibilidad con Node 18/20/22.
 - No hizo falta tocar `App.tsx`, `pages/*.tsx` ni `vite.config.ts`: las importaciones desde `react-router-dom` (`Navigate`, `NavLink`, `Outlet`, `Route`, `Routes`, `Link`, `BrowserRouter`) siguen funcionando en v7.
-- `backend/static/` se regeneró con el nuevo build. Desde el PR #23, Render compila el sitio en cada despliegue; la copia en git se mantiene hasta que se autorice quitarla.
+- Render compila el sitio en cada despliegue desde el PR #23, y `backend/static/` ya no está en git desde el PR #27.
 
 ### Verificación
 
@@ -56,6 +56,11 @@ La supervisión de hoy encontró 4 avisos de `npm audit` en `frontend/` (1 alto,
 La misma corrección (`COPY --from=web /backend/static ./static`) llegó a `master` con el PR #23, «Compila el frontend en el despliegue de Render». Al fusionar `master` en esta rama se conservó esa versión del `Dockerfile` y de `README-ENTORNO.md`, y esta rama aporta solo el cambio a `node:22-alpine`. Ese PR también hace que Render compile el frontend en cada despliegue (`NODE_VERSION` 22.22.0, compatible con plugin-react 5, que exige `>=22.12.0`). Así, Render ya no usa la copia de `backend/static/` guardada en git.
 
 Verificación de la imagen en esta rama: `docker build` completo. Solo para la prueba se usó una copia del Dockerfile con el certificado del proxy del entorno de verificación. `npm ci` y `npm run build` corrieron en `node:22-alpine`, y con el contenedor en marcha (SQLite), `/`, `/login`, `/privacidad`, `/app/customers`, `/health` y el JS del sitio respondieron 200.
+
+### `backend/static` fuera de git (fusión con el PR #27)
+
+Esta rama también quitó `backend/static` de git, pero el PR #27 llegó antes a `master` con el mismo cambio. Al fusionar se conservó la versión de `master` (`main.py`, `test_app_startup.py`, `.gitignore`, `docs/DESPLIEGUE.md`), y esta rama aporta solo `backend/static` en `.dockerignore`. Así, `docker build` no copia al contexto un build local viejo, y la imagen usa solo el sitio que compila su etapa `web`. Verificado: `docker build` completo, y en el contenedor `/`, `/login`, `/privacidad`, `/app/customers`, `/health` y el JS respondieron 200.
+
 ## 2026-11-25 — Docker verificado y `backend/static` recompilado
 
 **Rama:** `claude/admiring-wright-nba927` (sin fusión). PR #24.
