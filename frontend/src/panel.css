@@ -23,6 +23,10 @@
 .panel .mut{color:var(--mu)}
 .panel .err{color:var(--bad)}
 .panel .ok{color:var(--good)}
+.panel .notice{border-color:var(--warning)}
+.panel .notice h3{margin:0 0 8px;font-size:16px}
+.panel .notice ul{margin:0;padding-left:20px;display:grid;gap:6px}
+.panel .badge-warn{display:inline-block;padding:1px 8px;border:1px solid var(--warning);border-radius:999px;color:var(--warning);font-size:12px;font-weight:600;white-space:nowrap}
 .panel .kpi{font-size:34px;font-weight:700;background:linear-gradient(90deg,var(--cy),var(--vi));-webkit-background-clip:text;background-clip:text;color:transparent}
 .panel a.card{display:block;text-decoration:none;transition:.2s}
 .panel a.card:hover{border-color:var(--cy);transform:translateY(-2px)}

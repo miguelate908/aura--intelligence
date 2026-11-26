@@ -213,9 +213,15 @@ Revisa la hoja cada lunes: ninguna oportunidad activa debe quedar sin "próximo 
 
 ---
 
-## 9. Correo para pedir autorización a solicitudes anteriores al 25-11-2026
+## 9. Autorización para solicitudes anteriores al cambio de política
 
 **A quién aplica.** Solo a quien envió el formulario de demo **antes** de que se publicara la política de privacidad actualizada (sección Conservación). Esas personas aceptaron la política anterior, que decía que su solicitud se borraba a los 7 días. Sin su autorización no se copian al registro de oportunidades.
+
+El corte es el **25 de noviembre de 2026 a las 16:47:36 en Bogotá** (`2026-11-25T21:47:36Z`), cuando se registró el despliegue exitoso de la política. [Registro del despliegue](https://api.github.com/repos/miguelate908/aura--intelligence/deployments/8070290879/statuses)
+
+- **Pedir autorización** identifica solicitudes anteriores al instante de corte.
+- Desde el instante exacto del corte, la solicitud queda sin esa marca. La fecha por sí sola no acredita una autorización individual.
+- **Revisar autorización** indica una fecha ausente, inválida o sin zona horaria. Verifica la autorización antes de copiar los datos.
 
 **Cuándo enviarlo.**
 
