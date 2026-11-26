@@ -133,6 +133,58 @@ def _search(db: Session, cid: int, raw: str) -> str:
     return "\n\n".join(out)
  
  
+def _dupes(db: Session, column, cid: int, model) -> list:
+    """Valores repetidos (sin distinguir mayúsculas ni espacios) dentro de la empresa."""
+    key = func.lower(func.trim(column))
+    return (
+        db.query(key, func.count(model.id))
+        .filter(model.company_id == cid, column.isnot(None), func.trim(column) != "")
+        .group_by(key)
+        .having(func.count(model.id) > 1)
+        .order_by(func.count(model.id).desc(), key)
+        .limit(5)
+        .all()
+    )
+
+
+def _quality(db: Session, cid: int) -> str:
+    customers = _count(db, Customer, cid)
+    products = _count(db, Product, cid)
+    if customers == 0 and products == 0:
+        return "Todavía no hay datos que revisar. Importa clientes o productos primero."
+    findings = []
+    if customers:
+        no_contact = (
+            db.query(func.count(Customer.id))
+            .filter(
+                Customer.company_id == cid,
+                func.coalesce(func.trim(Customer.email), "") == "",
+                func.coalesce(func.trim(Customer.phone), "") == "",
+            )
+            .scalar() or 0
+        )
+        if no_contact:
+            findings.append(f"{no_contact} de {customers} cliente(s) sin correo ni teléfono: no se pueden contactar.")
+        for email, n in _dupes(db, Customer.email, cid, Customer):
+            findings.append(f"Correo repetido en {n} clientes: {email}")
+        for name, n in _dupes(db, Customer.name, cid, Customer):
+            findings.append(f"Nombre de cliente repetido {n} veces: {name}")
+    if products:
+        zero = (
+            db.query(func.count(Product.id))
+            .filter(Product.company_id == cid, func.coalesce(Product.price, 0) <= 0)
+            .scalar() or 0
+        )
+        if zero:
+            findings.append(f"{zero} de {products} producto(s) con precio 0 o sin precio.")
+        for sku, n in _dupes(db, Product.sku, cid, Product):
+            findings.append(f"SKU repetido en {n} productos: {sku}")
+    header = f"Revisión de calidad de datos ({customers} cliente(s), {products} producto(s)):"
+    if not findings:
+        return header + "\nNo encontré problemas: sin duplicados, sin precios en 0 y todos los clientes tienen un dato de contacto."
+    return header + "\n" + _lines(findings) + "\n\nCorrígelos en Clientes o Productos, o vuelve a importar el CSV corregido."
+
+
 HELP = (
     "Puedo ayudarte con información de tu empresa. Prueba con:\n"
     "- «Resumen de mi empresa»\n"
@@ -140,6 +192,7 @@ HELP = (
     "- «Productos con precio mayor a 100»\n"
     "- «¿Qué bodegas tengo?»\n"
     "- «Actividad reciente»\n"
+    "- «Revisa la calidad de mis datos»\n"
     "- «Busca <nombre>»"
 )
  
@@ -156,6 +209,8 @@ def chat(body: ChatRequest, db: Session = Depends(get_db), current_user: User = 
         intent, reply = "search", _search(db, cid, raw)
     elif _has(t, "resumen", "general", "panorama", "estado de mi empresa"):
         intent, reply = "summary", _summary(db, cid)
+    elif _has(t, "calidad", "duplicad", "repetid", "incomplet", "revisa mis datos", "revisa los datos"):
+        intent, reply = "quality", _quality(db, cid)
     elif _has(t, "evento", "actividad", "historial") or (
         _has(t, "reciente") and not _has(t, "cliente", "producto", "bodega", "almacen")
     ):

@@ -1,5 +1,54 @@
 # EDITH — Registro diario
 
+## 2026-11-26 — Supervisión diaria y revisión de calidad de datos en el asistente
+
+**Rama:** `claude/laughing-curie-700g4h` (desde `master` en `bcd5afa`). No está fusionada.
+
+### A. Supervisión técnica
+
+| Comprobación | Resultado |
+|---|---|
+| `master` frente a la rama | Sin diferencias al empezar; árbol limpio |
+| `pytest` del backend (SQLite) | 35 passed (34 previas + 1 nueva) |
+| Pruebas del workflow de CI (`test_jwt_tokens.py`, `test_auth_tenant_isolation.py`) | 19 passed |
+| PostgreSQL 16 local | Conecta; `create_all` crea las 9 tablas; registro, login, alta de cliente y producto, `/query/company/{id}` y `/assistant/chat` responden bien; sin errores en el log de uvicorn |
+| `npm ci` + `npm run build` | Compila (`tsc` sin errores, Vite 6.4.6) |
+| `npm audit` | 0 vulnerabilidades |
+| `pip-audit -r requirements.txt` / `pip check` | Sin vulnerabilidades conocidas / sin dependencias rotas |
+
+La prueba con PostgreSQL usó una base temporal del contenedor de la sesión, no la de Render. Desde esta sesión no hay acceso a la base de producción.
+
+**Riesgo corregido en las pruebas.** El límite de registro (5 por IP y hora) es global al proceso. Las pruebas de `test_auth_tenant_isolation.py` ya registraban casi 5 cuentas, así que cualquier prueba nueva que registrara usuarios fallaba con 429. `setup_function` ahora vacía los limitadores de registro y login antes de cada prueba. Solo cambia el código de prueba; el limitador de producción no se tocó.
+
+### B. Mejora del producto: «Revisa la calidad de mis datos»
+
+- **Objetivo:** que el cliente vea en un mensaje qué datos tiene incompletos o duplicados después de importar su Excel/CSV.
+- **Justificación:** el Piloto (`PLAN-COMERCIAL.md` §4) promete un «informe de hallazgos sobre la calidad y organización de los datos». Hasta hoy ese informe se tenía que armar a mano. Ahora el panel da una primera versión, y el cliente la puede repetir solo después de corregir.
+- **Cambio:** nueva intención `quality` en `backend/routers/assistant.py`. Se activa con «calidad», «duplicados», «repetidos», «incompletos» o «revisa mis datos». Revisa, solo dentro de la empresa del token:
+  - clientes sin correo ni teléfono;
+  - correos de cliente repetidos (sin distinguir mayúsculas ni espacios);
+  - nombres de cliente repetidos;
+  - productos con precio 0 o sin precio;
+  - SKU repetidos.
+  Muestra hasta 5 duplicados por tipo. La ayuda del asistente incluye el nuevo ejemplo.
+- **Criterio de aceptación:** con 3 clientes (dos con el mismo correo en distinto formato y uno sin contacto) y 2 productos (SKU repetido, uno con precio 0), la respuesta lista los cinco hallazgos; otra empresa recibe «Todavía no hay datos que revisar» y no ve nada de la primera. Lo comprueba `test_assistant_data_quality_flags_issues_only_for_own_company`, y se verificó a mano contra PostgreSQL.
+- No se cambiaron el modelo de datos, las migraciones ni el frontend.
+
+### C–E. Comercial, monetización y marketing
+
+- **Acción comercial del día (propuesta, no ejecutada):** usar la revisión de calidad como gancho de la demo. En la llamada, importar un CSV de muestra con errores típicos (clientes repetidos, SKU duplicados, precios en 0) y pedir «Revisa la calidad de mis datos». Así el prospecto ve en 1 minuto el problema que el Piloto resuelve. Encaja con el ICP primario (distribución y logística), que maneja listas de clientes y catálogos en Excel.
+- **Mensaje sugerido para LinkedIn (borrador, no publicado):** «¿Cuántos clientes repetidos tiene tu Excel? En la mayoría de pymes que trabajan con hojas de cálculo aparecen correos duplicados, productos sin precio y clientes sin forma de contacto. EDITH Intelligence lo revisa en segundos después de importar tus datos. Si quieres verlo con una muestra de tus datos, escríbeme.» No incluye cifras de mercado porque no hay una fuente verificada.
+- No se contactó a nadie ni se publicó nada. No hay clientes confirmados ni ingresos nuevos que registrar.
+
+### F. Finanzas
+
+Sin gastos nuevos en esta sesión: no se compró ni contrató nada. Los costos de Render (plan `starter` y base `basic-256mb`, según `render.yaml`) siguen como estaban.
+
+### Pendiente de tu parte
+
+- Revisar y fusionar la rama si te parece bien la mejora.
+- Preparar el CSV de muestra para la demo con datos ficticios. No uses datos reales de clientes.
+
 ## 2026-11-25 — Limpieza de python-jose en el `.venv` local y en `backend/.runtime-deps`
 
 Seguimiento de CORE-001 en la copia de trabajo principal. Estos cambios son locales y no pasan por git: `.venv` y `backend/.runtime-deps` están ignorados.

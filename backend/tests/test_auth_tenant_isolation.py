@@ -54,6 +54,9 @@ client = TestClient(app)
 
 
 def setup_function():
+    # Cada prueba parte sin intentos acumulados: el límite de registro por IP es de 5 por hora.
+    for limiter in (auth.register_limit, auth.login_ip_limit, auth.login_email_limit):
+        limiter._hits.clear()
     Base.metadata.drop_all(bind=engine)
     Base.metadata.create_all(bind=engine)
 
@@ -195,3 +198,39 @@ def test_assistant_chat_returns_response_and_only_uses_users_company_data():
     assert "Cliente Confidencial A" in customers_a.json()["reply"]
     assert customers_b.status_code == 200, customers_b.text
     assert "Cliente Confidencial A" not in customers_b.json()["reply"]
+
+
+def test_assistant_data_quality_flags_issues_only_for_own_company():
+    token_a = register("Empresa A", "quality-a@example.com")
+    token_b = register("Empresa B", "quality-b@example.com")
+    headers_a = {"Authorization": f"Bearer {token_a}"}
+    headers_b = {"Authorization": f"Bearer {token_b}"}
+
+    for body in (
+        {"company_id": 1, "name": "Ana Pérez", "email": "ana@example.com"},
+        {"company_id": 1, "name": "ana pérez ", "email": "ANA@example.com"},
+        {"company_id": 1, "name": "Sin Contacto"},
+    ):
+        assert client.post("/customers/", headers=headers_a, json=body).status_code == 200
+    for body in (
+        {"company_id": 1, "sku": "SKU-1", "name": "Uno", "price": 10},
+        {"company_id": 1, "sku": "sku-1", "name": "Dos", "price": 0},
+    ):
+        assert client.post("/products/", headers=headers_a, json=body).status_code == 200
+
+    reply_a = client.post("/assistant/chat", headers=headers_a, json={"message": "Revisa la calidad de mis datos"})
+    reply_b = client.post("/assistant/chat", headers=headers_b, json={"message": "¿tengo clientes duplicados?"})
+
+    assert reply_a.status_code == 200, reply_a.text
+    assert reply_a.json()["intent"] == "quality"
+    text = reply_a.json()["reply"]
+    assert "1 de 3 cliente(s) sin correo ni teléfono" in text
+    assert "Correo repetido en 2 clientes: ana@example.com" in text
+    assert "Nombre de cliente repetido 2 veces" in text
+    assert "1 de 2 producto(s) con precio 0" in text
+    assert "SKU repetido en 2 productos: sku-1" in text
+
+    assert reply_b.status_code == 200, reply_b.text
+    assert reply_b.json()["intent"] == "quality"
+    assert "Todavía no hay datos que revisar" in reply_b.json()["reply"]
+    assert "ana" not in reply_b.json()["reply"].lower()
