@@ -1,5 +1,19 @@
 # EDITH — Registro diario
 
+## 2026-11-25 — Verificación en producción del aviso «Pedir autorización» (PR #38)
+
+Render registró como exitoso el despliegue del commit `bcd5afa` a las 20:24:06 de Bogotá (26 de noviembre a la 01:24:06 UTC). El corte que aplica el panel corresponde a la publicación anterior de la política de privacidad, el **25 de noviembre a las 21:47:36 UTC** (`2026-11-25T21:47:36Z`). [PR #38](https://github.com/miguelate908/aura--intelligence/pull/38) · [Despliegue en Render](https://dashboard.render.com/web/srv-dc0t08jl550s73bge5eg/deploys/dep-dc3ok1d9el5s73aindk0)
+
+Dos sesiones aisladas de Edge cargaron el HTML y los archivos JavaScript y CSS públicos de `www.edith-intelligence.com/app/requests`. En ambos navegadores se interceptaron las consultas de solicitudes y permisos antes de llegar al servidor. Se usaron exclusivamente solicitudes simuladas, sin iniciar sesión con una cuenta real, consultar datos personales ni modificar producción.
+
+| Instante probado | Bogotá (25 nov.) | Tokio (26 nov.) | Marca observada en ambas zonas |
+|---|---|---|---|
+| Un segundo antes | 16:47:35 | 06:47:35 | Pedir autorización |
+| Corte exacto | 16:47:36 | 06:47:36 | Sin marca |
+| Un segundo después | 16:47:37 | 06:47:37 | Sin marca |
+
+**Pasaron seis casos en Bogotá y los mismos seis en Tokio.** Además de los tres de la tabla, `2026-11-25T16:47:35.999-05:00` mostró «Pedir autorización», `2026-11-26T06:47:36+09:00` quedó sin marca y la fecha sin zona `2026-11-25T21:47:35` mostró «Revisar autorización». La ausencia de marca indica únicamente que la solicitud no es anterior al corte.
+
 ## 2026-11-25 — Limpieza de python-jose en el `.venv` local y en `backend/.runtime-deps`
 
 Seguimiento de CORE-001 en la copia de trabajo principal. Estos cambios son locales y no pasan por git: `.venv` y `backend/.runtime-deps` están ignorados.
