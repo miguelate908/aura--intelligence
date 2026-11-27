@@ -26,6 +26,7 @@ from routers import demo_requests
 from routers import imports
 from routers.contact import router as contact_router
 from routers.account import router as account_router
+from routers.summary import router as summary_router
 # Pendientes de confirmar en el repositorio: routers.inventory y routers.manage.
 # Inclúyelos aquí cuando sus archivos estén en git; si no, el servidor no arranca.
 
@@ -79,6 +80,7 @@ app.include_router(demo_requests.router)
 app.include_router(imports.router)
 app.include_router(contact_router)
 app.include_router(account_router)
+app.include_router(summary_router)
 # El sitio compilado (npm run build en frontend/) vive en backend/static y no se guarda en git.
 # Render y el Dockerfile lo compilan en cada despliegue. En local, sin compilar, la API funciona igual.
 STATIC_DIR = Path("static")

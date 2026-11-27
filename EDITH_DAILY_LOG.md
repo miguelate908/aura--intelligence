@@ -1,5 +1,51 @@
 # EDITH — Registro diario
 
+## 2026-11-27 — Supervisión diaria y resumen del panel en una sola petición
+
+**Rama:** `claude/laughing-curie-oo3vhz`, creada desde `master` (`bcd5afa`, PR #38). No está fusionada. No se envió ni se publicó nada.
+
+### A. Supervisión técnica
+
+| Comprobación | Resultado |
+|---|---|
+| `pytest` del backend (antes del cambio) | 34 passed |
+| `pytest` del backend (después del cambio) | 36 passed (2 pruebas nuevas) |
+| `pip-audit -r backend/requirements.txt` y `pip check` | Sin vulnerabilidades conocidas; sin dependencias rotas |
+| `npm ci`, `tsc` y `vite build` en `frontend/` | Compila sin errores (59 módulos) |
+| `npm audit` | 0 vulnerabilidades |
+| PostgreSQL 16 local | El servidor arranca, crea las 9 tablas; registro, inicio de sesión, alta de cliente, producto y bodega, y `/summary/` funcionan |
+| Producción `https://www.edith-intelligence.com` (15:08 UTC) | `/health`, `/`, `/login` y `/auth/config` responden 200; sirve `index-BDntQdFc.js`, el mismo bundle que compila `master` |
+
+**Matiz sobre PostgreSQL.** Las pruebas de `pytest` fijan `DATABASE_URL=sqlite://` dentro de cada archivo, así que **nunca prueban PostgreSQL**, aunque se ejecuten con otra variable. La verificación con PostgreSQL de hoy fue manual, con el servidor en marcha. Desde esta sesión no hay acceso a la base de producción.
+
+**Observaciones (sin cambios hechos):**
+- El panel pide `GET /inventory`, que no existe (`main.py` indica que `routers.inventory` está pendiente). Responde 404 y las tarjetas de inventario quedan ocultas. No afecta al usuario, pero genera un 404 en cada visita al Resumen.
+- Las descripciones de los eventos están en inglés («Customer 'X' created») en un producto en español. Se ven ahora en «Actividad reciente». Propuesta para otro día: traducirlas por `event_type`.
+- `GET /events/` ordena solo por `created_at`; los eventos del mismo segundo pueden salir en cualquier orden. `/summary/` desempata por `id`.
+
+### B. Mejora del día: resumen del panel con conteos en la base
+
+- **Objetivo.** El Resumen del panel debe cargar con una sola petición y mostrar qué pasó últimamente en la empresa.
+- **Justificación.** Antes el panel descargaba **todas** las filas de clientes, productos, bodegas y eventos solo para contarlas (4 peticiones). La tabla de eventos crece con cada alta, edición o borrado, así que el Resumen se volvía más lento con el uso, justo en los clientes que más usan el producto. Además, no mostraba actividad: un cliente no veía que su equipo estaba trabajando.
+- **Cambio.**
+  - `backend/routers/summary.py` (nuevo): `GET /summary/` devuelve los conteos con `COUNT` filtrados por la empresa de la sesión y los 5 eventos más recientes. Exige sesión.
+  - `backend/main.py`: registra el router (2 líneas).
+  - `frontend/src/pages/Dashboard.tsx`: usa `/summary/` y añade la tarjeta «Actividad reciente».
+  - `backend/tests/test_summary.py` (nuevo): aislamiento entre empresas, conteos, límite de 5 eventos, orden y 401 sin sesión. No modifica `test_auth_tenant_isolation.py` (lo usa la CI de seguridad).
+- **Criterio de aceptación (cumplido).** Al abrir `/app`, el navegador hace una petición a `/summary/` en lugar de cuatro listas completas; los números coinciden con los registros de la empresa y no incluyen los de otra; sin sesión, 401. Comprobado con `pytest` y con Playwright sobre PostgreSQL.
+
+### C–E. Comercial, monetización y marketing
+
+**Acción comercial del día (para que la apruebes y la hagas tú).** Usar «Actividad reciente» en el guion de demostración (`KIT-VENTAS.md` §3): tras cargar los datos del prospecto, volver al Resumen y mostrar que cada cambio queda registrado con fecha y hora. Responde a la pregunta del dueño de pyme «¿qué hizo mi equipo hoy?», que Siigo y Alegra no responden en su pantalla de inicio. Es coherente con el posicionamiento como complemento (§3.1 del plan) y no promete nada que no exista.
+
+**Idea de publicación para LinkedIn (borrador, sin publicar):** «¿Sabes qué cambió hoy en tu inventario y en tu cartera de clientes sin preguntarle a nadie? En EDITH Intelligence, el resumen muestra la actividad reciente de tu equipo. Si usas Siigo o Alegra para contabilidad, EDITH ordena el resto de tu operación.»
+
+**Clientes confirmados:** ninguno. **Ingresos registrados:** COP 0. No se contactó a ninguna empresa.
+
+### F. Control financiero
+
+Sin gastos nuevos: no se contrató, compró ni suscribió nada. Los costos conocidos siguen siendo los de `render.yaml` (servicio web `starter` y base `basic-256mb`) y el dominio. Desde esta sesión no hay acceso a la facturación de Render ni del dominio, así que no se pueden confirmar importes.
+
 ## 2026-11-25 — Limpieza de python-jose en el `.venv` local y en `backend/.runtime-deps`
 
 Seguimiento de CORE-001 en la copia de trabajo principal. Estos cambios son locales y no pasan por git: `.venv` y `backend/.runtime-deps` están ignorados.
