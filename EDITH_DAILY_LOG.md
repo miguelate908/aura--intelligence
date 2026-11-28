@@ -1,5 +1,53 @@
 # EDITH — Registro diario
 
+## 2026-11-28 — Supervisión diaria y `HEAD` para monitores de disponibilidad
+
+**Rama:** `claude/laughing-curie-fkccjx`, desde `master` (`bcd5afa`, PR #38). No está fusionada.
+
+### A. Supervisión
+
+| Comprobación | Resultado |
+|---|---|
+| `pytest` del backend (Python 3.11, entorno limpio desde `requirements-dev.txt`) | 34 passed antes del cambio; 35 passed después |
+| `pip-audit -r backend/requirements-dev.txt` / `pip check` | sin vulnerabilidades / sin conflictos |
+| `npm ci` + `npm run build` en `frontend/` (Node 22) | `tsc` y `vite build` sin errores, 59 módulos |
+| `npm audit` | 0 vulnerabilidades |
+| PostgreSQL 16 local | la app crea las 9 tablas, `seed_demo.py` carga la empresa demo, login, `/customers/`, `/products/`, `/warehouses/` y `/assistant/chat` responden 200; sin token, 401 |
+| Producción `www.edith-intelligence.com` | `/`, `/health`, `/login`, `/auth/config` responden 200 (0,2–0,5 s) |
+| Render (API, solo lectura) | despliegue activo `bcd5afa` (PR #38), estado `live` desde el 26-11 01:24 UTC |
+
+- `httpx2` en `requirements-dev.txt` se revisó por si era un paquete suplantado: es el que importa la `TestClient` de Starlette 1.10 (`import httpx2 as httpx`) y lo publica el mismo autor de Starlette. Sin riesgo.
+- `npm outdated` muestra versiones mayores nuevas (React 19, Vite 8, TypeScript 7, plugin-react 6). No hay avisos de seguridad; no se actualizan sin un plan, porque son cambios mayores.
+- La FastAPI de `backend/.runtime-deps` (pendiente del 25-11) sigue sin decidir; esa carpeta no está en este clon.
+
+### B. Mejora del día: `HEAD` en `/`, `/health` y las rutas del sitio
+
+- **Objetivo:** poder vigilar `www.edith-intelligence.com` con un monitor externo gratuito que avise si el sitio cae, antes de que lo note un cliente piloto.
+- **Justificación:** el 25-11 se observó que `HEAD /` respondía `405 Method Not Allowed`; hoy producción sigue igual. Muchos monitores (UptimeRobot, entre otros) usan `HEAD` por defecto y marcarían el sitio como caído aunque funcione.
+- **Cambio:** `backend/main.py` registra `/`, `/health`, `/app`, `/app/...`, `/privacidad` y `/login` con `GET` y `HEAD`. No se abre ningún endpoint nuevo ni cambia la autenticación: `HEAD /customers/` sigue en 405.
+- **Prueba:** `test_head_requests_for_uptime_monitors` en `backend/tests/test_app_startup.py`.
+- **Criterio de aceptación:** `HEAD` en esas rutas responde 200 sin cuerpo y con las cabeceras de seguridad; `GET` no cambia; las 35 pruebas pasan. Verificado también con uvicorn y PostgreSQL local.
+- **Después de fusionar (tú decides):** crear un monitor gratuito sobre `https://www.edith-intelligence.com/health`. No se creó ninguna cuenta.
+
+### C. Investigación comercial (prospectos, no clientes)
+
+- **Ferreterías y distribuidores ferreteros:** el Gran Salón Ferretero de Bogotá reúne fabricantes, importadores, mayoristas y distribuidores, y su programa trata surtido, digitalización y logística ([Portafolio](https://www.portafolio.co/negocios/industrias/gran-salon-ferretero-llega-a-bogota-la-industria-que-mueve-mas-de-18-billones-busca-nuevos-mercados-505623)). Encaja con el ICP: miles de referencias y varias bodegas. No se encontró la fecha de 2027; confirmarla con el organizador.
+- **Posible alianza:** Bogotá dio mentorías gratuitas en analítica de datos a 272 mipymes ([Portafolio](https://www.portafolio.co/economia/bogota-impulsa-la-productividad-de-272-mipymes-con-mentorias-gratuitas-en-analitica-de-datos-empresarial-492582)). Vale la pena averiguar si hay una nueva convocatoria y si admite proveedores o mentores externos. No se contactó a nadie.
+- **Contexto:** las mipymes priorizan sostener el negocio y ganar productividad sin ampliar la nómina ([Portafolio](https://www.portafolio.co/negocios/empresas/las-mipymes-pisan-el-freno-y-cambian-de-objetivo-hoy-la-prioridad-es-sostener-el-negocio-no-crecer-498290), [Portafolio](https://www.portafolio.co/economia/empleo/productividad-antes-que-contratacion-siete-estrategias-para-que-las-pymes-ganen-eficiencia-sin-ampliar-su-nomina-497113)). Esto refuerza el mensaje de horas ahorradas frente a un auxiliar que consolida Excel (`PLAN-COMERCIAL.md` §4.1).
+- No se encontró una encuesta de 2026 que mida el uso de Excel para inventario en pymes colombianas; no se cita ninguna cifra.
+
+### D. Acción comercial propuesta para hoy
+
+Hacer una lista de 10 distribuidores ferreteros de Bogotá o Medellín con datos públicos (sitio web, directorio de la Cámara de Comercio o lista de expositores del Gran Salón Ferretero) en `plantillas/registro-oportunidades.xlsx`, con la etapa «Prospecto». Después, enviarles el mensaje de primer contacto de `KIT-VENTAS.md`, adaptado a ferretería: *«¿Cuántos archivos de Excel usan hoy para saber qué referencia hay en cada bodega?»*. El envío lo haces tú.
+
+### E. Marketing (borrador, sin publicar)
+
+Publicación para LinkedIn: *«Muchas ferreterías y distribuidoras llevan miles de referencias en un Excel por bodega. Cuando alguien pregunta "¿dónde está este producto y quién lo compra?", la respuesta depende de una persona. En EDITH cargamos esos archivos por ti y en 30 días tienes clientes, productos y bodegas en un solo lugar, conectados. Tu Siigo o Alegra sigue llevando la contabilidad.»*
+
+### F. Finanzas
+
+Hoy no hubo gastos ni ingresos. La infraestructura estimada sigue en unos USD 13 al mes en Render (`docs/DESPLIEGUE.md`; confirma el valor en tu factura). Ingresos recibidos registrados: ninguno.
+
 ## 2026-11-25 — Limpieza de python-jose en el `.venv` local y en `backend/.runtime-deps`
 
 Seguimiento de CORE-001 en la copia de trabajo principal. Estos cambios son locales y no pasan por git: `.venv` y `backend/.runtime-deps` están ignorados.

@@ -104,7 +104,8 @@ async def strip_api_prefix_and_headers(request: Request, call_next):
     return response
 
 
-@app.get("/", include_in_schema=False)
+# GET y HEAD: los monitores de disponibilidad externos (p. ej. UptimeRobot) suelen usar HEAD.
+@app.api_route("/", methods=["GET", "HEAD"], include_in_schema=False)
 def root():
     # Si el frontend está compilado se sirve la landing; si no, el mensaje de la API.
     if INDEX.is_file():
@@ -112,16 +113,16 @@ def root():
     return {"message": "EDITH Intelligence API funcionando"}
 
 
-@app.get("/health")
+@app.api_route("/health", methods=["GET", "HEAD"])
 def health():
     return {"status": "ok"}
 
 
 # Rutas de React (recargar la página en ellas debe seguir mostrando el sitio).
-@app.get("/app", include_in_schema=False)
-@app.get("/app/{rest:path}", include_in_schema=False)
-@app.get("/privacidad", include_in_schema=False)
-@app.get("/login", include_in_schema=False)
+@app.api_route("/app", methods=["GET", "HEAD"], include_in_schema=False)
+@app.api_route("/app/{rest:path}", methods=["GET", "HEAD"], include_in_schema=False)
+@app.api_route("/privacidad", methods=["GET", "HEAD"], include_in_schema=False)
+@app.api_route("/login", methods=["GET", "HEAD"], include_in_schema=False)
 def web_app(rest: str = ""):
     if INDEX.is_file():
         return FileResponse(INDEX)
